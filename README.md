@@ -20,7 +20,7 @@ LPEAssessor is a comprehensive Linux privilege escalation assessment tool design
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/LPEAssessor.git
+git clone https://github.com/ParzivalHack/LPEAssessor.git
 cd LPEAssessor
 
 # Install required dependencies
@@ -31,22 +31,22 @@ pip install -r requirements.txt
 
 ```
 # Basic scan with default options
-python lpeassessor.py
+python LPEAssessor.py
 
 # Generate a report in all formats (HTML, JSON, text)
-python lpeassessor.py -o report
+python LPEAssessor.py -o report
 
 # Verbose output with custom log file
-python lpeassessor.py -v -l assessment.log
+python LPEAssessor.py -v -l assessment.log
 
 # Increase number of scanning threads
-python lpeassessor.py -t 20
+python LPEAssessor.py -t 20
 
 # Skip information gathering and exploit generation
-python lpeassessor.py --skip-info --skip-exploits
+python LPEAssessor.py --skip-info --skip-exploits
 
 # Monitor for successful path hijacking exploits
-python lpeassessor.py --monitor-only --monitor-timeout 600
+python LPEAssessor.py --monitor-only --monitor-timeout 600
 ```
 
 ### Command-line Options
