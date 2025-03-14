@@ -22,9 +22,6 @@ LPEAssessor is a comprehensive Linux privilege escalation assessment tool design
 # Clone the repository
 git clone https://github.com/ParzivalHack/LPEAssessor.git
 cd LPEAssessor
-
-# Install required dependencies
-pip install -r requirements.txt
 ```
 
 # Usage
@@ -70,7 +67,7 @@ python LPEAssessor.py --monitor-only --monitor-timeout 600
 
 ## Example Report
 
-![Report Example](docs/images/report-example.png)
+![Real Report Example](https://parzivalhack.github.io/LPEAssessor/examplereport.html)
 
 ## Supported Vulnerability Types
 
