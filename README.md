@@ -49,11 +49,9 @@ python lpeassessor.py --skip-info --skip-exploits
 python lpeassessor.py --monitor-only --monitor-timeout 600
 ```
 
-### Command-line Options Block
-
-```markdown
 ### Command-line Options
 
+```markdown
 | Option | Description |
 |--------|-------------|
 | `-o, --output` | Output file for the report (without extension) |
