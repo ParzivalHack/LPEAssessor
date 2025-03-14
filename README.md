@@ -116,4 +116,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the [MIT LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [MIT LICENSE](LICENSE) file for details. 
+
+## Disclaimer
+A full disclaimer can be found [here](https://github.com/ParzivalHack/LPEAssessor/blob/main/DISCLAIMER.md)
