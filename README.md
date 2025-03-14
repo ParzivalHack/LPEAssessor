@@ -67,7 +67,7 @@ python LPEAssessor.py --monitor-only --monitor-timeout 600
 
 ## Example Report
 
-![Real Report Example](https://parzivalhack.github.io/LPEAssessor/examplereport.html)
+[Real Report Example](https://parzivalhack.github.io/LPEAssessor/examplereport.html)
 
 ## Supported Vulnerability Types
 
