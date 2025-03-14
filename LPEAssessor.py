@@ -3035,7 +3035,7 @@ def main():
     
     # Initialize logger
     logger = PrivescLogger(log_file=args.log, verbose=args.verbose)
-    logger.log(LogLevel.INFO, "Advanced Linux Privilege Escalation Tool Starting")
+    logger.log(LogLevel.INFO, "LPEAssessor: Linux Privilege Escalation Assessment Tool")
     
     # Check if we're in monitor-only mode
     if args.monitor_only:
@@ -3098,7 +3098,7 @@ def main():
             output_file=args.output
         )
     
-    logger.log(LogLevel.INFO, "Advanced Linux Privilege Escalation Tool Completed")
+    logger.log(LogLevel.INFO, "LPEAssessor: Linux Privilege Escalation Assessment Tool")
 
 if __name__ == "__main__":
     try:
