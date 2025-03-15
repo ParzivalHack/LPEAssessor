@@ -10,7 +10,7 @@ LPEAssessor is a comprehensive Linux privilege escalation assessment tool design
 
 - **Comprehensive Scanning**: Detects 12+ types of privilege escalation vulnerabilities
 - **Real-time Verification**: Verifies vulnerabilities to minimize false positives
-- **Advanced Exploitation**: Generates practical exploitation commands with multiple approaches
+- **Advanced Exploitation**: Generates practical exploitation commands with multiple approaches, including comprehensive GTFOBins techniques for SUID/SGID binaries
 - **Path Hijacking Analysis**: Sophisticated path manipulation vulnerability detection
 - **Intelligent Monitoring**: Optional monitoring for privileged execution of hijacked binaries
 - **Professional Reporting**: Generates detailed HTML, JSON, and text reports
