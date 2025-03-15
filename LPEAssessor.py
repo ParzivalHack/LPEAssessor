@@ -3660,7 +3660,7 @@ def print_banner():
                                                            
                             
                                                             
-  Linux Privilege Escalation Assessment Tool v1.3.0
+  Linux Privilege Escalation Assessment Tool v1.3.1
   https://github.com/ParzivalHack/LPEAssessor
     """
     print(banner)
