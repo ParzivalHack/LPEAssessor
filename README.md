@@ -102,6 +102,8 @@ This tool is provided for educational and professional security assessment purpo
 
 **Use responsibly and only on systems you have permission to test.**
 
+A full disclaimer can be found [here](https://github.com/ParzivalHack/LPEAssessor/blob/main/DISCLAIMER.md)
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -115,6 +117,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the MIT License - see the [MIT LICENSE](LICENSE) file for details. 
-
-## Disclaimer
-A full disclaimer can be found [here](https://github.com/ParzivalHack/LPEAssessor/blob/main/DISCLAIMER.md)
