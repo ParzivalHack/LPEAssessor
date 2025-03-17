@@ -9,7 +9,7 @@ LPEAssessor is a comprehensive Linux privilege escalation assessment tool design
 
 ## Features
 
-- **Comprehensive Scanning**: Detects 12+ types of privilege escalation vulnerabilities
+- **Comprehensive Scanning**: Detects 17+ types of privilege escalation vulnerabilities
 - **Real-time Verification**: Verifies vulnerabilities to minimize false positives
 - **Advanced Exploitation**: Generates practical exploitation commands with multiple approaches, including comprehensive GTFOBins techniques for SUID/SGID binaries
 - **Path Hijacking Analysis**: Sophisticated path manipulation vulnerability detection
@@ -65,6 +65,8 @@ python LPEAssessor.py --monitor-only --monitor-timeout 600
 | `--skip-report` | Skip report generation |
 | `--monitor-only` | Only monitor for successful path hijacking exploits |
 | `--monitor-timeout` | Timeout for monitoring in seconds (default: 300) |
+| `--verify none|safe|full` | Choose verification mode (default: safe) |
+| `--verify-timeout SECONDS` | Set timeout for verification attempts (default: 10) |
 ```
 
 ## Example Report
