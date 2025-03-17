@@ -2,7 +2,8 @@
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.6%2B-blue)
 
-![image](https://github.com/user-attachments/assets/456f9f9d-dc83-46d6-a0e5-6603c98d4ba8)
+![image](https://github.com/user-attachments/assets/344b6d8b-bb1c-4882-8f63-3c2020942560)
+
 
 LPEAssessor is a comprehensive Linux privilege escalation assessment tool designed for security professionals, system administrators, and penetration testers. It systematically identifies potential privilege escalation vectors, verifies their exploitability, and provides detailed reports with actionable remediation recommendations.
 
@@ -71,6 +72,8 @@ python LPEAssessor.py --monitor-only --monitor-timeout 600
 [Real HTML Report Example](https://parzivalhack.github.io/LPEAssessor/examplereport.html)
 
 [Real JSON Report Example](https://github.com/ParzivalHack/LPEAssessor/blob/main/examplereport.json)
+
+[Real TXT Report Example]()
 
 ## Supported Vulnerability Types
 
