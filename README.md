@@ -1,6 +1,7 @@
 # LPEAssessor: Linux Privilege Escalation Assessment Tool
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.6%2B-blue)
+![Version](https://img.shields.io/badge/version-1.3.2-blue)
 
 ![image](https://github.com/user-attachments/assets/344b6d8b-bb1c-4882-8f63-3c2020942560)
 
