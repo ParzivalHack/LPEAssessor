@@ -3652,19 +3652,15 @@ def print_banner():
 
  _     ______ _____  ___                                   
 | |    | ___ \  ___|/ _ \                                  
-| |    | |_/ / |__ / /_\ \___ ___  ___  ___ ___  ___  _ __ 
-| |    |  __/|  __||  _  / __/ __|/ _ \/ __/ __|/ _ \| '__|
-| |____| |   | |___| | | \__ \__ \  __/\__ \__ \ (_) | |   
-\_____/\_|   \____/\_| |_/___/___/\___||___/___/\___/|_|   
-                                                           
-                                                           
-                            
-                                                            
-  Linux Privilege Escalation Assessment Tool v1.3.1
-  https://github.com/ParzivalHack/LPEAssessor
+| |    | |_/ / |__ / /_\ \___ ___  ___  ___ ___  ___  _ __ ─────▄───▄
+| |    |  __/|  __||  _  / __/ __|/ _ \/ __/ __|/ _ \| '__|─▄█▄─█▀█▀█─▄█▄
+| |____| |   | |___| | | \__ \__ \  __/\__ \__ \ (_) | |   ▀▀████▄█▄████▀▀
+\_____/\_|   \____/\_| |_/___/___/\___||___/___/\___/|_|   ─────▀█▀█▀                                                                                                                                                                                                              
     """
     print(banner)
-    print("Starting the assessment...")
+    print("  Linux Privilege Escalation Assessment Tool v1.3.1")
+    print("  https://github.com/ParzivalHack/LPEAssessor")
+    print("")
     print("")
 
 def parse_arguments():
