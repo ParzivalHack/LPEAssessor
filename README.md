@@ -65,7 +65,7 @@ python LPEAssessor.py --monitor-only --monitor-timeout 600
 | `--skip-report` | Skip report generation |
 | `--monitor-only` | Only monitor for successful path hijacking exploits |
 | `--monitor-timeout` | Timeout for monitoring in seconds (default: 300) |
-| `--verify none|safe|full` | Choose verification mode (default: safe) |
+| `--verify (none,safe,full)` | Choose verification mode (default: safe) |
 | `--verify-timeout SECONDS` | Set timeout for verification attempts (default: 10) |
 ```
 
