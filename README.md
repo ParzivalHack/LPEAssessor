@@ -91,6 +91,14 @@ python LPEAssessor.py --monitor-only --monitor-timeout 600
 - Sudo Permissions
 - Exposed Internal Services
 - PATH Hijacking Vulnerabilities
+- History File Exposures
+- SSH Key Weak Permissions
+- Sensitive Information Exposure
+- Dangerous Capabilities
+- Container-related vulnerabilities:
+  - Accessible Docker Socket
+  - Inside Docker Container
+  - Privileged Container
 
 ## Compliance Support
 
