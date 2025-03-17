@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # LPEAssessor - Linux Privilege Escalation Assessment Tool
-# Version: 1.3.1
+# Version: 1.3.2
 # Author: Tommaso Bona
 # License: MIT
 # Description: Comprehensive tool for detecting, verifying, and exploiting Linux privilege escalation vulnerabilities.
@@ -195,14 +195,381 @@ class SystemInfo:
             else:
                 self.logger.log(LogLevel.INFO, f"{key.replace('_', ' ').title()}: {value}")
 
+#!/usr/bin/env python3
+# vulnerability_verifier.py - Verification framework for LPEAssessor
+# To be integrated with main LPEAssessor tool
+
+import os
+import stat
+import subprocess
+import tempfile
+import random
+import string
+import time
+import platform
+from logging import *
+import re
+from enum import Enum
+
+class LogLevel(Enum):
+    INFO = 1
+    SUCCESS = 2
+    WARNING = 3
+    ERROR = 4
+    CRITICAL = 5
+    DEBUG = 6
+
+class VulnerabilityVerifier:
+    def __init__(self, logger, verification_mode='safe', timeout=10, evidence_dir="/tmp/.lpeassessor_evidence"):
+        self.logger = logger
+        self.verification_mode = verification_mode  # 'none', 'safe', or 'full'
+        self.timeout = timeout  # Timeout for verification attempts
+        self.evidence_dir = evidence_dir
+        self.success_indicators = []
+        
+        # Create evidence directory if it doesn't exist
+        if verification_mode != 'none':
+            os.makedirs(self.evidence_dir, exist_ok=True)
+        
+    def verify_vulnerability(self, vulnerability, exploit=None):
+        """Main method to verify if a vulnerability is exploitable"""
+        # Skip verification if in 'none' mode
+        if self.verification_mode == 'none':
+            return True, "Verification skipped"
+            
+        vuln_type = vulnerability.get('type', 'unknown')
+        method_name = f"verify_{vuln_type}"
+        
+        # Reset success indicators
+        self.success_indicators = []
+        
+        # Check if we have a specific verification method for this vulnerability type
+        if hasattr(self, method_name) and callable(getattr(self, method_name)):
+            try:
+                verification_result = getattr(self, method_name)(vulnerability, exploit)
+                if verification_result:
+                    return verification_result
+            except Exception as e:
+                self.logger.log(LogLevel.ERROR, f"Error verifying {vuln_type}: {e}")
+        
+        # Fall back to generic verification if no specific method or specific method failed
+        return self.generic_verification(vulnerability, exploit)
+    
+    def generic_verification(self, vulnerability, exploit=None):
+        """Generic vulnerability verification method"""
+        # Basic permission and existence checks
+        if 'path' in vulnerability:
+            path = vulnerability.get('path')
+            if not os.path.exists(path):
+                return False, "Path does not exist"
+            
+            # Perform basic permission checks based on vulnerability type
+            if any(t in vulnerability.get('type', '') for t in ['writable', 'weak_permissions']):
+                if not os.access(path, os.W_OK):
+                    return False, "No write permissions to path"
+            
+        # If an exploit is provided and we're in full mode, try to run it
+        if exploit and self.verification_mode == 'full':
+            return self.verify_with_exploit(vulnerability, exploit)
+            
+        # Default to true if we couldn't disprove exploitability
+        return True, "Potentially exploitable based on euristhic (basic) checks only"
+    
+    def verify_with_exploit(self, vulnerability, exploit):
+        """Verify vulnerability by actually running the exploit"""
+        if not exploit or 'command' not in exploit:
+            return False, "No exploit command available"
+            
+        # Generate a unique identifier for this verification
+        verification_id = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+        evidence_file = os.path.join(self.evidence_dir, f"evidence_{verification_id}")
+        
+        # Modify the exploit to create evidence of success
+        command = exploit.get('command')
+        modified_command = self._create_verification_command(command, evidence_file, vulnerability)
+        
+        try:
+            # Execute the modified exploit command
+            self.logger.log(LogLevel.INFO, f"Executing verification command: {modified_command}")
+            process = subprocess.Popen(
+                modified_command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            
+            try:
+                stdout, stderr = process.communicate(timeout=self.timeout)
+                exit_code = process.returncode
+                
+                # Check for evidence of successful exploitation
+                success, evidence = self._check_exploitation_evidence(vulnerability, evidence_file, stdout, stderr, exit_code)
+                
+                if success:
+                    self.logger.log(LogLevel.SUCCESS, f"Verification successful: {evidence}")
+                    return True, evidence
+                else:
+                    self.logger.log(LogLevel.WARNING, f"Verification failed: {evidence}")
+                    return False, evidence
+                    
+            except subprocess.TimeoutExpired:
+                process.kill()
+                return False, f"Verification timed out after {self.timeout} seconds"
+                
+        except Exception as e:
+            return False, f"Error during verification: {str(e)}"
+    
+    def _create_verification_command(self, command, evidence_file, vulnerability):
+        """Modify exploit command to include success evidence creation"""
+        # Create a success marker that this command should generate if successful
+        success_marker = f"echo 'LPEAssessor verification successful' > {evidence_file}"
+        
+        vuln_type = vulnerability.get('type', '')
+        
+        if 'suid_binary' in vuln_type:
+            # For SUID exploits, we need to make sure the success marker is executed with elevated privileges
+            if 'bash' in command or 'sh' in command:
+                # If exploit gives a shell, make it create our evidence file
+                return f"{command} -c '{success_marker} && id > {evidence_file}.id'"
+            else:
+                # Otherwise append our marker command
+                return f"{command} && {success_marker}"
+        
+        elif 'writable_file' in vuln_type or 'weak_file_permissions' in vuln_type:
+            # For file modifications, check if the modification was successful
+            return f"{command} && {success_marker}"
+        
+        elif 'sudo' in vuln_type:
+            # For sudo exploits, create evidence file as root
+            return f"{command} -c '{success_marker} && id > {evidence_file}.id'"
+        
+        # Generic case
+        return f"{command} && {success_marker}"
+    
+    def _check_exploitation_evidence(self, vulnerability, evidence_file, stdout, stderr, exit_code):
+        """Check for evidence of successful exploitation"""
+        # Check if our evidence file was created
+        if os.path.exists(evidence_file):
+            # Additional checks based on vulnerability type
+            vuln_type = vulnerability.get('type', '')
+            
+            if 'suid' in vuln_type or 'sudo' in vuln_type:
+                # Check if we got elevated privileges
+                if os.path.exists(f"{evidence_file}.id"):
+                    with open(f"{evidence_file}.id", 'r') as f:
+                        id_output = f.read()
+                        if 'uid=0' in id_output or 'root' in id_output:
+                            self.success_indicators.append("Obtained root privileges")
+                            return True, "Successfully obtained root privileges"
+            
+            # Generic success case - evidence file exists
+            return True, "Exploit successfully executed"
+            
+        # Check command output for success indicators
+        success_patterns = [
+            'uid=0', 'root', 'successful', 'success',
+            'privileges', 'elevated', 'access granted'
+        ]
+        
+        if any(pattern.lower() in stdout.lower() for pattern in success_patterns):
+            success_pattern = next(pattern for pattern in success_patterns if pattern.lower() in stdout.lower())
+            self.success_indicators.append(f"Output contained success indicator: {success_pattern}")
+            return True, f"Exploit output indicates success: '{success_pattern}'"
+        
+        # If exit code is 0 and no errors, might be successful
+        if exit_code == 0 and not stderr:
+            return True, "Exploit command executed successfully with no errors"
+            
+        # Default to failure
+        return False, "No evidence of successful exploitation found"
+    
+    # Specific verification methods for different vulnerability types
+    
+    def verify_suid_binary(self, vulnerability, exploit=None):
+        """Verify SUID binary vulnerability"""
+        path = vulnerability.get('path')
+        
+        # Check if the binary exists and has SUID bit
+        if not os.path.exists(path):
+            return False, "Binary does not exist"
+            
+        try:
+            file_stat = os.stat(path)
+            if not (file_stat.st_mode & stat.S_ISUID):
+                return False, "Binary does not have SUID bit set"
+                
+            # Check if binary is executable by current user
+            if not os.access(path, os.X_OK):
+                return False, "Binary is not executable by current user"
+                
+            binary_name = os.path.basename(path)
+            exploit_method = vulnerability.get('exploit_method', '')
+            
+            if not exploit_method:
+                return False, "No known exploit method for this binary"
+                
+            # If we have an exploit and in full mode, try to run it
+            if exploit and self.verification_mode == 'full':
+                return self.verify_with_exploit(vulnerability, exploit)
+                
+            return True, f"SUID binary {binary_name} appears exploitable"
+            
+        except Exception as e:
+            return False, f"Error verifying SUID binary: {str(e)}"
+    
+    def verify_writable_file(self, vulnerability, exploit=None):
+        """Verify writable file vulnerability"""
+        path = vulnerability.get('path')
+        
+        # Check if the file exists
+        if not os.path.exists(path):
+            return False, "File does not exist"
+            
+        # Verify that we can actually write to the file
+        try:
+            # Create a temporary file instead of modifying the actual file
+            temp_fd, temp_path = tempfile.mkstemp()
+            os.close(temp_fd)
+            
+            # Try to copy the file to verify read access
+            with open(path, 'rb') as src, open(temp_path, 'wb') as dst:
+                dst.write(src.read(1))  # Just read first byte to verify
+                
+            # Try to open the real file in append mode without writing
+            with open(path, 'a') as f:
+                pass
+                
+            os.unlink(temp_path)  # Clean up temp file
+            
+            return True, f"File {path} is verified as writable"
+            
+        except PermissionError:
+            return False, f"Permission denied when attempting to write to {path}"
+        except Exception as e:
+            return False, f"Error verifying writable file: {str(e)}"
+    
+    def verify_sudo_permissions(self, vulnerability, exploit=None):
+        """Verify sudo permissions vulnerability"""
+        cmd = vulnerability.get('command')
+        
+        try:
+            # Check if sudo is available
+            subprocess.check_output(['which', 'sudo'])
+            
+            # Test if we can use sudo without a password
+            sudo_test = subprocess.run(['sudo', '-n', 'true'], stderr=subprocess.PIPE, timeout=2)
+            can_sudo = sudo_test.returncode == 0
+            
+            if can_sudo:
+                # If we can sudo without password, check if the specific command is allowed
+                sudo_output = subprocess.check_output(['sudo', '-l'], stderr=subprocess.STDOUT, timeout=2).decode('utf-8')
+                
+                # Check if the command appears in the sudo permissions
+                if cmd in sudo_output or 'ALL' in sudo_output or '(ALL)' in sudo_output:
+                    # If we have an exploit and in full mode, try to run it
+                    if exploit and self.verification_mode == 'full':
+                        return self.verify_with_exploit(vulnerability, exploit)
+                        
+                    return True, f"Sudo permission for {cmd} verified"
+                    
+                return False, f"Command {cmd} not found in sudo permissions"
+                
+            return False, "User cannot use sudo without a password"
+            
+        except subprocess.CalledProcessError:
+            return False, "Sudo is not available or user doesn't have sudo rights"
+        except Exception as e:
+            return False, f"Error verifying sudo permissions: {str(e)}"
+            
+    def verify_path_hijacking(self, vulnerability, exploit=None):
+        """Verify PATH hijacking vulnerability"""
+        command = vulnerability.get('command')
+        writable_directory = vulnerability.get('writable_directory')
+        
+        if not command or not writable_directory:
+            return False, "Missing command or writable directory information"
+            
+        # Check if directory exists and is writable
+        if not os.path.exists(writable_directory):
+            return False, "Directory does not exist"
+            
+        if not os.access(writable_directory, os.W_OK):
+            return False, "Directory is not writable"
+            
+        # Check if directory is in PATH
+        path_env = os.environ.get('PATH', '')
+        path_dirs = path_env.split(':')
+        
+        if writable_directory not in path_dirs:
+            return False, "Directory not in PATH"
+            
+        # Verify that we can create a file with the command name
+        try:
+            cmd_path = os.path.join(writable_directory, command)
+            
+            # If the file already exists, check if it's writable
+            if os.path.exists(cmd_path):
+                if not os.access(cmd_path, os.W_OK):
+                    return False, f"Cannot write to existing command file: {cmd_path}"
+            else:
+                # Try to create a temporary file to verify write access
+                try:
+                    with open(cmd_path, 'w') as f:
+                        f.write("#!/bin/sh\necho test\n")
+                    os.chmod(cmd_path, 0o755)
+                    os.unlink(cmd_path)  # Clean up
+                except Exception as e:
+                    return False, f"Cannot create command file: {e}"
+            
+            # Find the real command location
+            real_cmd_path = None
+            for path_dir in path_dirs:
+                if path_dir == writable_directory:
+                    continue  # Skip our writable directory
+                    
+                potential_path = os.path.join(path_dir, command)
+                if os.path.exists(potential_path) and os.path.isfile(potential_path):
+                    real_cmd_path = potential_path
+                    break
+                    
+            # Check PATH order
+            if real_cmd_path:
+                writable_index = path_dirs.index(writable_directory)
+                real_dir = os.path.dirname(real_cmd_path)
+                real_dir_index = path_dirs.index(real_dir)
+                
+                if writable_index >= real_dir_index:
+                    return False, f"Writable directory comes after real command in PATH"
+            
+            # If we have an exploit and in full mode, try to run it
+            if exploit and self.verification_mode == 'full':
+                return self.verify_with_exploit(vulnerability, exploit)
+                
+            return True, f"PATH hijacking for {command} appears exploitable"
+            
+        except Exception as e:
+            return False, f"Error verifying PATH hijacking: {str(e)}"
+
+
 class VulnerabilityScanner:
-    def __init__(self, logger, username=None, threads=10, scan_timeout=3600):
+    def __init__(self, logger, username=None, threads=10, scan_timeout=3600, verification_mode='safe', verify_timeout=10):
         self.logger = logger
         self.username = username
         self.threads = threads
         self.scan_timeout = scan_timeout
         self.vulnerabilities = []
         self.exclude_paths = ['/proc', '/sys', '/dev', '/run', '/snap']
+        self.verification_mode = verification_mode
+        self.verify_timeout = verify_timeout
+        
+        # Initialize the verifier if needed
+        if verification_mode != 'none':
+            self.verifier = VulnerabilityVerifier(
+                logger=logger,
+                verification_mode=verification_mode,
+                timeout=verify_timeout
+        )
     
     def start_scan(self):
         """Main method to start vulnerability scanning with improved thread management"""
@@ -229,7 +596,7 @@ class VulnerabilityScanner:
             self.scan_containers
         ]
 
-        # Run each method with individual timeout instead of starting all threads at once
+        # Run each method with individual timeout
         for method in scan_methods:
             method_name = method.__name__
             self.logger.log(LogLevel.INFO, f"Starting {method_name}...")
@@ -238,12 +605,43 @@ class VulnerabilityScanner:
             thread.daemon = True
             thread.start()
         
-            # Use a shorter timeout for each individual scan (adjust as needed)
             method_timeout = min(300, self.scan_timeout / len(scan_methods))
             thread.join(timeout=method_timeout)
         
             if thread.is_alive():
                 self.logger.log(LogLevel.WARNING, f"{method_name} timed out after {method_timeout} seconds, continuing with next scan")
+
+        # Verify discovered vulnerabilities if verification is enabled
+        if self.verification_mode != 'none':
+            self.logger.log(LogLevel.INFO, f"Verifying discovered vulnerabilities in {self.verification_mode} mode...")
+            verified_vulnerabilities = []
+            
+            for vuln in self.vulnerabilities:
+                vuln_type = vuln.get('type', 'unknown')
+                self.logger.log(LogLevel.INFO, f"Verifying {vuln_type} vulnerability...")
+                
+                # Skip verification for vulnerabilities already marked as unexploitable
+                if vuln.get('is_exploitable') is False:
+                    verified_vulnerabilities.append(vuln)
+                    continue
+                    
+                # Verify the vulnerability
+                is_exploitable, reason = self.verifier.verify_vulnerability(vuln)
+                
+                # Update the vulnerability with verification results
+                vuln['is_exploitable'] = is_exploitable
+                vuln['verification_reason'] = reason
+                
+                if is_exploitable:
+                    self.logger.log(LogLevel.SUCCESS, f"Verification succeeded: {reason}")
+                else:
+                    self.logger.log(LogLevel.WARNING, f"Verification failed: {reason}")
+                    
+                verified_vulnerabilities.append(vuln)
+            
+            # Replace the vulnerabilities list with verified vulnerabilities
+            self.vulnerabilities = verified_vulnerabilities
+            self.logger.log(LogLevel.INFO, f"Verification complete: {sum(1 for v in self.vulnerabilities if v.get('is_exploitable', False))} exploitable vulnerabilities confirmed")
 
         return self.vulnerabilities
     
@@ -1709,16 +2107,26 @@ class VulnerabilityScanner:
                 self.logger.log(LogLevel.DEBUG, f"Error checking for PATH hijacking: {e}")
 
 class ExploitManager:
-    def __init__(self, logger, vulnerabilities, username=None):
+    def __init__(self, logger, vulnerabilities, username=None, verification_mode='safe', verify_timeout=10):
         self.logger = logger
         self.vulnerabilities = vulnerabilities
         self.username = username or os.getlogin()
         self.exploits = []
+        self.verification_mode = verification_mode
+        self.verify_timeout = verify_timeout
+        
+        # Initialize the verifier if needed
+        if verification_mode != 'none':
+            self.verifier = VulnerabilityVerifier(
+                logger=logger,
+                verification_mode=verification_mode,
+                timeout=verify_timeout
+            )
     
     def generate_exploits(self):
         """Generate exploits for the discovered and verified vulnerabilities"""
         self.logger.log(LogLevel.INFO, "Generating exploits for discovered vulnerabilities...")
-    
+
         # Filter out vulnerabilities that are not exploitable
         verified_vulnerabilities = []
         for vuln in self.vulnerabilities:
@@ -1727,9 +2135,9 @@ class ExploitManager:
             # For backward compatibility, if is_exploitable is not set, assume it might be exploitable
             elif 'is_exploitable' not in vuln:
                 verified_vulnerabilities.append(vuln)
-    
+
         self.logger.log(LogLevel.INFO, f"Found {len(verified_vulnerabilities)} verified vulnerabilities out of {len(self.vulnerabilities)} total")
-    
+
         # Group vulnerabilities by type
         vuln_types = {}
         for vuln in verified_vulnerabilities:
@@ -1737,19 +2145,45 @@ class ExploitManager:
             if vuln_type not in vuln_types:
                 vuln_types[vuln_type] = []
             vuln_types[vuln_type].append(vuln)
-    
+
         # Generate exploits for each vulnerability type
         for vuln_type, vulns in vuln_types.items():
             method_name = f"exploit_{vuln_type}"
             if hasattr(self, method_name) and callable(getattr(self, method_name)):
                 try:
                     method = getattr(self, method_name)
-                    exploits = method(vulns)
-                    if exploits:
-                        self.exploits.extend(exploits)
+                    potential_exploits = method(vulns)
+                    
+                    # If verification is enabled and in full mode, test each exploit
+                    if self.verification_mode == 'full' and potential_exploits:
+                        verified_exploits = []
+                        
+                        for exploit in potential_exploits:
+                            vulnerability = exploit.get('vulnerability')
+                            
+                            # Verify the exploit actually works
+                            is_exploitable, reason = self.verifier.verify_vulnerability(vulnerability, exploit)
+                            
+                            # Update the vulnerability with verification results
+                            vulnerability['is_exploitable'] = is_exploitable
+                            vulnerability['verification_reason'] = reason
+                            
+                            # Only add verified exploits
+                            if is_exploitable:
+                                verified_exploits.append(exploit)
+                                self.logger.log(LogLevel.SUCCESS, f"Verified working exploit: {reason}")
+                            else:
+                                self.logger.log(LogLevel.WARNING, f"Exploit verification failed: {reason}")
+                        
+                        # Add the verified exploits
+                        self.exploits.extend(verified_exploits)
+                    else:
+                        # If verification is disabled or in safe mode, add all exploits
+                        self.exploits.extend(potential_exploits)
+                    
                 except Exception as e:
                     self.logger.log(LogLevel.ERROR, f"Error generating exploits for {vuln_type}: {e}")
-    
+
         return self.exploits
     
     def exploit_history_file_exposure(self, vulns):
@@ -3017,6 +3451,11 @@ class ReportGenerator:
                     report_lines.append(f"  {key.replace('_', ' ').title()}: {value}")
             
             report_lines.append("")  # Add a blank line between vulnerabilities
+
+        # Add verification information
+        if 'verification_reason' in vuln:
+            verification_status = "Verified" if vuln.get('is_exploitable', False) else "Verification Failed"
+            report_lines.append(f"  Verification: {verification_status} - {vuln.get('verification_reason')}")
         
         # Add exploits
         report_lines.append("EXPLOITS DETAILS")
@@ -3514,6 +3953,20 @@ class ReportGenerator:
             elif vuln in medium_risk_vulns:
                 finding_class = "finding-medium"
                 severity = "Medium"
+
+            # Add verification information to the finding
+            if 'verification_reason' in vuln:
+                verification_status = "Verified" if vuln.get('is_exploitable', False) else "Verification Failed"
+                verification_reason = vuln.get('verification_reason', 'No verification information')
+                
+                finding_content += f"""
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>{verification_status}</strong>: {verification_reason}</p>
+                    </div>
+                </div>
+                """
             
             # Create content for each finding
             finding_content = f"""
@@ -3658,7 +4111,7 @@ def print_banner():
 \_____/\_|   \____/\_| |_/___/___/\___||___/___/\___/|_|   ─────▀█▀█▀                                                                                                                                                                                                              
     """
     print(banner)
-    print("  Linux Privilege Escalation Assessment Tool v1.3.1")
+    print("  Linux Privilege Escalation Assessment Tool v1.3.2")
     print("  https://github.com/ParzivalHack/LPEAssessor")
     print("")
     print("")
@@ -3677,6 +4130,9 @@ def parse_arguments():
     parser.add_argument('--skip-report', action='store_true', help='Skip report generation')
     parser.add_argument('--monitor-only', action='store_true', help='Only monitor for successful path hijacking exploits')
     parser.add_argument('--monitor-timeout', type=int, default=300, help='Timeout for monitoring in seconds (default: 300)')
+    parser.add_argument('--verify', choices=['none', 'safe', 'full'], default='safe', help='Verification mode: none (skip verification), safe (non-destructive tests), full (attempt exploitation)')
+    parser.add_argument('--verify-timeout', type=int, default=10, help='Timeout for each verification attempt in seconds (default: 10)')
+
     return parser.parse_args()
 
 def main():
@@ -3688,6 +4144,15 @@ def main():
     # Initialize logger
     logger = PrivescLogger(log_file=args.log, verbose=args.verbose)
     logger.log(LogLevel.INFO, "LPEAssessor: Linux Privilege Escalation Assessment Tool")
+    
+    # Get verification settings
+    verification_mode = args.verify
+    verify_timeout = args.verify_timeout
+    
+    # Log verification settings
+    logger.log(LogLevel.INFO, f"Verification mode: {verification_mode}")
+    if verification_mode != 'none':
+        logger.log(LogLevel.INFO, f"Verification timeout: {verify_timeout} seconds")
     
     # Check if we're in monitor-only mode
     if args.monitor_only:
@@ -3716,23 +4181,27 @@ def main():
         system_info = system_info_scanner.gather_system_info()
         system_info_scanner.print_system_info()
     
-    # Scan for vulnerabilities
+    # Scan for vulnerabilities with verification
     scanner = VulnerabilityScanner(
         logger=logger,
         username=args.username,
         threads=args.threads,
-        scan_timeout=args.timeout
+        scan_timeout=args.timeout,
+        verification_mode=verification_mode,
+        verify_timeout=verify_timeout
     )
     vulnerabilities = scanner.start_scan()
-    logger.log(LogLevel.INFO, f"Found {len(vulnerabilities)} vulnerabilities")
+    logger.log(LogLevel.INFO, f"Found {len(vulnerabilities)} vulnerabilities, {sum(1 for v in vulnerabilities if v.get('is_exploitable', False))} exploitable")
     
-    # Generate exploits
+    # Generate exploits with verification
     exploits = []
     if not args.skip_exploits:
         exploit_manager = ExploitManager(
             logger=logger,
             vulnerabilities=vulnerabilities,
-            username=args.username
+            username=args.username,
+            verification_mode=verification_mode,
+            verify_timeout=verify_timeout
         )
         exploits = exploit_manager.generate_exploits()
         logger.log(LogLevel.INFO, f"Generated {len(exploits)} exploits")
