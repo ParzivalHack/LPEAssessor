@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # LPEAssessor - Linux Privilege Escalation Assessment Tool
-# Version: 1.3.2
+# Version: 1.3.1
 # Author: Tommaso Bona
 # License: MIT
 # Description: Comprehensive tool for detecting, verifying, and exploiting Linux privilege escalation vulnerabilities.
@@ -3314,13 +3314,201 @@ class ReportGenerator:
         self.vulnerabilities = vulnerabilities
         self.exploits = exploits
         self.report_data = {}
+        
+        # Initialize compliance framework mappings
+        self.compliance_mappings = {
+            'suid_binary': {
+                'nist': ['AC-6', 'CM-6'],
+                'cis': ['5.1', '5.4'],
+                'pci_dss': ['7.1', '7.2'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            },
+            'sgid_binary': {
+                'nist': ['AC-6', 'CM-6'],
+                'cis': ['5.1', '5.4'],
+                'pci_dss': ['7.1', '7.2'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            },
+            'writable_file': {
+                'nist': ['AC-3', 'AC-6', 'CM-6'],
+                'cis': ['5.1', '5.4', '14.6'],
+                'pci_dss': ['7.1', '7.2', '10.5'],
+                'iso27001': ['A.9.2.3', 'A.9.4.1']
+            },
+            'world_writable_directory': {
+                'nist': ['AC-3', 'AC-6', 'CM-6'],
+                'cis': ['5.1', '14.6'],
+                'pci_dss': ['7.1', '7.2', '10.5'],
+                'iso27001': ['A.9.2.3', 'A.9.4.1']
+            },
+            'weak_file_permissions': {
+                'nist': ['AC-3', 'AC-6', 'CM-6'],
+                'cis': ['5.1', '14.6'],
+                'pci_dss': ['7.1', '7.2', '10.5'],
+                'iso27001': ['A.9.2.3', 'A.9.4.1']
+            },
+            'docker_group_member': {
+                'nist': ['AC-6', 'CM-7'],
+                'cis': ['5.1', '4.8'],
+                'pci_dss': ['7.1', '7.2'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            },
+            'plaintext_credentials': {
+                'nist': ['IA-5', 'SC-28'],
+                'cis': ['16.4', '16.5'],
+                'pci_dss': ['8.2', '8.4'],
+                'iso27001': ['A.9.2.4', 'A.9.4.3']
+            },
+            'kernel_exploit': {
+                'nist': ['SI-2', 'RA-5'],
+                'cis': ['3.4', '3.5'],
+                'pci_dss': ['6.1', '6.2'],
+                'iso27001': ['A.12.6.1', 'A.14.2.2']
+            },
+            'writable_cron_job': {
+                'nist': ['AC-6', 'CM-6'],
+                'cis': ['5.1', '6.2'],
+                'pci_dss': ['7.1', '7.2'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            },
+            'sudo_permissions': {
+                'nist': ['AC-6', 'CM-6'],
+                'cis': ['5.1', '5.4'],
+                'pci_dss': ['7.1', '7.2'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            },
+            'exposed_service': {
+                'nist': ['AC-3', 'CM-7'],
+                'cis': ['9.2', '9.4'],
+                'pci_dss': ['1.2', '2.2'],
+                'iso27001': ['A.13.1.3', 'A.9.1.2']
+            },
+            'path_hijacking': {
+                'nist': ['AC-6', 'CM-6'],
+                'cis': ['5.1', '5.4'],
+                'pci_dss': ['7.1', '7.2'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            },
+            'history_file_exposure': {
+                'nist': ['AC-6', 'CM-6'],
+                'cis': ['5.1', '16.4'],
+                'pci_dss': ['8.2', '8.4'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            },
+            'ssh_key_weak_permissions': {
+                'nist': ['AC-3', 'AC-6', 'IA-5'],
+                'cis': ['5.2.2', '16.4'],
+                'pci_dss': ['8.2', '8.4'],
+                'iso27001': ['A.9.2.4', 'A.9.4.3']
+            },
+            'readable_ssh_private_key': {
+                'nist': ['AC-3', 'AC-6', 'IA-5'],
+                'cis': ['5.2.2', '16.4'],
+                'pci_dss': ['8.2', '8.4'],
+                'iso27001': ['A.9.2.4', 'A.9.4.3']
+            },
+            'sensitive_info_exposure': {
+                'nist': ['AC-6', 'SC-28'],
+                'cis': ['16.4', '16.5'],
+                'pci_dss': ['8.2', '8.4'],
+                'iso27001': ['A.9.2.4', 'A.9.4.3']
+            },
+            'dangerous_capability': {
+                'nist': ['AC-6', 'CM-6'],
+                'cis': ['5.1', '5.4'],
+                'pci_dss': ['7.1', '7.2'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            },
+            'accessible_docker_socket': {
+                'nist': ['AC-6', 'CM-7'],
+                'cis': ['5.1', '4.8'],
+                'pci_dss': ['7.1', '7.2'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            },
+            'inside_docker_container': {
+                'nist': ['CM-7', 'SC-7'],
+                'cis': ['4.8', '9.2'],
+                'pci_dss': ['2.2', '1.2'],
+                'iso27001': ['A.13.1.3', 'A.9.1.2']
+            },
+            'privileged_container': {
+                'nist': ['AC-6', 'CM-7'],
+                'cis': ['5.1', '4.8'],
+                'pci_dss': ['7.1', '7.2'],
+                'iso27001': ['A.9.2.3', 'A.9.4.4']
+            }
+        }
+        
+        # Define severity levels for each vulnerability type
+        self.severity_levels = {
+            'suid_binary': 'High',
+            'sgid_binary': 'Medium',
+            'writable_file': 'High',
+            'world_writable_directory': 'Medium',
+            'weak_file_permissions': 'Medium',
+            'docker_group_member': 'High',
+            'plaintext_credentials': 'Medium',
+            'kernel_exploit': 'Critical',
+            'writable_cron_job': 'High',
+            'sudo_permissions': 'High',
+            'exposed_service': 'Medium',
+            'path_hijacking': 'Medium',
+            'history_file_exposure': 'Low',
+            'ssh_key_weak_permissions': 'High',
+            'readable_ssh_private_key': 'Critical',
+            'sensitive_info_exposure': 'Medium',
+            'dangerous_capability': 'High',
+            'accessible_docker_socket': 'High',
+            'inside_docker_container': 'Medium',
+            'privileged_container': 'High'
+        }
+        
+        # Define remediation timeframes for each severity level
+        self.remediation_timeframes = {
+            'Critical': '24 hours',
+            'High': '1 week',
+            'Medium': '1 month',
+            'Low': '3 months'
+        }
+    
+    def collect_assessment_info(self):
+        """Collect assessment information from user input"""
+        print("\n" + "="*80)
+        print("Assessment Information Collection")
+        print("="*80)
+        
+        assessment_info = {}
+        
+        assessment_info['organization_name'] = input("Organization Name: ")
+        assessment_info['scope'] = input("Assessment Scope (e.g., 'All Linux servers in production environment'): ")
+        assessment_info['assessor_name'] = input("Assessor Name: ")
+        assessment_info['assessor_contact'] = input("Assessor Contact (email/phone): ")
+        assessment_info['assessment_date'] = input("Assessment Date (YYYY-MM-DD) [default: today]: ") or datetime.now().strftime('%Y-%m-%d')
+        assessment_info['report_id'] = input("Report ID/Reference: ")
+        assessment_info['report_version'] = input("Report Version [default: 1.0]: ") or "1.0"
+        assessment_info['authorization'] = input("Authorization provided by: ")
+        
+        # Ask for inclusion of specific compliance frameworks
+        print("\nInclude compliance framework mappings:")
+        assessment_info['include_nist'] = input("Include NIST SP 800-53 mappings? (y/n) [default: y]: ").lower() != 'n'
+        assessment_info['include_cis'] = input("Include CIS Controls mappings? (y/n) [default: y]: ").lower() != 'n'
+        assessment_info['include_pci'] = input("Include PCI DSS mappings? (y/n) [default: y]: ").lower() != 'n'
+        assessment_info['include_iso'] = input("Include ISO 27001 mappings? (y/n) [default: y]: ").lower() != 'n'
+        
+        print("\nThank you. Generating report...\n")
+        
+        return assessment_info
     
     def generate_report(self, output_format='all', output_file=None):
-        """Generate a report of the scan results"""
+        """Generate a report of the scan results with compliance framework mappings"""
         self.logger.log(LogLevel.INFO, "Generating report...")
+        
+        # Collect assessment information
+        assessment_info = self.collect_assessment_info()
         
         # Prepare report data
         self.report_data = {
+            'assessment_info': assessment_info,
             'scan_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'system_info': self.system_info,
             'vulnerabilities': self.vulnerabilities,
@@ -3329,13 +3517,39 @@ class ReportGenerator:
                 'total_vulnerabilities': len(self.vulnerabilities),
                 'total_exploits': len(self.exploits),
                 'vulnerability_types': {},
-                'exploit_types': {}
+                'exploit_types': {},
+                'critical_count': 0,
+                'high_count': 0,
+                'medium_count': 0,
+                'low_count': 0
             }
         }
         
-        # Count vulnerability types
+        # Calculate risk levels and count vulnerabilities by severity
         for vuln in self.vulnerabilities:
             vuln_type = vuln.get('type', 'unknown')
+            
+            # Add severity level to each vulnerability
+            severity = self.severity_levels.get(vuln_type, 'Medium')
+            vuln['severity'] = severity
+            
+            # Add compliance mappings to each vulnerability
+            vuln['compliance'] = self.compliance_mappings.get(vuln_type, {})
+            
+            # Increment severity counters
+            if severity == 'Critical':
+                self.report_data['summary']['critical_count'] += 1
+            elif severity == 'High':
+                self.report_data['summary']['high_count'] += 1
+            elif severity == 'Medium':
+                self.report_data['summary']['medium_count'] += 1
+            elif severity == 'Low':
+                self.report_data['summary']['low_count'] += 1
+            
+            # Add remediation timeframe
+            vuln['remediation_timeframe'] = self.remediation_timeframes.get(severity, 'Not specified')
+            
+            # Count vulnerability types
             if vuln_type not in self.report_data['summary']['vulnerability_types']:
                 self.report_data['summary']['vulnerability_types'][vuln_type] = 0
             self.report_data['summary']['vulnerability_types'][vuln_type] += 1
@@ -3360,7 +3574,7 @@ class ReportGenerator:
         return self.report_data
     
     def generate_json_report(self, output_file=None):
-        """Generate a JSON report"""
+        """Generate a JSON report with compliance framework mappings"""
         json_report = json.dumps(self.report_data, indent=4)
         
         if output_file:
@@ -3372,14 +3586,47 @@ class ReportGenerator:
         return json_report
     
     def generate_text_report(self, output_file=None):
-        """Generate a text report"""
+        """Generate a text report with compliance framework mappings"""
         report_lines = []
         
-        # Add header
+        # Add header with assessment information
         report_lines.append("=" * 80)
-        report_lines.append(f"Advanced Linux Privilege Escalation Report")
+        report_lines.append(f"Privilege Escalation Vulnerability Assessment Report")
+        report_lines.append(f"Organization: {self.report_data['assessment_info']['organization_name']}")
+        report_lines.append(f"Report ID: {self.report_data['assessment_info']['report_id']}")
+        report_lines.append(f"Version: {self.report_data['assessment_info']['report_version']}")
         report_lines.append(f"Scan Time: {self.report_data['scan_time']}")
         report_lines.append("=" * 80)
+        report_lines.append("")
+        
+        # Add assessment information
+        report_lines.append("ASSESSMENT INFORMATION")
+        report_lines.append("-" * 80)
+        report_lines.append(f"Assessor: {self.report_data['assessment_info']['assessor_name']}")
+        report_lines.append(f"Contact: {self.report_data['assessment_info']['assessor_contact']}")
+        report_lines.append(f"Assessment Date: {self.report_data['assessment_info']['assessment_date']}")
+        report_lines.append(f"Scope: {self.report_data['assessment_info']['scope']}")
+        report_lines.append(f"Authorization: {self.report_data['assessment_info']['authorization']}")
+        report_lines.append("")
+        
+        # Add methodology information
+        report_lines.append("METHODOLOGY")
+        report_lines.append("-" * 80)
+        report_lines.append("The assessment was conducted using LPEAssessor, a comprehensive privilege escalation assessment tool that:")
+        report_lines.append("1. Scans the system for common privilege escalation vectors")
+        report_lines.append("2. Verifies the exploitability of identified vulnerabilities")
+        report_lines.append("3. Generates potential exploit paths for confirmed vulnerabilities")
+        report_lines.append("4. Maps findings to compliance frameworks and provides remediation guidance")
+        report_lines.append("")
+        report_lines.append("Compliance frameworks mapped in this report:")
+        if self.report_data['assessment_info']['include_nist']:
+            report_lines.append("- NIST SP 800-53 (Security Control RA-5: Vulnerability Scanning)")
+        if self.report_data['assessment_info']['include_cis']:
+            report_lines.append("- CIS Controls (Control 3: Continuous Vulnerability Management)")
+        if self.report_data['assessment_info']['include_pci']:
+            report_lines.append("- PCI DSS (Requirement 11.2: Regular Vulnerability Scanning)")
+        if self.report_data['assessment_info']['include_iso']:
+            report_lines.append("- ISO 27001 (Control A.12.6.1: Management of Technical Vulnerabilities)")
         report_lines.append("")
         
         # Add system information
@@ -3408,8 +3655,23 @@ class ReportGenerator:
                 report_lines.append(f"{key.replace('_', ' ').title()}: {value}")
         report_lines.append("")
         
+        # Add executive summary
+        report_lines.append("EXECUTIVE SUMMARY")
+        report_lines.append("-" * 80)
+        report_lines.append(f"This report presents the findings of a comprehensive privilege escalation assessment")
+        report_lines.append(f"conducted on {self.report_data['assessment_info']['organization_name']} systems. The assessment")
+        report_lines.append(f"identified {self.report_data['summary']['total_vulnerabilities']} potential privilege escalation vectors,")
+        report_lines.append(f"of which {len([v for v in self.vulnerabilities if v.get('is_exploitable', False)])} have been verified as exploitable.")
+        report_lines.append("")
+        report_lines.append("Risk Summary:")
+        report_lines.append(f"  Critical Risk: {self.report_data['summary']['critical_count']} vulnerabilities")
+        report_lines.append(f"  High Risk: {self.report_data['summary']['high_count']} vulnerabilities")
+        report_lines.append(f"  Medium Risk: {self.report_data['summary']['medium_count']} vulnerabilities")
+        report_lines.append(f"  Low Risk: {self.report_data['summary']['low_count']} vulnerabilities")
+        report_lines.append("")
+        
         # Add summary
-        report_lines.append("SUMMARY")
+        report_lines.append("FINDINGS SUMMARY")
         report_lines.append("-" * 80)
         report_lines.append(f"Total Vulnerabilities: {self.report_data['summary']['total_vulnerabilities']}")
         report_lines.append(f"Total Exploits: {self.report_data['summary']['total_exploits']}")
@@ -3432,10 +3694,24 @@ class ReportGenerator:
         report_lines.append("-" * 80)
         for i, vuln in enumerate(self.report_data['vulnerabilities'], 1):
             vuln_type = vuln.get('type', 'unknown').replace('_', ' ').title()
+            severity = vuln.get('severity', 'Medium')
             report_lines.append(f"[{i}] {vuln_type}")
+            report_lines.append(f"  Severity: {severity}")
+            report_lines.append(f"  Remediation Timeframe: {vuln.get('remediation_timeframe', 'Not specified')}")
+            
+            # Add compliance mappings if enabled
+            compliance = vuln.get('compliance', {})
+            if self.report_data['assessment_info']['include_nist'] and 'nist' in compliance:
+                report_lines.append(f"  NIST SP 800-53 Controls: {', '.join(compliance['nist'])}")
+            if self.report_data['assessment_info']['include_cis'] and 'cis' in compliance:
+                report_lines.append(f"  CIS Controls: {', '.join(compliance['cis'])}")
+            if self.report_data['assessment_info']['include_pci'] and 'pci_dss' in compliance:
+                report_lines.append(f"  PCI DSS Requirements: {', '.join(compliance['pci_dss'])}")
+            if self.report_data['assessment_info']['include_iso'] and 'iso27001' in compliance:
+                report_lines.append(f"  ISO 27001 Controls: {', '.join(compliance['iso27001'])}")
             
             for key, value in vuln.items():
-                if key == 'type':
+                if key in ['type', 'severity', 'compliance', 'remediation_timeframe']:
                     continue  # Already displayed above
                 
                 if isinstance(value, dict) or isinstance(value, list):
@@ -3450,12 +3726,12 @@ class ReportGenerator:
                 else:
                     report_lines.append(f"  {key.replace('_', ' ').title()}: {value}")
             
+            # Add verification information
+            if 'verification_reason' in vuln:
+                verification_status = "Verified" if vuln.get('is_exploitable', False) else "Verification Failed"
+                report_lines.append(f"  Verification: {verification_status} - {vuln.get('verification_reason')}")
+            
             report_lines.append("")  # Add a blank line between vulnerabilities
-
-        # Add verification information
-        if 'verification_reason' in vuln:
-            verification_status = "Verified" if vuln.get('is_exploitable', False) else "Verification Failed"
-            report_lines.append(f"  Verification: {verification_status} - {vuln.get('verification_reason')}")
         
         # Add exploits
         report_lines.append("EXPLOITS DETAILS")
@@ -3466,6 +3742,125 @@ class ReportGenerator:
             report_lines.append(f"  Description: {exploit.get('description', 'No description')}")
             report_lines.append(f"  Command: {exploit.get('command', 'No command')}")
             report_lines.append("")  # Add a blank line between exploits
+        
+        # Add remediation recommendations
+        report_lines.append("REMEDIATION RECOMMENDATIONS")
+        report_lines.append("-" * 80)
+        report_lines.append("Based on the findings of this assessment, the following remediation actions are recommended:")
+        report_lines.append("")
+        report_lines.append("General Hardening Recommendations:")
+        report_lines.append("  - Apply the principle of least privilege for all user accounts and services")
+        report_lines.append("  - Regularly update the system with security patches")
+        report_lines.append("  - Implement robust file permission controls")
+        report_lines.append("  - Configure proper sudo policies")
+        report_lines.append("  - Disable unnecessary SUID/SGID binaries")
+        report_lines.append("  - Monitor and audit system for unauthorized changes")
+        report_lines.append("")
+        
+        # Add specific recommendations by severity
+        if self.report_data['summary']['critical_count'] > 0:
+            report_lines.append("Critical Risk Vulnerabilities (Remediate within 24 hours):")
+            critical_vulns = [v for v in self.vulnerabilities if v.get('severity') == 'Critical']
+            for vuln in critical_vulns:
+                path = vuln.get('path', '')
+                vuln_type = vuln.get('type', '').replace('_', ' ').title()
+                if path:
+                    report_lines.append(f"  - Address {vuln_type} in {path}")
+                else:
+                    report_lines.append(f"  - Address {vuln_type}")
+            report_lines.append("")
+        
+        if self.report_data['summary']['high_count'] > 0:
+            report_lines.append("High Risk Vulnerabilities (Remediate within 1 week):")
+            high_vulns = [v for v in self.vulnerabilities if v.get('severity') == 'High']
+            for vuln in high_vulns:
+                path = vuln.get('path', '')
+                vuln_type = vuln.get('type', '').replace('_', ' ').title()
+                if path:
+                    report_lines.append(f"  - Address {vuln_type} in {path}")
+                else:
+                    report_lines.append(f"  - Address {vuln_type}")
+            report_lines.append("")
+        
+        if self.report_data['summary']['medium_count'] > 0:
+            report_lines.append("Medium Risk Vulnerabilities (Remediate within 1 month):")
+            medium_vulns = [v for v in self.vulnerabilities if v.get('severity') == 'Medium']
+            for vuln in medium_vulns[:10]:  # Limit to first 10 to avoid too long reports
+                path = vuln.get('path', '')
+                vuln_type = vuln.get('type', '').replace('_', ' ').title()
+                if path:
+                    report_lines.append(f"  - Address {vuln_type} in {path}")
+                else:
+                    report_lines.append(f"  - Address {vuln_type}")
+            if len(medium_vulns) > 10:
+                report_lines.append(f"  - ...and {len(medium_vulns) - 10} more medium risk vulnerabilities")
+            report_lines.append("")
+        
+        # Add compliance gap analysis
+        report_lines.append("COMPLIANCE GAP ANALYSIS")
+        report_lines.append("-" * 80)
+        
+        if self.report_data['assessment_info']['include_nist']:
+            report_lines.append("NIST SP 800-53 Compliance Gaps:")
+            report_lines.append("  - RA-5 (Vulnerability Scanning): The presence of exploitable privilege escalation")
+            report_lines.append("    vulnerabilities indicates insufficient scanning and remediation processes.")
+            report_lines.append("  - AC-6 (Least Privilege): Multiple findings related to excessive privileges")
+            report_lines.append("    and inadequate permission controls.")
+            report_lines.append("  - CM-6 (Configuration Settings): System configuration does not adhere to")
+            report_lines.append("    security best practices for privilege management.")
+            report_lines.append("")
+        
+        if self.report_data['assessment_info']['include_cis']:
+            report_lines.append("CIS Controls Compliance Gaps:")
+            report_lines.append("  - Control 3 (Continuous Vulnerability Management): Current vulnerability")
+            report_lines.append("    management practices are insufficient to identify and remediate")
+            report_lines.append("    privilege escalation vectors in a timely manner.")
+            report_lines.append("  - Control 5 (Account Management): Excessive privileges and inadequate")
+            report_lines.append("    access controls indicate gaps in account management practices.")
+            report_lines.append("  - Control 14 (Controlled Access): Insufficient control of sensitive data")
+            report_lines.append("    and system access points based on multiple privilege escalation findings.")
+            report_lines.append("")
+        
+        if self.report_data['assessment_info']['include_pci']:
+            report_lines.append("PCI DSS Compliance Gaps:")
+            report_lines.append("  - Requirement 6.2 (Security Patches): System not fully patched against")
+            report_lines.append("    known vulnerabilities that could lead to privilege escalation.")
+            report_lines.append("  - Requirement 7.1 (Least Privilege): Access rights not restricted to")
+            report_lines.append("    least privileges necessary, enabling privilege escalation opportunities.")
+            report_lines.append("  - Requirement 11.2 (Vulnerability Scanning): Current scanning processes")
+            report_lines.append("    have failed to identify and address critical security vulnerabilities.")
+            report_lines.append("")
+        
+        if self.report_data['assessment_info']['include_iso']:
+            report_lines.append("ISO 27001 Compliance Gaps:")
+            report_lines.append("  - A.12.6.1 (Technical Vulnerabilities): Insufficient management of")
+            report_lines.append("    technical vulnerabilities as evidenced by exploitable privilege escalation paths.")
+            report_lines.append("  - A.9.2.3 (Management of Privileged Access Rights): Inadequate management")
+            report_lines.append("    of privileged access rights has resulted in multiple privilege escalation vectors.")
+            report_lines.append("  - A.9.4.4 (Use of Privileged Utility Programs): Insufficient restrictions")
+            report_lines.append("    on the use of privileged system utilities.")
+            report_lines.append("")
+        
+        # Add verification methodology
+        report_lines.append("VERIFICATION METHODOLOGY")
+        report_lines.append("-" * 80)
+        report_lines.append("Each identified vulnerability was verified using a combination of:")
+        report_lines.append("1. Static analysis of file permissions, ownership, and system configurations")
+        report_lines.append("2. Dynamic testing of exploitation vectors in a controlled manner")
+        report_lines.append("3. Evidence collection to confirm exploitability")
+        report_lines.append("")
+        report_lines.append("Verification was performed with care to avoid system disruption or data corruption.")
+        report_lines.append("Only non-destructive tests were conducted unless specifically authorized.")
+        report_lines.append("")
+        
+        # Add responsible parties
+        report_lines.append("RESPONSIBLE PARTIES")
+        report_lines.append("-" * 80)
+        report_lines.append(f"Assessment Conducted by: {self.report_data['assessment_info']['assessor_name']}")
+        report_lines.append(f"Organization: {self.report_data['assessment_info']['organization_name']}")
+        report_lines.append("Remediation Responsibility: IT Security Team")
+        report_lines.append("Verification Responsibility: Security Operations")
+        report_lines.append("")
         
         # Add footer
         report_lines.append("=" * 80)
@@ -3483,12 +3878,12 @@ class ReportGenerator:
         return text_report
     
     def generate_html_report(self, output_file=None):
-        """Generate a professional HTML report"""
+        """Generate a professional HTML report with compliance framework mappings"""
         # Read the report template
         html_template = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privilege Escalation Assessment Report</title>
@@ -3500,6 +3895,7 @@ class ReportGenerator:
             --success-color: #27ae60;
             --warning-color: #f39c12;
             --danger-color: #e74c3c;
+            --critical-color: #8e44ad;
             --light-color: #ecf0f1;
             --dark-color: #2c3e50;
             --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -3570,6 +3966,13 @@ class ReportGenerator:
             margin-bottom: 20px;
         }
         
+        .methodology {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
         .risk-summary {
             display: flex;
             flex-wrap: wrap;
@@ -3584,6 +3987,11 @@ class ReportGenerator:
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             text-align: center;
+        }
+        
+        .risk-critical {
+            background-color: rgba(142, 68, 173, 0.1);
+            border-left: 4px solid var(--critical-color);
         }
         
         .risk-high {
@@ -3610,6 +4018,10 @@ class ReportGenerator:
             font-size: 24px;
             font-weight: bold;
             margin: 10px 0;
+        }
+        
+        .risk-critical .count {
+            color: var(--critical-color);
         }
         
         .risk-high .count {
@@ -3647,7 +4059,12 @@ class ReportGenerator:
             background-color: #f5f5f5;
         }
         
-        .severity-high, .severity-critical {
+        .severity-critical {
+            color: var(--critical-color);
+            font-weight: 600;
+        }
+        
+        .severity-high {
             color: var(--danger-color);
             font-weight: 600;
         }
@@ -3677,6 +4094,11 @@ class ReportGenerator:
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #eee;
+        }
+        
+        .finding-critical .finding-header {
+            background-color: rgba(142, 68, 173, 0.1);
+            color: var(--critical-color);
         }
         
         .finding-high .finding-header {
@@ -3723,6 +4145,13 @@ class ReportGenerator:
             margin: 10px 0;
         }
         
+        .compliance-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -3738,6 +4167,23 @@ class ReportGenerator:
         
         .footer a:hover {
             text-decoration: underline;
+        }
+        
+        .responsible-parties {
+            margin-top: 20px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .responsible-parties h3 {
+            margin-top: 0;
+            color: var(--dark-color);
+        }
+        
+        .responsible-parties ul {
+            margin: 10px 0 0;
+            padding-left: 20px;
         }
         
         @media print {
@@ -3767,37 +4213,83 @@ class ReportGenerator:
             }
         }
     </style>
-</head>
-<body>
+    </head>
+    <body>
     <div class="container">
         <div class="header">
             <h1>Privilege Escalation Vulnerability Assessment</h1>
-            <p>Confidential Security Report</p>
+            <p>{{organization_name}} - Confidential Security Report</p>
+            <p>Report ID: {{report_id}} | Version: {{report_version}}</p>
             <p>Generated: {{scan_time}}</p>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Assessment Information</div>
+            <div class="section-content">
+                <table>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr><td>Organization</td><td>{{organization_name}}</td></tr>
+                    <tr><td>Scope</td><td>{{scope}}</td></tr>
+                    <tr><td>Assessor</td><td>{{assessor_name}}</td></tr>
+                    <tr><td>Contact</td><td>{{assessor_contact}}</td></tr>
+                    <tr><td>Assessment Date</td><td>{{assessment_date}}</td></tr>
+                    <tr><td>Report ID</td><td>{{report_id}}</td></tr>
+                    <tr><td>Report Version</td><td>{{report_version}}</td></tr>
+                    <tr><td>Authorization</td><td>{{authorization}}</td></tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Methodology</div>
+            <div class="section-content">
+                <div class="methodology">
+                    <p>The assessment was conducted using LPEAssessor, a comprehensive privilege escalation assessment tool that:</p>
+                    <ol>
+                        <li>Scans the system for common privilege escalation vectors</li>
+                        <li>Verifies the exploitability of identified vulnerabilities</li>
+                        <li>Generates potential exploit paths for confirmed vulnerabilities</li>
+                        <li>Maps findings to compliance frameworks and provides remediation guidance</li>
+                    </ol>
+                    <p>Verification was performed with care to avoid system disruption or data corruption.</p>
+                    <p>Compliance frameworks mapped in this report:</p>
+                    <ul>
+                        {{compliance_frameworks}}
+                    </ul>
+                </div>
+            </div>
         </div>
         
         <div class="section">
             <div class="section-header">Executive Summary</div>
             <div class="section-content">
                 <div class="executive-summary">
-                    <p>This report presents the findings of a comprehensive privilege escalation assessment conducted on the target system. The assessment identified {{total_vulnerabilities}} potential privilege escalation vectors, of which {{total_exploits}} have been verified as exploitable. This report provides detailed information about each vulnerability and recommended remediation actions.</p>
+                    <p>This report presents the findings of a comprehensive privilege escalation assessment conducted on {{organization_name}} systems. The assessment identified {{total_vulnerabilities}} potential privilege escalation vectors, of which {{exploitable_count}} have been verified as exploitable. This report provides detailed information about each vulnerability and recommended remediation actions.</p>
                 </div>
                 
                 <div class="risk-summary">
+                    <div class="risk-box risk-critical">
+                        <h3>Critical Risk</h3>
+                        <div class="count">{{critical_count}}</div>
+                        <p>Critical vulnerabilities requiring immediate attention (24 hours)</p>
+                    </div>
                     <div class="risk-box risk-high">
                         <h3>High Risk</h3>
-                        <div class="count">{{high_risk_count}}</div>
-                        <p>Critical vulnerabilities requiring immediate attention</p>
+                        <div class="count">{{high_count}}</div>
+                        <p>Severe vulnerabilities requiring prompt remediation (1 week)</p>
                     </div>
                     <div class="risk-box risk-medium">
                         <h3>Medium Risk</h3>
-                        <div class="count">{{medium_risk_count}}</div>
-                        <p>Significant vulnerabilities requiring prompt remediation</p>
+                        <div class="count">{{medium_count}}</div>
+                        <p>Significant vulnerabilities requiring scheduled remediation (1 month)</p>
                     </div>
                     <div class="risk-box risk-low">
                         <h3>Low Risk</h3>
-                        <div class="count">{{low_risk_count}}</div>
-                        <p>Minor vulnerabilities to address in regular maintenance</p>
+                        <div class="count">{{low_count}}</div>
+                        <p>Minor vulnerabilities to address in regular maintenance (3 months)</p>
                     </div>
                 </div>
             </div>
@@ -3825,6 +4317,7 @@ class ReportGenerator:
                         <th>Vulnerability Type</th>
                         <th>Severity</th>
                         <th>Status</th>
+                        <th>Remediation Timeframe</th>
                     </tr>
                     {{vulnerability_summary_rows}}
                 </table>
@@ -3835,6 +4328,15 @@ class ReportGenerator:
             <div class="section-header">Detailed Findings</div>
             <div class="section-content">
                 {{detailed_findings}}
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Compliance Gap Analysis</div>
+            <div class="section-content">
+                <p>Based on the findings of this assessment, the following compliance gaps were identified:</p>
+                
+                {{compliance_gaps}}
             </div>
         </div>
         
@@ -3858,6 +4360,16 @@ class ReportGenerator:
                 </div>
                 
                 {{remediation_recommendations}}
+                
+                <div class="responsible-parties">
+                    <h3>Responsible Parties</h3>
+                    <ul>
+                        <li><strong>Assessment Conducted by:</strong> {{assessor_name}}</li>
+                        <li><strong>Organization:</strong> {{organization_name}}</li>
+                        <li><strong>Remediation Responsibility:</strong> IT Security Team</li>
+                        <li><strong>Verification Responsibility:</strong> Security Operations</li>
+                    </ul>
+                </div>
             </div>
         </div>
         
@@ -3865,10 +4377,11 @@ class ReportGenerator:
             <p>This report was generated by LPEAssessor - Advanced Linux Privilege Escalation Assessment Tool</p>
             <p>This report is confidential and intended for authorized security personnel only.</p>
             <p>Assessment conducted in accordance with industry security standards and best practices.</p>
+            <p>Report Date: {{assessment_date}}</p>
         </div>
     </div>
-</body>
-</html>
+    </body>
+    </html>
         """
         
         # Generate system info rows
@@ -3893,82 +4406,39 @@ class ReportGenerator:
             
             system_info_rows += f"<tr><td>{key.replace('_', ' ').title()}</td><td>{formatted_value}</td></tr>\n"
         
-        # Calculate risk levels
-        high_risk_vulns = []
-        medium_risk_vulns = []
-        low_risk_vulns = []
-        
-        # Categorize vulnerabilities by risk level
-        for vuln in self.report_data['vulnerabilities']:
-            vuln_type = vuln.get('type', 'unknown')
-            
-            # Define high risk vulnerabilities
-            if vuln_type in ['sudo_permissions', 'suid_binary', 'writable_file', 'kernel_exploit', 'docker_group_member']:
-                high_risk_vulns.append(vuln)
-            # Define medium risk vulnerabilities
-            elif vuln_type in ['sgid_binary', 'weak_file_permissions', 'writable_cron_job', 'path_hijacking']:
-                medium_risk_vulns.append(vuln)
-            # Everything else is low risk
-            else:
-                low_risk_vulns.append(vuln)
-        
         # Generate vulnerability summary rows
         vulnerability_summary_rows = ""
         for i, vuln in enumerate(self.report_data['vulnerabilities'], 1):
             vuln_type = vuln.get('type', 'unknown').replace('_', ' ').title()
-            
-            # Determine severity
-            severity = "Low"
-            severity_class = "severity-low"
-            if vuln in high_risk_vulns:
-                severity = "High"
-                severity_class = "severity-high"
-            elif vuln in medium_risk_vulns:
-                severity = "Medium"
-                severity_class = "severity-medium"
+            severity = vuln.get('severity', 'Medium')
+            severity_class = f"severity-{severity.lower()}"
             
             # Determine status
             status = "Unexploitable"
             if vuln.get('is_exploitable', False):
                 status = "Exploitable"
             
+            # Get remediation timeframe
+            remediation_timeframe = vuln.get('remediation_timeframe', 'Not specified')
+            
             vulnerability_summary_rows += f"""<tr>
                 <td>VULN-{i:03d}</td>
                 <td>{vuln_type}</td>
                 <td class="{severity_class}">{severity}</td>
                 <td>{status}</td>
+                <td>{remediation_timeframe}</td>
             </tr>\n"""
         
         # Generate detailed findings
         detailed_findings = ""
         for i, vuln in enumerate(self.report_data['vulnerabilities'], 1):
             vuln_type = vuln.get('type', 'unknown').replace('_', ' ').title()
+            severity = vuln.get('severity', 'Medium')
             
-            # Determine severity class for finding
-            finding_class = "finding-low"
-            severity = "Low"
-            if vuln in high_risk_vulns:
-                finding_class = "finding-high"
-                severity = "High"
-            elif vuln in medium_risk_vulns:
-                finding_class = "finding-medium"
-                severity = "Medium"
-
-            # Add verification information to the finding
-            if 'verification_reason' in vuln:
-                verification_status = "Verified" if vuln.get('is_exploitable', False) else "Verification Failed"
-                verification_reason = vuln.get('verification_reason', 'No verification information')
-                
-                finding_content += f"""
-                <div class="detail-row">
-                    <div class="detail-label">Verification:</div>
-                    <div class="detail-value">
-                        <p><strong>{verification_status}</strong>: {verification_reason}</p>
-                    </div>
-                </div>
-                """
+            # Determine finding class for styling
+            finding_class = f"finding-{severity.lower()}"
             
-            # Create content for each finding
+            # Start the finding div
             finding_content = f"""
             <div class="finding {finding_class}">
                 <div class="finding-header">
@@ -3978,9 +4448,24 @@ class ReportGenerator:
                 <div class="finding-content">
             """
             
+            # Add compliance mapping
+            compliance = vuln.get('compliance', {})
+            if compliance:
+                finding_content += '<div class="compliance-box">'
+                if self.report_data['assessment_info']['include_nist'] and 'nist' in compliance:
+                    finding_content += f'<div><strong>NIST SP 800-53:</strong> {", ".join(compliance["nist"])}</div>'
+                if self.report_data['assessment_info']['include_cis'] and 'cis' in compliance:
+                    finding_content += f'<div><strong>CIS Controls:</strong> {", ".join(compliance["cis"])}</div>'
+                if self.report_data['assessment_info']['include_pci'] and 'pci_dss' in compliance:
+                    finding_content += f'<div><strong>PCI DSS:</strong> {", ".join(compliance["pci_dss"])}</div>'
+                if self.report_data['assessment_info']['include_iso'] and 'iso27001' in compliance:
+                    finding_content += f'<div><strong>ISO 27001:</strong> {", ".join(compliance["iso27001"])}</div>'
+                finding_content += f'<div><strong>Remediation Timeframe:</strong> {vuln.get("remediation_timeframe", "Not specified")}</div>'
+                finding_content += '</div>'
+            
             # Add details for the vulnerability
             for key, value in vuln.items():
-                if key in ['type', 'is_exploitable']:
+                if key in ['type', 'severity', 'compliance', 'remediation_timeframe']:
                     continue  # Skip these keys as they are already represented elsewhere
                 
                 label = key.replace('_', ' ').title()
@@ -4005,6 +4490,18 @@ class ReportGenerator:
                 </div>
                 """
             
+            # Add verification information
+            if 'verification_reason' in vuln:
+                verification_status = "Verified" if vuln.get('is_exploitable', False) else "Verification Failed"
+                finding_content += f"""
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>{verification_status}</strong>: {vuln.get('verification_reason', 'No verification information')}</p>
+                    </div>
+                </div>
+                """
+            
             # Add exploit information if available
             matching_exploits = [e for e in self.report_data['exploits'] if e.get('vulnerability', {}).get('type', '') == vuln.get('type', '')]
             if matching_exploits:
@@ -4025,78 +4522,213 @@ class ReportGenerator:
             
             detailed_findings += finding_content
         
+        # Generate compliance gaps
+        compliance_gaps = ""
+        
+        if self.report_data['assessment_info']['include_nist']:
+            compliance_gaps += """
+            <div class="finding">
+                <div class="finding-header">NIST SP 800-53 Compliance Gaps</div>
+                <div class="finding-content">
+                    <ul>
+                        <li><strong>RA-5 (Vulnerability Scanning):</strong> The presence of exploitable privilege escalation
+                        vulnerabilities indicates insufficient scanning and remediation processes.</li>
+                        <li><strong>AC-6 (Least Privilege):</strong> Multiple findings related to excessive privileges
+                        and inadequate permission controls.</li>
+                        <li><strong>CM-6 (Configuration Settings):</strong> System configuration does not adhere to
+                        security best practices for privilege management.</li>
+                    </ul>
+                </div>
+            </div>
+            """
+        
+        if self.report_data['assessment_info']['include_cis']:
+            compliance_gaps += """
+            <div class="finding">
+                <div class="finding-header">CIS Controls Compliance Gaps</div>
+                <div class="finding-content">
+                    <ul>
+                        <li><strong>Control 3 (Continuous Vulnerability Management):</strong> Current vulnerability
+                        management practices are insufficient to identify and remediate
+                        privilege escalation vectors in a timely manner.</li>
+                        <li><strong>Control 5 (Account Management):</strong> Excessive privileges and inadequate
+                        access controls indicate gaps in account management practices.</li>
+                        <li><strong>Control 14 (Controlled Access):</strong> Insufficient control of sensitive data
+                        and system access points based on multiple privilege escalation findings.</li>
+                    </ul>
+                </div>
+            </div>
+            """
+        
+        if self.report_data['assessment_info']['include_pci']:
+            compliance_gaps += """
+            <div class="finding">
+                <div class="finding-header">PCI DSS Compliance Gaps</div>
+                <div class="finding-content">
+                    <ul>
+                        <li><strong>Requirement 6.2 (Security Patches):</strong> System not fully patched against
+                        known vulnerabilities that could lead to privilege escalation.</li>
+                        <li><strong>Requirement 7.1 (Least Privilege):</strong> Access rights not restricted to
+                        least privileges necessary, enabling privilege escalation opportunities.</li>
+                        <li><strong>Requirement 11.2 (Vulnerability Scanning):</strong> Current scanning processes
+                        have failed to identify and address critical security vulnerabilities.</li>
+                    </ul>
+                </div>
+            </div>
+            """
+        
+        if self.report_data['assessment_info']['include_iso']:
+            compliance_gaps += """
+            <div class="finding">
+                <div class="finding-header">ISO 27001 Compliance Gaps</div>
+                <div class="finding-content">
+                    <ul>
+                        <li><strong>A.12.6.1 (Technical Vulnerabilities):</strong> Insufficient management of
+                        technical vulnerabilities as evidenced by exploitable privilege escalation paths.</li>
+                        <li><strong>A.9.2.3 (Management of Privileged Access Rights):</strong> Inadequate management
+                        of privileged access rights has resulted in multiple privilege escalation vectors.</li>
+                        <li><strong>A.9.4.4 (Use of Privileged Utility Programs):</strong> Insufficient restrictions
+                        on the use of privileged system utilities.</li>
+                    </ul>
+                </div>
+            </div>
+            """
+        
         # Generate remediation recommendations
         remediation_recommendations = ""
-        if high_risk_vulns:
-            remediation_recommendations += """
+        
+        # Critical vulnerabilities
+        if self.report_data['summary']['critical_count'] > 0:
+            critical_recommendations = "<ul>"
+            critical_vulns = [v for v in self.vulnerabilities if v.get('severity') == 'Critical']
+            for vuln in critical_vulns:
+                path = vuln.get('path', '')
+                vuln_type = vuln.get('type', '').replace('_', ' ').title()
+                if path:
+                    critical_recommendations += f"<li>Address {vuln_type} in {path}</li>\n"
+                else:
+                    critical_recommendations += f"<li>Address {vuln_type}</li>\n"
+            critical_recommendations += "</ul>"
+            
+            remediation_recommendations += f"""
+            <div class="finding finding-critical">
+                <div class="finding-header">Critical Risk Vulnerabilities (Remediate within 24 hours)</div>
+                <div class="finding-content">
+                    {critical_recommendations}
+                </div>
+            </div>
+            """
+        
+        # High vulnerabilities
+        if self.report_data['summary']['high_count'] > 0:
+            high_recommendations = "<ul>"
+            high_vulns = [v for v in self.vulnerabilities if v.get('severity') == 'High']
+            for vuln in high_vulns:
+                path = vuln.get('path', '')
+                vuln_type = vuln.get('type', '').replace('_', ' ').title()
+                if path:
+                    high_recommendations += f"<li>Address {vuln_type} in {path}</li>\n"
+                else:
+                    high_recommendations += f"<li>Address {vuln_type}</li>\n"
+            high_recommendations += "</ul>"
+            
+            remediation_recommendations += f"""
             <div class="finding finding-high">
-                <div class="finding-header">High Risk Vulnerabilities</div>
+                <div class="finding-header">High Risk Vulnerabilities (Remediate within 1 week)</div>
                 <div class="finding-content">
-                    <ul>
-            """
-            
-            for vuln in high_risk_vulns:
-                vuln_type = vuln.get('type', 'unknown').replace('_', ' ').title()
-                if vuln_type == "Sudo Permissions":
-                    remediation_recommendations += "<li>Review and restrict sudo permissions to the minimum required for operational needs</li>\n"
-                elif vuln_type == "Suid Binary":
-                    remediation_recommendations += f"<li>Remove unnecessary SUID bit from {vuln.get('path', 'binary')}</li>\n"
-                elif vuln_type == "Writable File":
-                    remediation_recommendations += f"<li>Fix permissions on {vuln.get('path', 'file')} to prevent unauthorized modification</li>\n"
-                elif vuln_type == "Kernel Exploit":
-                    remediation_recommendations += "<li>Update the kernel to the latest security patched version</li>\n"
-                elif vuln_type == "Docker Group Member":
-                    remediation_recommendations += "<li>Remove unnecessary users from the Docker group to prevent container escapes</li>\n"
-            
-            remediation_recommendations += """
-                    </ul>
+                    {high_recommendations}
                 </div>
             </div>
             """
         
-        if medium_risk_vulns:
-            remediation_recommendations += """
+# Medium vulnerabilities
+        if self.report_data['summary']['medium_count'] > 0:
+            medium_recommendations = "<ul>"
+            medium_vulns = [v for v in self.vulnerabilities if v.get('severity') == 'Medium']
+            for vuln in medium_vulns[:10]:  # Limit to first 10 to avoid too long reports
+                path = vuln.get('path', '')
+                vuln_type = vuln.get('type', '').replace('_', ' ').title()
+                if path:
+                    medium_recommendations += f"<li>Address {vuln_type} in {path}</li>\n"
+                else:
+                    medium_recommendations += f"<li>Address {vuln_type}</li>\n"
+            if len(medium_vulns) > 10:
+                medium_recommendations += f"<li>...and {len(medium_vulns) - 10} more medium risk vulnerabilities</li>\n"
+            medium_recommendations += "</ul>"
+            
+            remediation_recommendations += f"""
             <div class="finding finding-medium">
-                <div class="finding-header">Medium Risk Vulnerabilities</div>
+                <div class="finding-header">Medium Risk Vulnerabilities (Remediate within 1 month)</div>
                 <div class="finding-content">
-                    <ul>
-            """
-            
-            for vuln in medium_risk_vulns:
-                vuln_type = vuln.get('type', 'unknown').replace('_', ' ').title()
-                if vuln_type == "Sgid Binary":
-                    remediation_recommendations += f"<li>Remove unnecessary SGID bit from {vuln.get('path', 'binary')}</li>\n"
-                elif vuln_type == "Weak File Permissions":
-                    remediation_recommendations += f"<li>Strengthen permissions on {vuln.get('path', 'file')} to prevent unauthorized access</li>\n"
-                elif vuln_type == "Writable Cron Job":
-                    remediation_recommendations += f"<li>Fix permissions on cron job {vuln.get('path', 'file')} to prevent manipulation</li>\n"
-                elif vuln_type == "Path Hijacking":
-                    remediation_recommendations += "<li>Review and secure PATH directories to prevent binary hijacking</li>\n"
-            
-            remediation_recommendations += """
-                    </ul>
+                    {medium_recommendations}
                 </div>
             </div>
             """
-        
+            
+        # Low vulnerabilities
+        if self.report_data['summary']['low_count'] > 0:
+            low_recommendations = "<ul>"
+            low_vulns = [v for v in self.vulnerabilities if v.get('severity') == 'Low']
+            for vuln in low_vulns[:5]:  # Limit to first 5 to avoid too long reports
+                path = vuln.get('path', '')
+                vuln_type = vuln.get('type', '').replace('_', ' ').title()
+                if path:
+                    low_recommendations += f"<li>Address {vuln_type} in {path}</li>\n"
+                else:
+                    low_recommendations += f"<li>Address {vuln_type}</li>\n"
+            if len(low_vulns) > 5:
+                low_recommendations += f"<li>...and {len(low_vulns) - 5} more low risk vulnerabilities</li>\n"
+            low_recommendations += "</ul>"
+            
+            remediation_recommendations += f"""
+            <div class="finding finding-low">
+                <div class="finding-header">Low Risk Vulnerabilities (Remediate within 3 months)</div>
+                <div class="finding-content">
+                    {low_recommendations}
+                </div>
+            </div>
+            """
+                
+        # Prepare compliance frameworks list
+        compliance_frameworks = ""
+        if self.report_data['assessment_info']['include_nist']:
+            compliance_frameworks += "<li>NIST SP 800-53 (Security Control RA-5: Vulnerability Scanning)</li>\n"
+        if self.report_data['assessment_info']['include_cis']:
+            compliance_frameworks += "<li>CIS Controls (Control 3: Continuous Vulnerability Management)</li>\n"
+        if self.report_data['assessment_info']['include_pci']:
+            compliance_frameworks += "<li>PCI DSS (Requirement 11.2: Regular Vulnerability Scanning)</li>\n"
+        if self.report_data['assessment_info']['include_iso']:
+            compliance_frameworks += "<li>ISO 27001 (Control A.12.6.1: Management of Technical Vulnerabilities)</li>\n"
+            
         # Replace placeholders in template
         html_report = html_template
+        html_report = html_report.replace("{{organization_name}}", self.report_data['assessment_info']['organization_name'])
+        html_report = html_report.replace("{{report_id}}", self.report_data['assessment_info']['report_id'])
+        html_report = html_report.replace("{{report_version}}", self.report_data['assessment_info']['report_version'])
         html_report = html_report.replace("{{scan_time}}", self.report_data['scan_time'])
-        html_report = html_report.replace("{{total_vulnerabilities}}", str(len(self.report_data['vulnerabilities'])))
-        html_report = html_report.replace("{{total_exploits}}", str(len(self.report_data['exploits'])))
-        html_report = html_report.replace("{{high_risk_count}}", str(len(high_risk_vulns)))
-        html_report = html_report.replace("{{medium_risk_count}}", str(len(medium_risk_vulns)))
-        html_report = html_report.replace("{{low_risk_count}}", str(len(low_risk_vulns)))
+        html_report = html_report.replace("{{assessor_name}}", self.report_data['assessment_info']['assessor_name'])
+        html_report = html_report.replace("{{assessor_contact}}", self.report_data['assessment_info']['assessor_contact'])
+        html_report = html_report.replace("{{assessment_date}}", self.report_data['assessment_info']['assessment_date'])
+        html_report = html_report.replace("{{scope}}", self.report_data['assessment_info']['scope'])
+        html_report = html_report.replace("{{authorization}}", self.report_data['assessment_info']['authorization'])
+        html_report = html_report.replace("{{total_vulnerabilities}}", str(self.report_data['summary']['total_vulnerabilities']))
+        html_report = html_report.replace("{{exploitable_count}}", str(len([v for v in self.vulnerabilities if v.get('is_exploitable', False)])))
+        html_report = html_report.replace("{{critical_count}}", str(self.report_data['summary']['critical_count']))
+        html_report = html_report.replace("{{high_count}}", str(self.report_data['summary']['high_count']))
+        html_report = html_report.replace("{{medium_count}}", str(self.report_data['summary']['medium_count']))
+        html_report = html_report.replace("{{low_count}}", str(self.report_data['summary']['low_count']))
         html_report = html_report.replace("{{system_info_rows}}", system_info_rows)
         html_report = html_report.replace("{{vulnerability_summary_rows}}", vulnerability_summary_rows)
         html_report = html_report.replace("{{detailed_findings}}", detailed_findings)
+        html_report = html_report.replace("{{compliance_frameworks}}", compliance_frameworks)
+        html_report = html_report.replace("{{compliance_gaps}}", compliance_gaps)
         html_report = html_report.replace("{{remediation_recommendations}}", remediation_recommendations)
         
         if output_file:
             file_name = f"{output_file}.html" if not output_file.endswith('.html') else output_file
             with open(file_name, 'w') as f:
                 f.write(html_report)
-            self.logger.log(LogLevel.SUCCESS, f"Professional HTML report saved to {file_name}")
+            self.logger.log(LogLevel.SUCCESS, f"HTML report saved to {file_name}")
         
         return html_report
 
@@ -4111,7 +4743,7 @@ def print_banner():
 \_____/\_|   \____/\_| |_/___/___/\___||___/___/\___/|_|   ─────▀█▀█▀                                                                                                                                                                                                              
     """
     print(banner)
-    print("  Linux Privilege Escalation Assessment Tool v1.3.2")
+    print("  Linux Privilege Escalation Assessment Tool v1.3.1")
     print("  https://github.com/ParzivalHack/LPEAssessor")
     print("")
     print("")
