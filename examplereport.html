@@ -1,7 +1,7 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privilege Escalation Assessment Report</title>
@@ -13,6 +13,7 @@
             --success-color: #27ae60;
             --warning-color: #f39c12;
             --danger-color: #e74c3c;
+            --critical-color: #8e44ad;
             --light-color: #ecf0f1;
             --dark-color: #2c3e50;
             --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -83,6 +84,13 @@
             margin-bottom: 20px;
         }
         
+        .methodology {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--success-color);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
         .risk-summary {
             display: flex;
             flex-wrap: wrap;
@@ -97,6 +105,11 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             text-align: center;
+        }
+        
+        .risk-critical {
+            background-color: rgba(142, 68, 173, 0.1);
+            border-left: 4px solid var(--critical-color);
         }
         
         .risk-high {
@@ -123,6 +136,10 @@
             font-size: 24px;
             font-weight: bold;
             margin: 10px 0;
+        }
+        
+        .risk-critical .count {
+            color: var(--critical-color);
         }
         
         .risk-high .count {
@@ -160,7 +177,12 @@
             background-color: #f5f5f5;
         }
         
-        .severity-high, .severity-critical {
+        .severity-critical {
+            color: var(--critical-color);
+            font-weight: 600;
+        }
+        
+        .severity-high {
             color: var(--danger-color);
             font-weight: 600;
         }
@@ -190,6 +212,11 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #eee;
+        }
+        
+        .finding-critical .finding-header {
+            background-color: rgba(142, 68, 173, 0.1);
+            color: var(--critical-color);
         }
         
         .finding-high .finding-header {
@@ -236,6 +263,13 @@
             margin: 10px 0;
         }
         
+        .compliance-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -251,6 +285,23 @@
         
         .footer a:hover {
             text-decoration: underline;
+        }
+        
+        .responsible-parties {
+            margin-top: 20px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .responsible-parties h3 {
+            margin-top: 0;
+            color: var(--dark-color);
+        }
+        
+        .responsible-parties ul {
+            margin: 10px 0 0;
+            padding-left: 20px;
         }
         
         @media print {
@@ -280,37 +331,87 @@
             }
         }
     </style>
-</head>
-<body>
+    </head>
+    <body>
     <div class="container">
         <div class="header">
             <h1>Privilege Escalation Vulnerability Assessment</h1>
-            <p>Confidential Security Report</p>
-            <p>Generated: 2025-03-17 14:57:01</p>
+            <p>OrganizationName - Confidential Security Report</p>
+            <p>Report ID: ExampleReport01 | Version: 1.0</p>
+            <p>Generated: 2025-03-31 10:41:07</p>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Assessment Information</div>
+            <div class="section-content">
+                <table>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr><td>Organization</td><td>OrganizationName</td></tr>
+                    <tr><td>Scope</td><td>Kali Linux VM in testing enviroment</td></tr>
+                    <tr><td>Assessor</td><td>Tommaso Bona</td></tr>
+                    <tr><td>Contact</td><td>tommasobona04@gmail.com</td></tr>
+                    <tr><td>Assessment Date</td><td>2025-03-31</td></tr>
+                    <tr><td>Report ID</td><td>ExampleReport01</td></tr>
+                    <tr><td>Report Version</td><td>1.0</td></tr>
+                    <tr><td>Authorization</td><td>CompanyName</td></tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Methodology</div>
+            <div class="section-content">
+                <div class="methodology">
+                    <p>The assessment was conducted using LPEAssessor, a comprehensive privilege escalation assessment tool that:</p>
+                    <ol>
+                        <li>Scans the system for common privilege escalation vectors</li>
+                        <li>Verifies the exploitability of identified vulnerabilities</li>
+                        <li>Generates potential exploit paths for confirmed vulnerabilities</li>
+                        <li>Maps findings to compliance frameworks and provides remediation guidance</li>
+                    </ol>
+                    <p>Verification was performed with care to avoid system disruption or data corruption.</p>
+                    <p>Compliance frameworks mapped in this report:</p>
+                    <ul>
+                        <li>NIST SP 800-53 (Security Control RA-5: Vulnerability Scanning)</li>
+<li>CIS Controls (Control 3: Continuous Vulnerability Management)</li>
+<li>PCI DSS (Requirement 11.2: Regular Vulnerability Scanning)</li>
+<li>ISO 27001 (Control A.12.6.1: Management of Technical Vulnerabilities)</li>
+
+                    </ul>
+                </div>
+            </div>
         </div>
         
         <div class="section">
             <div class="section-header">Executive Summary</div>
             <div class="section-content">
                 <div class="executive-summary">
-                    <p>This report presents the findings of a comprehensive privilege escalation assessment conducted on the target system. The assessment identified 60 potential privilege escalation vectors, of which 11 have been verified as exploitable. This report provides detailed information about each vulnerability and recommended remediation actions.</p>
+                    <p>This report presents the findings of a comprehensive privilege escalation assessment conducted on OrganizationName systems. The assessment identified 61 potential privilege escalation vectors, of which 19 have been verified as exploitable. This report provides detailed information about each vulnerability and recommended remediation actions.</p>
                 </div>
                 
                 <div class="risk-summary">
+                    <div class="risk-box risk-critical">
+                        <h3>Critical Risk</h3>
+                        <div class="count">0</div>
+                        <p>Critical vulnerabilities requiring immediate attention (24 hours)</p>
+                    </div>
                     <div class="risk-box risk-high">
                         <h3>High Risk</h3>
                         <div class="count">35</div>
-                        <p>Critical vulnerabilities requiring immediate attention</p>
+                        <p>Severe vulnerabilities requiring prompt remediation (1 week)</p>
                     </div>
                     <div class="risk-box risk-medium">
                         <h3>Medium Risk</h3>
-                        <div class="count">13</div>
-                        <p>Significant vulnerabilities requiring prompt remediation</p>
+                        <div class="count">25</div>
+                        <p>Significant vulnerabilities requiring scheduled remediation (1 month)</p>
                     </div>
                     <div class="risk-box risk-low">
                         <h3>Low Risk</h3>
-                        <div class="count">12</div>
-                        <p>Minor vulnerabilities to address in regular maintenance</p>
+                        <div class="count">1</div>
+                        <p>Minor vulnerabilities to address in regular maintenance (3 months)</p>
                     </div>
                 </div>
             </div>
@@ -352,366 +453,434 @@
                         <th>Vulnerability Type</th>
                         <th>Severity</th>
                         <th>Status</th>
+                        <th>Remediation Timeframe</th>
                     </tr>
                     <tr>
                 <td>VULN-001</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-002</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-003</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-004</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-005</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-006</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-007</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-008</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-009</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-010</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-011</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-012</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-013</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-014</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-015</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-016</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-017</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-018</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-019</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-020</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-021</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-022</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-023</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-024</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-025</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-026</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-027</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-028</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-029</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-030</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-031</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-032</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-033</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-034</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-035</td>
                 <td>Suid Binary</td>
                 <td class="severity-high">High</td>
                 <td>Unexploitable</td>
+                <td>1 week</td>
             </tr>
 <tr>
                 <td>VULN-036</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
                 <td>Unexploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-037</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
                 <td>Unexploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-038</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
                 <td>Unexploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-039</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
                 <td>Unexploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-040</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
                 <td>Unexploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-041</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-042</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
-                <td>Unexploitable</td>
+                <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-043</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-044</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
-                <td>Exploitable</td>
+                <td>Unexploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-045</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-046</td>
                 <td>Sgid Binary</td>
                 <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-047</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-048</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-049</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-050</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-051</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-052</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-053</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-054</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-055</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-056</td>
                 <td>Plaintext Credentials</td>
-                <td class="severity-low">Low</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-057</td>
-                <td>Writable Path Directory</td>
-                <td class="severity-low">Low</td>
+                <td>Plaintext Credentials</td>
+                <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-058</td>
-                <td>Path Hijacking</td>
+                <td>Writable Path Directory</td>
                 <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-059</td>
                 <td>Path Hijacking</td>
                 <td class="severity-medium">Medium</td>
                 <td>Exploitable</td>
+                <td>1 month</td>
             </tr>
 <tr>
                 <td>VULN-060</td>
+                <td>Path Hijacking</td>
+                <td class="severity-medium">Medium</td>
+                <td>Exploitable</td>
+                <td>1 month</td>
+            </tr>
+<tr>
+                <td>VULN-061</td>
                 <td>History File Exposure</td>
                 <td class="severity-low">Low</td>
                 <td>Unexploitable</td>
+                <td>3 months</td>
             </tr>
 
                 </table>
@@ -728,42 +897,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/alternatives/rlogin</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-002: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/etc/alternatives/rsh</div>
@@ -789,6 +923,51 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-002: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/alternatives/rlogin</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -798,7 +977,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/lib/chromium/chrome-sandbox</div>
@@ -824,6 +1003,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -833,7 +1017,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/lib/openssh/ssh-keysign</div>
@@ -859,6 +1043,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -868,7 +1057,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/lib/polkit-1/polkit-agent-helper-1</div>
@@ -894,6 +1083,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -903,7 +1097,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/lib/policykit-1/polkit-agent-helper-1</div>
@@ -929,6 +1123,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -938,7 +1137,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/lib/xorg/Xorg.wrap</div>
@@ -964,6 +1163,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -973,7 +1177,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/libexec/polkit-agent-helper-1</div>
@@ -999,6 +1203,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1008,7 +1217,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/rsh-redone-rlogin</div>
@@ -1034,6 +1243,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1043,7 +1257,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/ntfs-3g</div>
@@ -1069,6 +1283,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1078,7 +1297,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/rsh</div>
@@ -1104,6 +1323,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1113,7 +1337,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/pkexec</div>
@@ -1139,6 +1363,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1148,42 +1377,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/sudoedit</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-014: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/fusermount3</div>
@@ -1209,16 +1403,21 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
             <div class="finding finding-high">
                 <div class="finding-header">
-                    VULN-015: Suid Binary
+                    VULN-014: Suid Binary
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/rlogin</div>
@@ -1244,6 +1443,51 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-015: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/sudoedit</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1253,7 +1497,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/fusermount</div>
@@ -1279,6 +1523,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1288,42 +1537,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/gpasswd</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-018: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/chfn</div>
@@ -1349,19 +1563,24 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
             <div class="finding finding-high">
                 <div class="finding-header">
-                    VULN-019: Suid Binary
+                    VULN-018: Suid Binary
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/sg</div>
+                    <div class="detail-value">/usr/bin/gpasswd</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1384,16 +1603,21 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
             <div class="finding finding-high">
                 <div class="finding-header">
-                    VULN-020: Suid Binary
+                    VULN-019: Suid Binary
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/su</div>
@@ -1419,6 +1643,51 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-020: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/sg</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1428,7 +1697,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/newgrp</div>
@@ -1454,6 +1723,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1463,112 +1737,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/umount</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-023: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/rsh-redone-rsh</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-024: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/chsh</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-025: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/sudo</div>
@@ -1594,6 +1763,131 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-023: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/chsh</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-024: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/rsh-redone-rsh</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-025: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/umount</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1603,77 +1897,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/umount.nfs</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-027: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.nfs</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-028: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/passwd</div>
@@ -1699,6 +1923,91 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-027: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/umount.nfs</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-028: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.nfs</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1708,7 +2017,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/sbin/mount.smb3</div>
@@ -1734,6 +2043,11 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1743,77 +2057,7 @@
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.ntfs-3g</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-031: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.nfs4</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-032: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/sbin/umount.nfs4</div>
@@ -1839,19 +2083,24 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
             <div class="finding finding-high">
                 <div class="finding-header">
-                    VULN-033: Suid Binary
+                    VULN-031: Suid Binary
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.ntfs</div>
+                    <div class="detail-value">/usr/sbin/mount.ntfs-3g</div>
                 </div>
                 
                 <div class="detail-row">
@@ -1874,39 +2123,9 @@
                     <div class="detail-value"></div>
                 </div>
                 
-                </div>
-            </div>
-            
-            <div class="finding finding-high">
-                <div class="finding-header">
-                    VULN-034: Suid Binary
-                    <span>High Risk</span>
-                </div>
-                <div class="finding-content">
-            
                 <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/sbin/mount.cifs</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">4755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploit Method:</div>
-                    <div class="detail-value"></div>
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
                 </div>
                 
                 </div>
@@ -1914,11 +2133,11 @@
             
             <div class="finding finding-high">
                 <div class="finding-header">
-                    VULN-035: Suid Binary
+                    VULN-032: Suid Binary
                     <span>High Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/sbin/pppd</div>
@@ -1944,6 +2163,131 @@
                     <div class="detail-value"></div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-033: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.ntfs</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-034: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.cifs</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-high">
+                <div class="finding-header">
+                    VULN-035: Suid Binary
+                    <span>High Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 week</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/sbin/mount.nfs4</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">4755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploit Method:</div>
+                    <div class="detail-value"></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1953,7 +2297,7 @@
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/etc/alternatives/locate</div>
@@ -1974,6 +2318,11 @@
                     <div class="detail-value">2755</div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -1983,7 +2332,7 @@
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/lib/x86_64-linux-gnu/utempter/utempter</div>
@@ -2004,6 +2353,11 @@
                     <div class="detail-value">2755</div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -2013,7 +2367,7 @@
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/lib/xorg/Xorg.wrap</div>
@@ -2034,6 +2388,11 @@
                     <div class="detail-value">6755</div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -2043,7 +2402,7 @@
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/dotlockfile</div>
@@ -2064,6 +2423,11 @@
                     <div class="detail-value">2755</div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -2073,7 +2437,7 @@
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/plocate</div>
@@ -2094,6 +2458,11 @@
                     <div class="detail-value">2755</div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
                 </div>
             </div>
             
@@ -2103,142 +2472,7 @@
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/ssh-agent</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">_ssh</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">2755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Potentially exploitable based on basic checks</div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-medium">
-                <div class="finding-header">
-                    VULN-042: Sgid Binary
-                    <span>Medium Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/locate</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">plocate</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">2755</div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-medium">
-                <div class="finding-header">
-                    VULN-043: Sgid Binary
-                    <span>Medium Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/chage</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">shadow</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">2755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Potentially exploitable based on basic checks</div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-medium">
-                <div class="finding-header">
-                    VULN-044: Sgid Binary
-                    <span>Medium Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/usr/bin/crontab</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Owner:</div>
-                    <div class="detail-value">root</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Group:</div>
-                    <div class="detail-value">crontab</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Permissions:</div>
-                    <div class="detail-value">2755</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Potentially exploitable based on basic checks</div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-medium">
-                <div class="finding-header">
-                    VULN-045: Sgid Binary
-                    <span>Medium Risk</span>
-                </div>
-                <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/bin/expiry</div>
@@ -2260,8 +2494,196 @@
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Potentially exploitable based on basic checks</div>
+                    <div class="detail-value">Potentially exploitable based on euristhic (basic) checks only</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Potentially exploitable based on euristhic (basic) checks only</p>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-042: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/ssh-agent</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">_ssh</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Potentially exploitable based on euristhic (basic) checks only</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Potentially exploitable based on euristhic (basic) checks only</p>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-043: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/chage</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">shadow</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Potentially exploitable based on euristhic (basic) checks only</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Potentially exploitable based on euristhic (basic) checks only</p>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-044: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/locate</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">plocate</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-045: Sgid Binary
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/usr/bin/crontab</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Owner:</div>
+                    <div class="detail-value">root</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Group:</div>
+                    <div class="detail-value">crontab</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Permissions:</div>
+                    <div class="detail-value">2755</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Potentially exploitable based on euristhic (basic) checks only</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Potentially exploitable based on euristhic (basic) checks only</p>
+                    </div>
                 </div>
                 
                 </div>
@@ -2273,7 +2695,7 @@
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/usr/sbin/unix_chkpwd</div>
@@ -2295,69 +2717,32 @@
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Potentially exploitable based on basic checks</div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-047: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/unicornscan/modules.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>scanit! host=localhost dbname=scan</li>
-<li>scanit!</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scanit! host=localhost dbname=scan', 'scanit!']}</li>
-<li>{'pattern': '(?i)username\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scan']}</li>
-</ul></div>
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
                 </div>
                 
                 <div class="detail-row">
                     <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Exploit successfully executed</div>
+                    <div class="detail-value">Potentially exploitable based on euristhic (basic) checks only</div>
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-label">Verification:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
+                        <p><strong>Verified</strong>: Potentially exploitable based on euristhic (basic) checks only</p>
                     </div>
                 </div>
                 
                 </div>
             </div>
             
-            <div class="finding finding-low">
+            <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-048: Plaintext Credentials
-                    <span>Low Risk</span>
+                    VULN-047: Plaintext Credentials
+                    <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/etc/idmapd.conf</div>
@@ -2385,55 +2770,8 @@ Nobody-Group = nogroup
                 </div>
                 
                 <div class="detail-row">
-                    <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Exploit successfully executed</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-049: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/sqlmap/sqlmap.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>guessme
-requestFile = 
-
-# Rather than providing a target URL, let Google return target
-# hosts as result of your Google dork expression. For a list of Google
-# </li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['guessme\nrequestFile = \n\n# Rather than providing a target URL, let Google return target\n# hosts as result of your Google dork expression. For a list of Google\n# ']}</li>
-</ul></div>
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
                 </div>
                 
                 <div class="detail-row">
@@ -2442,215 +2780,30 @@ requestFile =
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
                     </div>
                 </div>
                 
                 </div>
             </div>
             
-            <div class="finding finding-low">
+            <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-050: Plaintext Credentials
-                    <span>Low Risk</span>
+                    VULN-048: Plaintext Credentials
+                    <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>root</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['root']}</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Exploit successfully executed</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-051: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>cups-pk-helper</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['cups-pk-helper']}</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Exploit successfully executed</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-052: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/var/lib/ucf/cache/:etc:idmapd.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>nobody
-Nobody-Group = nogroup
-</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Exploit successfully executed</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-053: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
-                <div class="detail-row">
-                    <div class="detail-label">Path:</div>
-                    <div class="detail-value">/etc/redsocks.conf</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Pattern:</div>
-                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Matches:</div>
-                    <div class="detail-value"><ul>
-<li>redsocks;
-	group = redsocks;
-	// chroot = </li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Creds Data:</div>
-                    <div class="detail-value"><ul>
-<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['redsocks;\n\tgroup = redsocks;\n\t// chroot = ']}</li>
-</ul></div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Verification Reason:</div>
-                    <div class="detail-value">Exploit successfully executed</div>
-                </div>
-                
-                <div class="detail-row">
-                    <div class="detail-label">Exploitation:</div>
-                    <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
-                    </div>
-                </div>
-                
-                </div>
-            </div>
-            
-            <div class="finding finding-low">
-                <div class="finding-header">
-                    VULN-054: Plaintext Credentials
-                    <span>Low Risk</span>
-                </div>
-                <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/etc/nsswitch.conf</div>
@@ -2690,28 +2843,341 @@ netgroup:       nis
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Verification Reason:</div>
                     <div class="detail-value">Exploit successfully executed</div>
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
                     </div>
                 </div>
                 
                 </div>
             </div>
             
-            <div class="finding finding-low">
+            <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-055: Plaintext Credentials
-                    <span>Low Risk</span>
+                    VULN-049: Plaintext Credentials
+                    <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/var/lib/ucf/cache/:etc:idmapd.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>nobody
+Nobody-Group = nogroup
+</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['nobody\nNobody-Group = nogroup\n']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
             
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-050: Plaintext Credentials
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/unicornscan/modules.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>scanit! host=localhost dbname=scan</li>
+<li>scanit!</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scanit! host=localhost dbname=scan', 'scanit!']}</li>
+<li>{'pattern': '(?i)username\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['scan']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-051: Plaintext Credentials
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/redsocks.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>redsocks;
+	group = redsocks;
+	// chroot = </li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['redsocks;\n\tgroup = redsocks;\n\t// chroot = ']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-052: Plaintext Credentials
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/dbus-1/system.d/org.opensuse.CupsPkHelper.Mechanism.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>cups-pk-helper</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['cups-pk-helper']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-053: Plaintext Credentials
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/dbus-1/system.d/com.redhat.NewPrinterNotification.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)user\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>root</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)user\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['root']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-054: Plaintext Credentials
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/etc/dbus-1/system.d/com.redhat.PrinterDriversInstaller.conf</div>
@@ -2737,28 +3203,166 @@ netgroup:       nis
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Verification Reason:</div>
                     <div class="detail-value">Exploit successfully executed</div>
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
                     </div>
                 </div>
                 
                 </div>
             </div>
             
-            <div class="finding finding-low">
+            <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-056: Plaintext Credentials
-                    <span>Low Risk</span>
+                    VULN-055: Plaintext Credentials
+                    <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/etc/sqlmap/sqlmap.conf</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>guessme
+requestFile = 
+
+# Rather than providing a target URL, let Google return target
+# hosts as result of your Google dork expression. For a list of Google
+# </li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['guessme\nrequestFile = \n\n# Rather than providing a target URL, let Google return target\n# hosts as result of your Google dork expression. For a list of Google\n# ']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
             
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-056: Plaintext Credentials
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
+                <div class="detail-row">
+                    <div class="detail-label">Path:</div>
+                    <div class="detail-value">/home/kali/Desktop/zphisher/.github/workflows/docker.yml</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Pattern:</div>
+                    <div class="detail-value">(?i)password\s*[=:]\s*[\'"]?([^\'"]+)[\'"]?</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Matches:</div>
+                    <div class="detail-value"><ul>
+<li>${{ secrets.GITHUB_TOKEN }}
+
+      - name: Login to DockerHub
+        if: github.repository == </li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Creds Data:</div>
+                    <div class="detail-value"><ul>
+<li>{'pattern': '(?i)password\\s*[=:]\\s*[\\\'"]?([^\\\'"]+)[\\\'"]?', 'matches': ['${{ secrets.GITHUB_TOKEN }}\n\n      - name: Login to DockerHub\n        if: github.repository == ']}</li>
+</ul></div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification Reason:</div>
+                    <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Exploitation:</div>
+                    <div class="detail-value">
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            <div class="finding finding-medium">
+                <div class="finding-header">
+                    VULN-057: Plaintext Credentials
+                    <span>Medium Risk</span>
+                </div>
+                <div class="finding-content">
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> IA-5, SC-28</div><div><strong>CIS Controls:</strong> 16.4, 16.5</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.4, A.9.4.3</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/etc/apparmor/parser.conf</div>
@@ -2784,25 +3388,37 @@ netgroup:       nis
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Verification Reason:</div>
                     <div class="detail-value">Exploit successfully executed</div>
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Exploitation:</div>
                     <div class="detail-value">
-                        <p>Extract plaintext credentials from /etc/unicornscan/modules.conf</p>
-                        <div class="code-block">cat /etc/unicornscan/modules.conf</div>
+                        <p>Extract plaintext credentials from /etc/idmapd.conf</p>
+                        <div class="code-block">cat /etc/idmapd.conf</div>
                     </div>
                 </div>
                 
                 </div>
             </div>
             
-            <div class="finding finding-low">
+            <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-057: Writable Path Directory
-                    <span>Low Risk</span>
+                    VULN-058: Writable Path Directory
+                    <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
             
@@ -2827,8 +3443,20 @@ netgroup:       nis
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Verification Reason:</div>
                     <div class="detail-value">Exploit successfully executed</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: Exploit successfully executed</p>
+                    </div>
                 </div>
                 
                 <div class="detail-row">
@@ -2844,11 +3472,11 @@ netgroup:       nis
             
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-058: Path Hijacking
+                    VULN-059: Path Hijacking
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Command:</div>
                     <div class="detail-value">cat</div>
@@ -2860,8 +3488,20 @@ netgroup:       nis
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Verification Reason:</div>
                     <div class="detail-value">PATH hijacking for cat appears exploitable</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: PATH hijacking for cat appears exploitable</p>
+                    </div>
                 </div>
                 
                 </div>
@@ -2869,11 +3509,11 @@ netgroup:       nis
             
             <div class="finding finding-medium">
                 <div class="finding-header">
-                    VULN-059: Path Hijacking
+                    VULN-060: Path Hijacking
                     <span>Medium Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 5.4</div><div><strong>PCI DSS:</strong> 7.1, 7.2</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 1 month</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Command:</div>
                     <div class="detail-value">ls</div>
@@ -2885,8 +3525,20 @@ netgroup:       nis
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">True</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Verification Reason:</div>
                     <div class="detail-value">PATH hijacking for ls appears exploitable</div>
+                </div>
+                
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verified</strong>: PATH hijacking for ls appears exploitable</p>
+                    </div>
                 </div>
                 
                 </div>
@@ -2894,11 +3546,11 @@ netgroup:       nis
             
             <div class="finding finding-low">
                 <div class="finding-header">
-                    VULN-060: History File Exposure
+                    VULN-061: History File Exposure
                     <span>Low Risk</span>
                 </div>
                 <div class="finding-content">
-            
+            <div class="compliance-box"><div><strong>NIST SP 800-53:</strong> AC-6, CM-6</div><div><strong>CIS Controls:</strong> 5.1, 16.4</div><div><strong>PCI DSS:</strong> 8.2, 8.4</div><div><strong>ISO 27001:</strong> A.9.2.3, A.9.4.4</div><div><strong>Remediation Timeframe:</strong> 3 months</div></div>
                 <div class="detail-row">
                     <div class="detail-label">Path:</div>
                     <div class="detail-value">/home/kali/.bash_history</div>
@@ -2917,10 +3569,88 @@ netgroup:       nis
                 </div>
                 
                 <div class="detail-row">
+                    <div class="detail-label">Is Exploitable:</div>
+                    <div class="detail-value">False</div>
+                </div>
+                
+                <div class="detail-row">
                     <div class="detail-label">Verification Reason:</div>
                     <div class="detail-value">No evidence of successful exploitation found</div>
                 </div>
                 
+                <div class="detail-row">
+                    <div class="detail-label">Verification:</div>
+                    <div class="detail-value">
+                        <p><strong>Verification Failed</strong>: No evidence of successful exploitation found</p>
+                    </div>
+                </div>
+                
+                </div>
+            </div>
+            
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-header">Compliance Gap Analysis</div>
+            <div class="section-content">
+                <p>Based on the findings of this assessment, the following compliance gaps were identified:</p>
+                
+                
+            <div class="finding">
+                <div class="finding-header">NIST SP 800-53 Compliance Gaps</div>
+                <div class="finding-content">
+                    <ul>
+                        <li><strong>RA-5 (Vulnerability Scanning):</strong> The presence of exploitable privilege escalation
+                        vulnerabilities indicates insufficient scanning and remediation processes.</li>
+                        <li><strong>AC-6 (Least Privilege):</strong> Multiple findings related to excessive privileges
+                        and inadequate permission controls.</li>
+                        <li><strong>CM-6 (Configuration Settings):</strong> System configuration does not adhere to
+                        security best practices for privilege management.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="finding">
+                <div class="finding-header">CIS Controls Compliance Gaps</div>
+                <div class="finding-content">
+                    <ul>
+                        <li><strong>Control 3 (Continuous Vulnerability Management):</strong> Current vulnerability
+                        management practices are insufficient to identify and remediate
+                        privilege escalation vectors in a timely manner.</li>
+                        <li><strong>Control 5 (Account Management):</strong> Excessive privileges and inadequate
+                        access controls indicate gaps in account management practices.</li>
+                        <li><strong>Control 14 (Controlled Access):</strong> Insufficient control of sensitive data
+                        and system access points based on multiple privilege escalation findings.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="finding">
+                <div class="finding-header">PCI DSS Compliance Gaps</div>
+                <div class="finding-content">
+                    <ul>
+                        <li><strong>Requirement 6.2 (Security Patches):</strong> System not fully patched against
+                        known vulnerabilities that could lead to privilege escalation.</li>
+                        <li><strong>Requirement 7.1 (Least Privilege):</strong> Access rights not restricted to
+                        least privileges necessary, enabling privilege escalation opportunities.</li>
+                        <li><strong>Requirement 11.2 (Vulnerability Scanning):</strong> Current scanning processes
+                        have failed to identify and address critical security vulnerabilities.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="finding">
+                <div class="finding-header">ISO 27001 Compliance Gaps</div>
+                <div class="finding-content">
+                    <ul>
+                        <li><strong>A.12.6.1 (Technical Vulnerabilities):</strong> Insufficient management of
+                        technical vulnerabilities as evidenced by exploitable privilege escalation paths.</li>
+                        <li><strong>A.9.2.3 (Management of Privileged Access Rights):</strong> Inadequate management
+                        of privileged access rights has resulted in multiple privilege escalation vectors.</li>
+                        <li><strong>A.9.4.4 (Use of Privileged Utility Programs):</strong> Insufficient restrictions
+                        on the use of privileged system utilities.</li>
+                    </ul>
                 </div>
             </div>
             
@@ -2948,71 +3678,83 @@ netgroup:       nis
                 
                 
             <div class="finding finding-high">
-                <div class="finding-header">High Risk Vulnerabilities</div>
+                <div class="finding-header">High Risk Vulnerabilities (Remediate within 1 week)</div>
                 <div class="finding-content">
-                    <ul>
-            <li>Remove unnecessary SUID bit from /etc/alternatives/rlogin</li>
-<li>Remove unnecessary SUID bit from /etc/alternatives/rsh</li>
-<li>Remove unnecessary SUID bit from /usr/lib/chromium/chrome-sandbox</li>
-<li>Remove unnecessary SUID bit from /usr/lib/openssh/ssh-keysign</li>
-<li>Remove unnecessary SUID bit from /usr/lib/polkit-1/polkit-agent-helper-1</li>
-<li>Remove unnecessary SUID bit from /usr/lib/policykit-1/polkit-agent-helper-1</li>
-<li>Remove unnecessary SUID bit from /usr/lib/xorg/Xorg.wrap</li>
-<li>Remove unnecessary SUID bit from /usr/libexec/polkit-agent-helper-1</li>
-<li>Remove unnecessary SUID bit from /usr/bin/rsh-redone-rlogin</li>
-<li>Remove unnecessary SUID bit from /usr/bin/ntfs-3g</li>
-<li>Remove unnecessary SUID bit from /usr/bin/rsh</li>
-<li>Remove unnecessary SUID bit from /usr/bin/pkexec</li>
-<li>Remove unnecessary SUID bit from /usr/bin/sudoedit</li>
-<li>Remove unnecessary SUID bit from /usr/bin/fusermount3</li>
-<li>Remove unnecessary SUID bit from /usr/bin/rlogin</li>
-<li>Remove unnecessary SUID bit from /usr/bin/fusermount</li>
-<li>Remove unnecessary SUID bit from /usr/bin/gpasswd</li>
-<li>Remove unnecessary SUID bit from /usr/bin/chfn</li>
-<li>Remove unnecessary SUID bit from /usr/bin/sg</li>
-<li>Remove unnecessary SUID bit from /usr/bin/su</li>
-<li>Remove unnecessary SUID bit from /usr/bin/newgrp</li>
-<li>Remove unnecessary SUID bit from /usr/bin/umount</li>
-<li>Remove unnecessary SUID bit from /usr/bin/rsh-redone-rsh</li>
-<li>Remove unnecessary SUID bit from /usr/bin/chsh</li>
-<li>Remove unnecessary SUID bit from /usr/bin/sudo</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/umount.nfs</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/mount.nfs</li>
-<li>Remove unnecessary SUID bit from /usr/bin/passwd</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/mount.smb3</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/mount.ntfs-3g</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/mount.nfs4</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/umount.nfs4</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/mount.ntfs</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/mount.cifs</li>
-<li>Remove unnecessary SUID bit from /usr/sbin/pppd</li>
-
-                    </ul>
+                    <ul><li>Address Suid Binary in /etc/alternatives/rsh</li>
+<li>Address Suid Binary in /etc/alternatives/rlogin</li>
+<li>Address Suid Binary in /usr/lib/chromium/chrome-sandbox</li>
+<li>Address Suid Binary in /usr/lib/openssh/ssh-keysign</li>
+<li>Address Suid Binary in /usr/lib/polkit-1/polkit-agent-helper-1</li>
+<li>Address Suid Binary in /usr/lib/policykit-1/polkit-agent-helper-1</li>
+<li>Address Suid Binary in /usr/lib/xorg/Xorg.wrap</li>
+<li>Address Suid Binary in /usr/libexec/polkit-agent-helper-1</li>
+<li>Address Suid Binary in /usr/bin/rsh-redone-rlogin</li>
+<li>Address Suid Binary in /usr/bin/ntfs-3g</li>
+<li>Address Suid Binary in /usr/bin/rsh</li>
+<li>Address Suid Binary in /usr/bin/pkexec</li>
+<li>Address Suid Binary in /usr/bin/fusermount3</li>
+<li>Address Suid Binary in /usr/bin/rlogin</li>
+<li>Address Suid Binary in /usr/bin/sudoedit</li>
+<li>Address Suid Binary in /usr/bin/fusermount</li>
+<li>Address Suid Binary in /usr/bin/chfn</li>
+<li>Address Suid Binary in /usr/bin/gpasswd</li>
+<li>Address Suid Binary in /usr/bin/su</li>
+<li>Address Suid Binary in /usr/bin/sg</li>
+<li>Address Suid Binary in /usr/bin/newgrp</li>
+<li>Address Suid Binary in /usr/bin/sudo</li>
+<li>Address Suid Binary in /usr/bin/chsh</li>
+<li>Address Suid Binary in /usr/bin/rsh-redone-rsh</li>
+<li>Address Suid Binary in /usr/bin/umount</li>
+<li>Address Suid Binary in /usr/bin/passwd</li>
+<li>Address Suid Binary in /usr/sbin/umount.nfs</li>
+<li>Address Suid Binary in /usr/sbin/mount.nfs</li>
+<li>Address Suid Binary in /usr/sbin/mount.smb3</li>
+<li>Address Suid Binary in /usr/sbin/umount.nfs4</li>
+<li>Address Suid Binary in /usr/sbin/mount.ntfs-3g</li>
+<li>Address Suid Binary in /usr/sbin/pppd</li>
+<li>Address Suid Binary in /usr/sbin/mount.ntfs</li>
+<li>Address Suid Binary in /usr/sbin/mount.cifs</li>
+<li>Address Suid Binary in /usr/sbin/mount.nfs4</li>
+</ul>
                 </div>
             </div>
             
             <div class="finding finding-medium">
-                <div class="finding-header">Medium Risk Vulnerabilities</div>
+                <div class="finding-header">Medium Risk Vulnerabilities (Remediate within 1 month)</div>
                 <div class="finding-content">
-                    <ul>
-            <li>Remove unnecessary SGID bit from /etc/alternatives/locate</li>
-<li>Remove unnecessary SGID bit from /usr/lib/x86_64-linux-gnu/utempter/utempter</li>
-<li>Remove unnecessary SGID bit from /usr/lib/xorg/Xorg.wrap</li>
-<li>Remove unnecessary SGID bit from /usr/bin/dotlockfile</li>
-<li>Remove unnecessary SGID bit from /usr/bin/plocate</li>
-<li>Remove unnecessary SGID bit from /usr/bin/ssh-agent</li>
-<li>Remove unnecessary SGID bit from /usr/bin/locate</li>
-<li>Remove unnecessary SGID bit from /usr/bin/chage</li>
-<li>Remove unnecessary SGID bit from /usr/bin/crontab</li>
-<li>Remove unnecessary SGID bit from /usr/bin/expiry</li>
-<li>Remove unnecessary SGID bit from /usr/sbin/unix_chkpwd</li>
-<li>Review and secure PATH directories to prevent binary hijacking</li>
-<li>Review and secure PATH directories to prevent binary hijacking</li>
-
-                    </ul>
+                    <ul><li>Address Sgid Binary in /etc/alternatives/locate</li>
+<li>Address Sgid Binary in /usr/lib/x86_64-linux-gnu/utempter/utempter</li>
+<li>Address Sgid Binary in /usr/lib/xorg/Xorg.wrap</li>
+<li>Address Sgid Binary in /usr/bin/dotlockfile</li>
+<li>Address Sgid Binary in /usr/bin/plocate</li>
+<li>Address Sgid Binary in /usr/bin/expiry</li>
+<li>Address Sgid Binary in /usr/bin/ssh-agent</li>
+<li>Address Sgid Binary in /usr/bin/chage</li>
+<li>Address Sgid Binary in /usr/bin/locate</li>
+<li>Address Sgid Binary in /usr/bin/crontab</li>
+<li>...and 15 more medium risk vulnerabilities</li>
+</ul>
                 </div>
             </div>
             
+            <div class="finding finding-low">
+                <div class="finding-header">Low Risk Vulnerabilities (Remediate within 3 months)</div>
+                <div class="finding-content">
+                    <ul><li>Address History File Exposure in /home/kali/.bash_history</li>
+</ul>
+                </div>
+            </div>
+            
+                
+                <div class="responsible-parties">
+                    <h3>Responsible Parties</h3>
+                    <ul>
+                        <li><strong>Assessment Conducted by:</strong> Tommaso Bona</li>
+                        <li><strong>Organization:</strong> OrganizationName</li>
+                        <li><strong>Remediation Responsibility:</strong> IT Security Team</li>
+                        <li><strong>Verification Responsibility:</strong> Security Operations</li>
+                    </ul>
+                </div>
             </div>
         </div>
         
@@ -3020,8 +3762,9 @@ netgroup:       nis
             <p>This report was generated by LPEAssessor - Advanced Linux Privilege Escalation Assessment Tool</p>
             <p>This report is confidential and intended for authorized security personnel only.</p>
             <p>Assessment conducted in accordance with industry security standards and best practices.</p>
+            <p>Report Date: 2025-03-31</p>
         </div>
     </div>
-</body>
-</html>
+    </body>
+    </html>
         
